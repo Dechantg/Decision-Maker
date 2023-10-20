@@ -16,7 +16,13 @@
   creators email (valid - receieve email from server of the 2 links)
         - link1: creators admin link - to rolling/final results ONLY
         - link2: voters/shared link - to poll (displayed) page, input votes and submit ONLY
-  end/close of the poll le
+  end/close of the poll ==> length of duration?
+        - hours
+        - days
+        - weeks
+        - months
+  option to limit the number of allowable voters
+        - limit their times 
 
       MAYBES:
         - shows a list or a number of *ACTIVE* polls for the creator/admin -- (that they created/are running simultaniously) =>
