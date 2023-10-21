@@ -42,6 +42,7 @@
   uses the Borda Count method - in our case - 3, 2, 1 (like AFL brownlow)
   create 'New' poll hyperlinked button - top right?
   view 'Active/Current' polls hyperlinked button - top left?
+  delete poll on Admin page
 
       MAYBES
         - timeleft on poll (being open)
