@@ -15,7 +15,7 @@ created_at TIMESTAMP
 opens_at TIMESTAMP **
 closes_at TIMESTAMP
 poll_active BOOLEAN default false
-final_result SMALLINT
+final_result FK (options database)
 
 
 
