@@ -5,6 +5,8 @@
 
 Get Node.js express server functional for testing against
 
+  ~~need to set .env~~
+
 ## Step 2
 
 Map out pages. Determin which are get/post calls in our server (MVP map out)
