@@ -7,7 +7,8 @@
         1 - least favourable option
   when a voter submits their poll - admin/creator is notified via email
   page refreshes to display current results - and time left
-      - no added information of (who/how many are left to vote, or total people asked to vote)
+      - no added information of (who/how many are left to vote, or total people asked to vote)? 
+        - or should display such information
 
       MAYBES: 
         title of poll
