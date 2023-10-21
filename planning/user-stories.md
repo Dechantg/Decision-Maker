@@ -40,39 +40,59 @@ Because somehow a final decision needs to be reached...
 
 ### A CREATOR / ADMIN ==> Should be the only one: 
 
-- Can view the poll results as they are LIVE.
-- Who has editorial privileges to the poll.
-  - *Via a specially generated admins link - post creation.*
-- Chooses who partakes in the poll. -- Limited/Unlimited participants as options. 
-  - *Via a specially generated shareable link.*
-- Determines the length of time the poll will be open/running for.
-- Should not be able to alter other users submitted choices
-  - Or selectively choose voting options for one user and not the other/s.
-- Will want to be able to save polls once completed - for later referrence or safe keepings... *(or bragging rights)*
-- Choose parameters/options around specific details and features, like:
-  - can a users submission be edited post submission?
-  - can the poll be closed before the alotted time is up? OR
-  - can the poll be closed without everyone voting?
-- Access previous(completed) polls as well as current(active) polls - which could be multiple.
-- Call for a revote post poll completion
-  - *re-send the same (or new) link to the same voters (or including additions/subtractions of voters)*
+0. Can create a poll with multiple choices [m]
+  - each choice can have title and optional descripton [m]
+
+1. Can view the poll results as they are LIVE. [m]
+
+2. Who has editorial privileges to the poll. [g]
+  - *Via a specially generated admins link - post creation.* [m]
+
+3. Chooses who partakes in the poll. -- Limited/Unlimited participants as options. [m]
+  - *Via a specially generated shareable link.* [m]
+
+4. Determines the length of time the poll will be open/running for. [g]
+
+5. Should not be able to alter other users submitted choices [g]
+  - Or selectively choose voting options for one user and not the other/s. [g]
+
+6. Will want to be able to save polls once completed - for later referrence or safe keepings... *(or bragging rights)* [g]
+
+7. Choose parameters/options around specific details and features, like: [n]
+  - can a users submission be edited post submission? [n]
+  - can the poll be closed before the alotted time is up? OR [n]
+  - can the poll be closed without everyone voting? [n]
+
+8. Access previous(completed) polls as well as current(active) polls - which could be multiple. [g]
+
+9. Call for a revote post poll completion [g]
+  - *re-send the same (or new) link to the same voters (or including additions/subtractions of voters)* [g]
+
 
 ### A VOTER / USER ==> Should/Should not be able to:
 
 - Should:
-  - Be able to see who created the poll, the options to vote for and any discriptions attached to the polls.
-    - other details such as ending date, number of allowed 're-submits/edits'.
-  - Be able to submit/re-submit their votes as many times as allowed (by the creator).
-  - Be able to receive the final results/summary of the poll once it is completed.
-    - *Via a specified link sent from the Admins side*
-  - Be provided the option to 'create' their own poll at anypoint along the way 
-    - *(maybe not multiple points)*
+  - Be able to see who created the poll, the options to vote for and any discriptions attached to the polls. [m]
+    - other details such as ending date, number of allowed 're-submits/edits'. [n]
+
+  - Be able to submit/re-submit their votes as many times as allowed (by the creator). [n]
+
+  - Be able to receive the final results/summary of the poll once it is completed. [g]
+    - *Via a specified link sent from the Admins side* [g/n]
+
+  - Be provided the option to 'create' their own poll at any point along the way [g]
+    - *(maybe not at multiple points)*
 
 - Should not:
-  - Be able to edit the poll and its options/details at any point.
-  - Be able to see the LIVE results of the poll.
-  - Be able to vote/partake in the poll without receiving the specific link from Creator.
-  - Be able to vote more than once as 'another' user with the received link from Creator.
-  - Be able to vote/partake with false credentials provided.
-  - Be able to share/forward the voting form.
+  - Be able to edit the poll and its options/details at any point. [m]
+
+  - Be able to see the LIVE results of the poll (until after voting maybe). [n]
+
+  - Be able to vote/partake in the poll without receiving the specific link from Creator. [m]
+
+  - Be able to vote more than once as 'another' user with the received link from Creator. [n]
+
+  - Be able to vote/partake with false credentials provided. [n] 
+
+  - Be able to share/forward the voting form. [n]
 
