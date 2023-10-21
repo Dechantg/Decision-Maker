@@ -1,4 +1,5 @@
 
+# Minimal Viable Product:
 
 ## Step 1
 
@@ -14,16 +15,34 @@ construct database and map key connections
 
 ## Step 4
 
-Wireframe web page, map out each pages requirments. and begin SASS formatting
+Wireframe web page, map out each pages requirments and elements
 
 ## Step 5
 
-Determin forms for each page and link input/output to our get/post calls
+begin SASS formatting
 
 ## Step 6
 
+Determin forms for each page and link input/output to our get/post calls
+
+## Step 7
+
 Write database SELECT and INSERT statements
 
+## Step 8
 
+debug and refactor for core requirments
+
+# Stretch Goals
+
+## 1)
+
+Edit choices page for users
+
+## 2)
+
+add in poll opens at and poll closes at options
+
+## 3)
 
 
