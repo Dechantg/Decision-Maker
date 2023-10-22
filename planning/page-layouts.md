@@ -1,4 +1,5 @@
 # home/vote page - view the poll and submit
+
   displays the poll title/dicision topic
   user enters name/or email (if required - verify allowed voter status)
     page lists the voting options ==> 
@@ -14,6 +15,7 @@
         title of poll
         description of why poll exists
 
+-----------------------------------------------
 
 # home/admin page - create poll page
 
@@ -35,6 +37,7 @@
         - voting opens at (if different time/date to creation)
         - display 'All' polls (past, present/active?)
         
+-----------------------------------------------
 
 # admin page - view results
 
@@ -50,3 +53,4 @@
         - projected outcome/option to win
         - if everyone/all votes have been cast - option to end poll ahead of scheduled end time? **
 
+-----------------------------------------------
