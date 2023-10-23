@@ -7,8 +7,8 @@
 
 localhost:8080/
 
-contains textbox to enter email to check on polls
-issues encrypted cookie based on user_id and/or email
+- contains textbox to enter email to check on polls
+- issues encrypted cookie based on user_id and/or email
 
 -----------------------------------------------
 
@@ -31,14 +31,14 @@ localhost:8080/poll/create
   - each option has ability for poll create to register their vote at creation
 
 - People who can vote section/ invites (intial 5 people)
-  - First, Last name entry of people eligable to vote
+  - ~~First, Last name entry of people eligable to vote~~ (avoid potential typos as issues - just require emails for now)
   - email of people eligable to vote
   - add additonal voter button
 
 - Clicking submit posts form data to database and redirects to poll list page
   - send out invite emails to add eligable voters
   - emails creator link to poll page and admin page
-  - creates unique id based on 6 character generator (tinyapp style)
+  - ~~creates unique id based on 6 character generator (tinyapp style)~~ (included in users.js file currently)
 
 -----------------------------------------------
 
