@@ -8,24 +8,24 @@ const mailgun = require('mailgun-js')({
 });
 
 
-const data = {
-  from: "greg@apresandadventure.com",
-		to: ["dechantg@gmail.com"],
-		subject: "Hello",
-		text: "Testing some Mailgun awesomness!",
-};
+// const data = {
+//   from: "greg@apresandadventure.com",
+// 		to: ["dechantg@gmail.com"],
+// 		subject: "Hello",
+// 		text: "Testing some Mailgun awesomness!",
+// };
 
 
 
-mailgun.messages().send(data, (error, body) => {
-  if (error) {
-    console.error('Error sending email:', error);
-  } else {
-    console.log('Email sent:', body);
-  }
-});
+// mailgun.messages().send(data, (error, body) => {
+//   if (error) {
+//     console.error('Error sending email:', error);
+//   } else {
+//     console.log('Email sent:', body);
+//   }
+// });
 
-
+module.exports = mailgun;
 
 // You can see a record of this email in your logs: https://app.mailgun.com/app/logs.
 
