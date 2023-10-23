@@ -22,7 +22,9 @@ CREATE TABLE polls (
   opens_at TIMESTAMP,
   closes_at TIMESTAMP,
   poll_active BOOLEAN DEFAULT FALSE,
-  final_result SMALLINT
+  result_one INTEGER REFERENCES polls_options(id) ON DELETE CASCADE,
+  result_two INTEGER REFERENCES polls_options(id) ON DELETE CASCADE,
+  result_three INTEGER REFERENCES polls_options(id) ON DELETE CASCADE,
 );
 
 DROP TABLE IF EXISTS polls_options CASCADE;
