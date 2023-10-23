@@ -15,6 +15,7 @@ DROP TABLE IF EXISTS polls CASCADE;
 
 CREATE TABLE polls (
   id SERIAL PRIMARY KEY NOT NULL,
+  uuid CHAR(36),
   poll_creator_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
   poll_name VARCHAR(255),
   poll_description TEXT,
