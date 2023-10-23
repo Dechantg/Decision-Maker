@@ -2,23 +2,29 @@
 // copied from mailgun's website for node.js
 
 
-const formData = require('form-data');
-const Mailgun = require('mailgun.js');
-const mailgun = new Mailgun(formData);
-const mg = mailgun.client({
-	username: 'api',
-	key: process.env.MAIL_GUN_API,
+const mailgun = require('mailgun-js')({
+  apiKey: process.env.MAIL_GUN_API,
+  domain: process.env.MAIL_GUN_DOMAIN
 });
 
-mg.messages
-	.create(sandbox1c422713a9c34dd39f0beeb268d1e285.mailgun.org, {
-		from: "Mailgun Sandbox <postmaster@sandbox1c422713a9c34dd39f0beeb268d1e285.mailgun.org>",
+
+const data = {
+  from: "greg@apresandadventure.com",
 		to: ["dechantg@gmail.com"],
 		subject: "Hello",
 		text: "Testing some Mailgun awesomness!",
-	})
-	.then(msg => console.log(msg)) // logs response data
-	.catch(err => console.log(err)); // logs any error`;
+};
+
+
+
+mailgun.messages().send(data, (error, body) => {
+  if (error) {
+    console.error('Error sending email:', error);
+  } else {
+    console.log('Email sent:', body);
+  }
+});
+
 
 
 // You can see a record of this email in your logs: https://app.mailgun.com/app/logs.
