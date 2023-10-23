@@ -99,6 +99,7 @@ localhost:8080/vote/:id
 - button to submit users votes registers selections in database and refreshes page to reflect
   - notifys the admin of a vote being cast
   - (stretch second column that shows current top three but only after user has registered their votes)
+  - runs calculation of poll from database from all submitted choices linked to that poll and pushes updated results into polls database
 
 - link to return to list of polls user is involved in
 
