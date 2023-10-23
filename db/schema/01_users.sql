@@ -40,7 +40,7 @@ CREATE TABLE user_choice (
   id SERIAL PRIMARY KEY NOT NULL,
   user_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
   poll_id INTEGER REFERENCES polls(id) ON DELETE CASCADE,
-  option_id INTEGER REFERENCES option(id) ON DELETE CASCADE,
+  option_id INTEGER REFERENCES polls_options(id) ON DELETE CASCADE,
   selection_made SMALLINT
 );
 
