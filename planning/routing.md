@@ -27,7 +27,7 @@ localhost:8080/poll/create
 - Options (3 empty spaces to start)
   - Option Title
   - short option description
-  - button to add addition options
+  - button to add addition options (STRETCH - DYNAMICALLY ADDING FORM ELEMENTS is a MAKEWORK project)
   - each option has ability for poll create to register their vote at creation
 
 - People who can vote section/ invites (intial 5 people)
@@ -56,18 +56,18 @@ localhost:8080/polls
 
 ## Poll admin page
 
-localhost:8080/admin/:id
+localhost:8080/admin/:id (poll id)
 
 - shows title and description of poll
   - shows list of options
 
-- shows time remaining on poll
+- shows time remaining on poll (stretch)
 
-- shows number of users who have voted
+- shows number of users who have voted 
 
-- shows current results talley
+- shows current results tally 
 
-- when applicable shows final result
+- when applicable shows final result 
 
 -----------------------------------------------
 
