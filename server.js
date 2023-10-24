@@ -46,7 +46,7 @@ const pool = new Pool({
   password: process.env.DB_PASS,
   host: process.env.DB_HOST,
   database: process.env.DB_NAME,
-})
+});
 
 // console.log('Generated UUID:', newUuid);
 
@@ -65,7 +65,7 @@ app.use('/users', usersRoutes);
 app.get('/', (req, res) => {
   res.render('index');
 
-  console.log('the sample index was just rendered')
+  console.log('the sample index was just rendered');
 
 
 
@@ -73,45 +73,62 @@ app.get('/', (req, res) => {
 
 app.get('/admin', (req, res) => {
   res.render('users');
-  console.log('the users page was just rendered on route /admin')
+  console.log('the users page was just rendered on route /admin');
 
 
 });
+
+app.get('/create', (req, res) => {
+  res.render('users');
+  const uuid = newUuid;
+  console.log('the users page was just rendered on route /create');
+  console.log(' I have created a new uuid for you', uuid);
+
+});
+
 
 
 app.get('/admin/:id', (req, res) => {
   const values = [req.params.id];
-console.log('log for the id being passed in')
+  console.log('log for the id being passed in');
 
-const queryString = `SELECT uuid
+  const queryString = `SELECT uuid
 FROM polls
 WHERE uuid = $1;
-`
+`;
 
-return pool
-.query(queryString, values)
-.then((result) => {
-  console.log(result.rows[0]);
-  return res.status(403).send("You have connected to a valid link from the database");
-})
-.catch((err) => {
-  console.log(err.message);
-});
-
-
-
-
-// const adminPageIdQuery = function (page) {
-
-
-  // }
-
-  // console.log('the page was just rendered on route /admin:id')
-  // return res.status(403).send("You have connected to a valid link from the database");
-
+  return pool
+    .query(queryString, values)
+    .then((result) => {
+      console.log(result.rows[0]);
+      return res.status(403).send("You have connected to a valid link from the database");
+    })
+    .catch((err) => {
+      console.log(err.message);
+    });
 
 });
 
+
+app.get('/voting/:id', (req, res) => {
+  const values = [req.params.id];
+  console.log('log for the id being passed in for the voting link');
+
+  const queryString = `SELECT uuid
+FROM polls
+WHERE uuid = $1;
+`;
+
+  return pool
+    .query(queryString, values)
+    .then((result) => {
+      console.log(result.rows[0]);
+      return res.status(403).send("You have connected to a valid link from the database through the voting link");
+    })
+    .catch((err) => {
+      console.log(err.message);
+    });
+});
 
 
 app.listen(PORT, () => {
