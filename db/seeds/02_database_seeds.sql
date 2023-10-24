@@ -22,14 +22,14 @@ CREATE TABLE polls (
   created_at TIMESTAMP,
   opens_at TIMESTAMP,
   closes_at TIMESTAMP,
-  poll_active BOOLEAN DEFAULT FALSE,
+  poll_active BOOLEAN DEFAULT FALSE
 
 );
 
 
-DROP TABLE IF EXISTS polls_options CASCADE;
+DROP TABLE IF EXISTS poll_options CASCADE;
 
-CREATE TABLE polls_options (
+CREATE TABLE poll_options (
   id SERIAL PRIMARY KEY NOT NULL,
   poll_id INTEGER,
   title VARCHAR(100),
@@ -58,7 +58,7 @@ CREATE TABLE authorized_to_vote (
 ALTER TABLE polls
 ADD CONSTRAINT fk_poll_creator FOREIGN KEY (poll_creator_id) REFERENCES users(id) ON DELETE CASCADE;
 
-ALTER TABLE polls_options
+ALTER TABLE poll_options
 ADD CONSTRAINT fk_poll_id FOREIGN KEY (poll_id) REFERENCES polls(id) ON DELETE CASCADE;
 
 ALTER TABLE user_choice
@@ -68,7 +68,7 @@ ALTER TABLE user_choice
 ADD CONSTRAINT fk_poll_id FOREIGN KEY (poll_id) REFERENCES polls(id) ON DELETE CASCADE;
 
 ALTER TABLE user_choice
-ADD CONSTRAINT fk_option_id FOREIGN KEY (option_id) REFERENCES polls_options(id) ON DELETE CASCADE;
+ADD CONSTRAINT fk_option_id FOREIGN KEY (option_id) REFERENCES poll_options(id) ON DELETE CASCADE;
 
 ALTER TABLE authorized_to_vote
 ADD CONSTRAINT fk_user_id FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE;
@@ -78,32 +78,32 @@ ADD CONSTRAINT fk_poll_id FOREIGN KEY (poll_id) REFERENCES polls(id) ON DELETE C
 
 
 ALTER TABLE polls
-ADD COLUMN result_one INTEGER REFERENCES polls_options(id);
+ADD COLUMN result_winner INTEGER REFERENCES poll_options(id);
 
 
 ALTER TABLE polls
-ADD CONSTRAINT fk_result_one
-FOREIGN KEY (result_one) REFERENCES polls_options(id);
+ADD CONSTRAINT fk_result_winner
+FOREIGN KEY (result_winner) REFERENCES poll_options(id);
 
-
-
-
-ALTER TABLE polls
-ADD COLUMN result_two INTEGER REFERENCES polls_options(id);
-
-
-ALTER TABLE polls
-ADD CONSTRAINT fk_result_two
-FOREIGN KEY (result_two) REFERENCES polls_options(id);
 
 
 
 ALTER TABLE polls
-ADD COLUMN result_three INTEGER REFERENCES polls_options(id);
+ADD COLUMN result_runner_up INTEGER REFERENCES poll_options(id);
 
 
 ALTER TABLE polls
-ADD CONSTRAINT fk_result_three
-FOREIGN KEY (result_three) REFERENCES polls_options(id);
+ADD CONSTRAINT fk_result_runner_up
+FOREIGN KEY (result_runner_up) REFERENCES poll_options(id);
+
+
+
+ALTER TABLE polls
+ADD COLUMN result_third_choice INTEGER REFERENCES poll_options(id);
+
+
+ALTER TABLE polls
+ADD CONSTRAINT fk_result_third_choice
+FOREIGN KEY (result_third_choice) REFERENCES poll_options(id);
 
 

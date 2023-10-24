@@ -3,7 +3,7 @@
 
 
 UPDATE polls
-SET result_one = (
+SET result_winner = (
   SELECT option_id
   FROM (
     SELECT option_id,
@@ -17,7 +17,7 @@ SET result_one = (
 );
 
 UPDATE polls
-SET result_two = (
+SET result_runner_up = (
   SELECT option_id
   FROM (
     SELECT option_id,
@@ -31,7 +31,7 @@ SET result_two = (
 );
 
 UPDATE polls
-SET result_three = (
+SET result_third_choice = (
   SELECT option_id
   FROM (
     SELECT option_id,
