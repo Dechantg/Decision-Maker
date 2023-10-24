@@ -38,9 +38,9 @@ const widgetApiRoutes = require('./routes/widgets-api');
 const usersRoutes = require('./routes/users');
 const mailgun = require('./routes/mailgun');
 const uuid = require('uuid');
-
 const newUuid = uuid.v4();
-console.log('Generated UUID:', newUuid);
+
+// console.log('Generated UUID:', newUuid);
 
 // Mount all resource routes
 // Note: Feel free to replace the example routes below with your own

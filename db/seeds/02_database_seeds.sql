@@ -22,7 +22,7 @@ CREATE TABLE polls (
   created_at TIMESTAMP,
   opens_at TIMESTAMP,
   closes_at TIMESTAMP,
-  poll_active BOOLEAN DEFAULT FALSE
+  poll_active BOOLEAN DEFAULT FALSE,
 
 );
 
@@ -75,3 +75,35 @@ ADD CONSTRAINT fk_user_id FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE C
 
 ALTER TABLE authorized_to_vote
 ADD CONSTRAINT fk_poll_id FOREIGN KEY (poll_id) REFERENCES polls(id) ON DELETE CASCADE;
+
+
+ALTER TABLE polls
+ADD COLUMN result_one INTEGER REFERENCES polls_options(id);
+
+
+ALTER TABLE polls
+ADD CONSTRAINT fk_result_one
+FOREIGN KEY (result_one) REFERENCES polls_options(id);
+
+
+
+
+ALTER TABLE polls
+ADD COLUMN result_two INTEGER REFERENCES polls_options(id);
+
+
+ALTER TABLE polls
+ADD CONSTRAINT fk_result_two
+FOREIGN KEY (result_two) REFERENCES polls_options(id);
+
+
+
+ALTER TABLE polls
+ADD COLUMN result_three INTEGER REFERENCES polls_options(id);
+
+
+ALTER TABLE polls
+ADD CONSTRAINT fk_result_three
+FOREIGN KEY (result_three) REFERENCES polls_options(id);
+
+
