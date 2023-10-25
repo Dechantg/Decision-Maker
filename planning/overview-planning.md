@@ -9,11 +9,11 @@ Get Node.js express server functional for testing against
 
 ## Step 2
 
-Map out pages. Determin which are get/post calls in our server (MVP map out)
+~~Map out pages. Determin which are get/post calls in our server (MVP map out)~~
 
 ## Step 3
 
-construct database and map key connections
+~~construct database and map key connections~~
 
 ## Step 4
 
