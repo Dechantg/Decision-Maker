@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>decisionMAKER</title>
+</head>
+
+<body>
+  <h3>Vote Submit</h3>
+
+  <main style="margin: 1em;">
+    <form>
+      <h1>Your Poll</h1>
+      <table>
+          <tr>
+              <th>CHOICE</th>
+              <th>DESCRIPTION</th>
+              <th class="votes-heading">
+                  VOTES
+                  <div class="subheading">3 2 1</div>
+              </th>
+              <th> </th>
+          </tr>
+          <tr class="default-row">
+              <td class="choice-cell">
+                  <button class="remove-button">-</button>
+                  <input type="text" placeholder="Enter Choice" maxlength="55" class="large-input">
+              </td>
+              <td>
+                  <input type="text" placeholder="Enter Description" maxlength="125" class="small-input">
+              </td>
+              <td class="votes">
+                  <input type="checkbox">
+                  <input type="checkbox">
+                  <input type="checkbox">
+              </td>
+              <td class="add-row">
+                  <button class="add-button">+</button>
+              </td>
+          </tr>
+      </table>
+      <script src="script.js"></script>
+
+</body>
+</html>

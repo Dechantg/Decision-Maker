@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <h1>Create a Poll</h1>
+  <form>
+    <h2>Your Poll</h2>
+    <table>
+        <tr>
+            <th>CHOICE</th>
+            <th>DESCRIPTION</th>
+            <th class="votes-heading">
+                VOTES
+                <div class="subheading">3      2      1</div>
+            </th>
+            <th> </th>
+        </tr>
+        <tr class="default-row">
+          <td class="choice-cell">
+              <button class="remove-button">-</button>
+                <input type="text" placeholder="Options" maxlength="55" class="option">
+            </td>
+            <td>
+                <input type="text" placeholder="Description" maxlength="125" class="description">
+            </td>
+            <td class="votes">
+                <input type="checkbox" class="custom-checkbox">
+                <input type="checkbox" class="custom-checkbox">
+                <input type="checkbox" class="custom-checkbox">
+            </td>
+            <td class="add-row">
+                <button class="add-button">+</button>
+            </td>
+        </tr>
+    </table><br>
+    <div class="submit-button">
+      <button type="submit">Submit</button>
+    </div>
+    <script src="script.js"></script>
+  </form>
+</body>
+</html>

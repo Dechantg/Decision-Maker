@@ -26,11 +26,21 @@ app.use(
 );
 app.use(express.static('public'));
 
+// app.use(cookieSession({
+//   name: process.env.COOKIE_SESSION,
+//   keys: provess.env.COOKIE_KEY
+// }));
+
 // Separated Routes for each Resource
 // Note: Feel free to replace the example routes below with your own
 const userApiRoutes = require('./routes/users-api');
 const widgetApiRoutes = require('./routes/widgets-api');
 const usersRoutes = require('./routes/users');
+const mailgun = require('./routes/mailgun');
+const uuid = require('uuid');
+const newUuid = uuid.v4();
+
+// console.log('Generated UUID:', newUuid);
 
 // Mount all resource routes
 // Note: Feel free to replace the example routes below with your own
@@ -47,6 +57,8 @@ app.use('/users', usersRoutes);
 app.get('/', (req, res) => {
   res.render('index');
 });
+
+
 
 app.listen(PORT, () => {
   console.log(`Example app listening on port ${PORT}`);
