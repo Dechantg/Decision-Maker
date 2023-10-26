@@ -26,7 +26,7 @@
         <% questionData.forEach((question, index) => { %>
           <tr class="default-row">
             <td class="choice-cell">
-              <p><%= question.option %></p>
+              <p><%= question.option %>  :</p>
             </td>
             <td>
               <p><%= question.option_details %></p>
@@ -75,14 +75,17 @@
           rowChoices.set(row, radioButton.value);
           colChoices.set(col, radioButton.value);
         }
-      });
 
-      const clearButton = document.getElementById("clearButton");
-      clearButton.addEventListener("click", () => {
-        // Reset the form to clear all choices
-        pollForm.reset();
-      });
+
+        });
+
+        const clearButton = document.getElementById("clearButton");
+        clearButton.addEventListener("click", () => {
+          // Reset the form to clear all choices
+          pollForm.reset();
+        });
     });
   </script>
+  <script src="public/scripts/radioButtons.js"></script>
 </body>
 </html>

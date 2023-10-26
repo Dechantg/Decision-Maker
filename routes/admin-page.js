@@ -9,15 +9,6 @@ const pollDetails       = require('../db/queries/return_poll_details');
 
 const db = require('../db/connection');
 
-// const { Pool }          = require('pg');
-
-// const pool = new Pool({
-//   user:     process.env.DB_USER,
-//   password: process.env.DB_PASS,
-//   host:     process.env.DB_HOST,
-//   database: process.env.DB_NAME,
-// });
-
 router.post('/')
 
 //
@@ -90,7 +81,6 @@ router.post('/ENTER PATH HERE (INVITE/ADD NEW VOTER)', (req, res) => {
       res.status(200).send(`The ability to vote has been sent to ${result.rows[0].id}`);
     }
   });
-
 });
 
 // Display the time remaining on live poll

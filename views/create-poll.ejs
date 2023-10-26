@@ -9,42 +9,48 @@
   <h2>Create your own</h2>
   <h1>decisionMAKER</h1>
 
+
   <div>
-    <label>fill out your poll</label>
-  </div>
+    <label>fill out below</label>
+  </div><br>
   <form>
     <div>
-    <input type="text" placeholder="The Decision Title/Topic" maxlength="55" class="option"/>
+      <input type="text" placeholder="The Decision Title/Topic" maxlength="55" class="option"/>
     </div>
     <table>
-        <tr>
-            <th class="votes-heading">
-                <div class="subheading">3	2	1</div>
-            </th>
-            <th> </th>
-        </tr>
-        <tr class="default-row">
-          <td class="choice-cell">
-              <button type="button" class="remove-button">-</button>
-                <input type="text" placeholder="Options" maxlength="55" class="option">
-            </td>
-            <td>
-                <input type="text" placeholder="Description" maxlength="125" class="description">
-            </td>
-            <td class="votes">
-                <input type="checkbox" class="custom-checkbox">
-                <input type="checkbox" class="custom-checkbox">
-                <input type="checkbox" class="custom-checkbox">
-            </td>
-            <td class="add-row">
-                <button type="button" class="add-button">+</button>
-            </td>
-        </tr>
+      <tr>
+        <th class="votes-heading">
+          <div class="subheading">3	2	1</div>
+        </th>
+        <th> </th>
+      </tr>
+      <tr class="default-row">
+        <td class="choice-cell">
+          <button type="button" class="remove-button">-</button>
+          <input type="text" placeholder="Options" maxlength="55" class="option">
+        </td>
+        <td>
+          <input type="text" placeholder="Description" maxlength="125" class="description">
+        </td>
+        <td class="votes">
+          <input type="checkbox" class="custom-checkbox">
+          <input type="checkbox" class="custom-checkbox">
+          <input type="checkbox" class="custom-checkbox">
+        </td>
+        <td class="add-row">
+          <button type="button" class="add-button">+</button>
+        </td>
+      </tr>
     </table><br>
+    <div>
+      <form>
+        <input type="text" placeholder="Enter email for the Admin of this poll" maxlength="55" class="admin-email">
+      </form><br>
+    </div><br>
     <div class="submit-button">
       <button type="submit">Submit</button>
     </div>
-    <script src="script.js"></script>
   </form>
+  <script src="script.js"></script>
 </body>
 </html>
