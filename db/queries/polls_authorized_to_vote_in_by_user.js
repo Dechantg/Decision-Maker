@@ -1,6 +1,5 @@
 const db = require('../connection');
 
-
 const getPollsAuthorizedToVoteByUser = (user_id) => {
   db.query (
     `
