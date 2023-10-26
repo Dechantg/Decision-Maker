@@ -7,6 +7,7 @@ const getQuestions  = require('../db/queries/get_questions_for_poll');
 const reisterVotes  = require('../db/queries/register_votes')
 const pollDetails   = require('../db/queries/return_poll_details');
 const addAnswer     = require('../db/queries/add_result_to_answers');
+const hasVoted     = require('../db/queries/has_voted');
 const db = require('../db/connection');
 
 const newUuid       = uuid.v4();
@@ -52,6 +53,8 @@ router.post('/:id/submit', (req, res) => {
   console.log(pollId)
   const responceData = req.body;
   console.log(responceData);
+
+  // hasVoted(userId, pollId));
 
   for (const key in responceData) {
     if (responceData.hasOwnProperty(key)) {

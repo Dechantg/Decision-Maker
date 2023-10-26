@@ -43,7 +43,8 @@ CREATE TABLE IF NOT EXISTS user_choice (
 CREATE TABLE IF NOT EXISTS authorized_to_vote (
   id SERIAL PRIMARY KEY NOT NULL,
   user_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
-  poll_id INTEGER REFERENCES polls(id) ON DELETE CASCADE
+  poll_id INTEGER REFERENCES polls(id) ON DELETE CASCADE,
+  has_voted BOOLEAN DEFAULT FALSE
 );
 
 -- Add Foreign Key (FK) constraints
