@@ -3,25 +3,29 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
+  <title>Make the right decision...</title>
 </head>
 <body>
-  <h1>Create a Poll</h1>
+  <h2>Create your own</h2>
+  <h1>decisionMAKER</h1>
+
+  <div>
+    <label>fill out your poll</label>
+  </div>
   <form>
-    <h2>Your Poll</h2>
+    <div>
+    <input type="text" placeholder="The Decision Title/Topic" maxlength="55" class="option"/>
+    </div>
     <table>
         <tr>
-            <th>CHOICE</th>
-            <th>DESCRIPTION</th>
             <th class="votes-heading">
-                VOTES
-                <div class="subheading">3      2      1</div>
+                <div class="subheading">3	2	1</div>
             </th>
             <th> </th>
         </tr>
         <tr class="default-row">
           <td class="choice-cell">
-              <button class="remove-button">-</button>
+              <button type="button" class="remove-button">-</button>
                 <input type="text" placeholder="Options" maxlength="55" class="option">
             </td>
             <td>
@@ -33,7 +37,7 @@
                 <input type="checkbox" class="custom-checkbox">
             </td>
             <td class="add-row">
-                <button class="add-button">+</button>
+                <button type="button" class="add-button">+</button>
             </td>
         </tr>
     </table><br>

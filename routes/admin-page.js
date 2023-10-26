@@ -1,6 +1,6 @@
 const express           = require('express');
 const router            = express.Router();
-const userEmailById     = require('../db/queries/findUserById');
+const userEmailById     = require('../db/queries/find_user_by_email');
 const uuid              = require('uuid');
 const newUuid           = uuid.v4();
 

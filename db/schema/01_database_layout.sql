@@ -92,4 +92,5 @@ ADD COLUMN result_third_choice INTEGER REFERENCES poll_options(id);
 ALTER TABLE polls
 ADD CONSTRAINT fk_result_third_choice FOREIGN KEY (result_third_choice) REFERENCES poll_options(id);
 
-
+ALTER TABLE user_choice
+ADD CONSTRAINT user_poll_option_unique UNIQUE (user_id, poll_id, option_id);

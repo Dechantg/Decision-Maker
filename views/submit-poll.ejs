@@ -3,45 +3,86 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
   <title>decisionMAKER</title>
 </head>
-
 <body>
+
   <h3>Vote Submit</h3>
-
   <main style="margin: 1em;">
-    <form>
-      <h1>Your Poll</h1>
+    <form id="pollForm" action="/vote/:id/submit" method="post">
+      <input type="hidden" name="poll_id" value="<%= pollData[0].id %>">
+      <h1><%= pollData[0].poll_name %></h1>
+      <h3><%= pollData[0].poll_description %></h3>
       <table>
-          <tr>
-              <th>CHOICE</th>
-              <th>DESCRIPTION</th>
-              <th class="votes-heading">
-                  VOTES
-                  <div class="subheading">3 2 1</div>
-              </th>
-              <th> </th>
-          </tr>
+        <tr>
+          <th>CHOICE</th>
+          <th>DESCRIPTION</th>
+          <th class="votes-heading">
+            VOTES
+            <div class="subheading">3 2 1</div>
+          </th>
+          <th></th>
+        </tr>
+        <% questionData.forEach((question, index) => { %>
           <tr class="default-row">
-              <td class="choice-cell">
-                  <button class="remove-button">-</button>
-                  <input type="text" placeholder="Enter Choice" maxlength="55" class="large-input">
-              </td>
-              <td>
-                  <input type="text" placeholder="Enter Description" maxlength="125" class="small-input">
-              </td>
-              <td class="votes">
-                  <input type="checkbox">
-                  <input type="checkbox">
-                  <input type="checkbox">
-              </td>
-              <td class="add-row">
-                  <button class="add-button">+</button>
-              </td>
+            <td class="choice-cell">
+              <p><%= question.option %></p>
+            </td>
+            <td>
+              <p><%= question.option_details %></p>
+            </td>
+            <td class="votes">
+              <input type="radio" name="<%= question.question_id %>" value="3" data-row="<%= index %>" data-col="3">
+            </td>
+            <td class="votes">
+              <input type="radio" name="<%= question.question_id %>" value="2" data-row="<%= index %>" data-col="2">
+            </td>
+            <td class="votes">
+              <input type="radio" name="<%= question.question_id %>" value="1" data-row="<%= index %>" data-col="1">
+            </td>
+            <td class="add-row">
+            </td>
           </tr>
+        <% }); %>
       </table>
-      <script src="script.js"></script>
+      <button type="submit" id="submitButton">Submit Choices</button>
+      <button type="button" id="clearButton">Clear Choices</button>
+    </form>
+  </main>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const pollForm = document.getElementById("pollForm");
+      const submitButton = document.getElementById("submitButton");
 
+      submitButton.addEventListener("click", (event) => {
+        // Gather all selected radio buttons
+        const selectedRadioButtons = document.querySelectorAll('input[type="radio"]:checked');
+
+        // Check for duplicate selections within rows and columns
+        const rowChoices = new Map();
+        const colChoices = new Map();
+
+        for (const radioButton of selectedRadioButtons) {
+          const row = radioButton.getAttribute("data-row");
+          const col = radioButton.getAttribute("data-col");
+
+          if (rowChoices.has(row) || colChoices.has(col)) {
+            alert("You may only select one option per row and column.");
+            event.preventDefault(); // Prevent form submission
+            return;
+          }
+
+          rowChoices.set(row, radioButton.value);
+          colChoices.set(col, radioButton.value);
+        }
+      });
+
+      const clearButton = document.getElementById("clearButton");
+      clearButton.addEventListener("click", () => {
+        // Reset the form to clear all choices
+        pollForm.reset();
+      });
+    });
+  </script>
 </body>
 </html>

@@ -5,6 +5,7 @@ require('dotenv').config();
 const sassMiddleware = require('./lib/sass-middleware');
 const express        = require('express');
 const morgan         = require('morgan');
+const cookieSession  = require("cookie-session");
 
 const PORT           = process.env.PORT || 8080;
 const app            = express();
@@ -31,10 +32,10 @@ app.use(
 
 
 
-// app.use(cookieSession({
-//   name: process.env.COOKIE_SESSION,
-//   keys: provess.env.COOKIE_KEY
-// }));
+app.use(cookieSession({
+  name: process.env.COOKIE_SESSION,
+  keys: process.env.COOKIE_KEY
+}));
 
 // Separated Routes for each Resource
 // Note: Feel free to replace the example routes below with your own
@@ -43,8 +44,9 @@ const usersRoutes       = require('./routes/users');
 const widgetApiRoutes   = require('./routes/widgets-api');
 const createPoll        = require('./routes/create-poll');
 const mailgun           = require('./routes/mailgun');
-const pollResults      = require('./routes/poll-results');
+const pollResults       = require('./routes/poll-results');
 const submitPolls       = require('./routes/submit-poll');
+// const adminPage         = require('./routes/admin-page');
 
 const uuid              = require('uuid');
 const newUuid           = uuid.v4();
@@ -70,6 +72,7 @@ app.use('/api/widgets', widgetApiRoutes);
 app.use('/users', usersRoutes);
 app.use('/create', createPoll);
 app.use('/vote', submitPolls);
+// app.use('/admin', adminPage);
 
 
 // Note: mount other resources here, using the same pattern above

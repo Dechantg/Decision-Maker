@@ -6,18 +6,10 @@ const pollExists    = require('../db/queries/does_poll_exist');
 const getQuestions  = require('../db/queries/get_questions_for_poll');
 const reisterVotes  = require('../db/queries/register_votes')
 const pollDetails   = require('../db/queries/return_poll_details');
+const addAnswer     = require('../db/queries/add_result_to_answers');
 const db = require('../db/connection');
 
 const newUuid       = uuid.v4();
-
-// const { Pool }      = require('pg');
-
-// const pool = new Pool({
-//   user:     process.env.DB_USER,
-//   password: process.env.DB_PASS,
-//   host:     process.env.DB_HOST,
-//   database: process.env.DB_NAME,
-// });
 
 
 router.get('/:id', (req, res) => {
@@ -33,8 +25,8 @@ router.get('/:id', (req, res) => {
         .then((pollData) => {
           return getQuestions(values)
           .then((questionData) => {
-            res.json({ pollData, questionData });
-
+            // res.json({ pollData, questionData });
+            res.render('submit-poll', { pollData, questionData });
           })
 
 
@@ -53,15 +45,26 @@ router.get('/:id', (req, res) => {
 });
 
 
-
 router.post('/:id/submit', (req, res) => {
-  const uuid = req.params.id
-  const responceData = req.body.responceData
-  responceData
+  const pollId = req.body.poll_id;
+  delete req.body.poll_id;
+  const userId = 1
+  console.log(pollId)
+  const responceData = req.body;
+  console.log(responceData);
+
+  for (const key in responceData) {
+    if (responceData.hasOwnProperty(key)) {
+      const question = key;
+      const result = responceData[key];
+      addAnswer(userId, pollId, question, result)
+
+    }
+  }
+
 
 
 });
-
 
 
 

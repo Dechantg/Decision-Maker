@@ -1,6 +1,6 @@
 const db = require('../connection');
 
-const reisterVotes = (uuid) => {
+const registerVotes = (uuid) => {
   return db.query (
   `
   INSERT INTO user_choice (user_id, poll_id, option_id, selection_made)
