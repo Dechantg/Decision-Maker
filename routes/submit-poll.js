@@ -56,10 +56,8 @@ router.get('/:id', (req, res) => {
 
 router.post('/:id/submit', (req, res) => {
   const uuid = req.params.id
-
-
-
-
+  const responceData = req.body.responceData
+  responceData
 
 
 });

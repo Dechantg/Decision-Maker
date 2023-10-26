@@ -1,16 +1,22 @@
 const express           = require('express');
 const router            = express.Router();
-const userEmailById = require('../db/queries/findUserById');
+const userEmailById     = require('../db/queries/findUserById');
 const uuid              = require('uuid');
 const newUuid           = uuid.v4();
-const { Pool }          = require('pg');
 
-const pool = new Pool({
-  user:     process.env.DB_USER,
-  password: process.env.DB_PASS,
-  host:     process.env.DB_HOST,
-  database: process.env.DB_NAME,
-});
+const pollExists        = require('../db/queries/does_poll_exist');
+const pollDetails       = require('../db/queries/return_poll_details');
+
+const db = require('../db/connection');
+
+// const { Pool }          = require('pg');
+
+// const pool = new Pool({
+//   user:     process.env.DB_USER,
+//   password: process.env.DB_PASS,
+//   host:     process.env.DB_HOST,
+//   database: process.env.DB_NAME,
+// });
 
 router.post('/')
 
@@ -66,7 +72,7 @@ router.get('/ENTER PATH HERE (POLL OPTIONS)', (req, res) => {
 router.post('/ENTER PATH HERE (INVITE/ADD NEW VOTER)', (req, res) => {
   const { user_id, poll_id } = req.body;
 
-  if (!Number.isInteger(user_id) || !Number.isInteger(poll_id)) {
+  if (!uuidExists || !pollExists) {
     return res.status(400).send('Invalid User/Poll ID');
   }
 
@@ -76,12 +82,12 @@ router.post('/ENTER PATH HERE (INVITE/ADD NEW VOTER)', (req, res) => {
   RETURNING id;
   `;
 
-  pool.query(insertNewUserIntoAuthorizedVoteQuery, [user_id, poll_id], (error) => {
+  db.query(insertNewUserIntoAuthorizedVoteQuery, [user_id, poll_id], (error) => {
     if (error) {
       console.error(error);
       res.status(500).send('Failed to add new voter for the current active poll');
     } else {
-      res.status(200).send(`Additional voter ${result.rows[0].id} is now authorized to vote`);
+      res.status(200).send(`The ability to vote has been sent to ${result.rows[0].id}`);
     }
   });
 
@@ -96,7 +102,7 @@ router.get('/ENTER PATH HERE (TIME REMAINING)', (req, res) => {
   WHERE id = $1;
   `;
 
-  pool.query(selectTimeRemainingQuery, [pollId], (error, result) => {
+  db.query(selectTimeRemainingQuery, [pollId], (error, result) => {
     if (error) {
       console.error(error);
       res.status(500).send('Failed to obtain reamining time information');
@@ -116,7 +122,7 @@ router.get('/ENTER PATH HERE (POLL STATUS - LIVE/ACTIVE', (req, res) => {
   WHERE id = $1;
   `;
 
-  pool.query(checkPollStatusQuery, [pollId], (error, result) => {
+  db.query(checkPollStatusQuery, [pollId], (error, result) => {
     if (error) {
       console.error(error);
       res.status(500).send('Error determining polls current status');
@@ -147,7 +153,7 @@ router.put('/ENTER PATH HERE (END POLL)', (req, res) => {
   WHERE id = $1;
   `;
 
-  pool.query(endPollEarlyQuery, [pollId], (error) => {
+  db.query(endPollEarlyQuery, [pollId], (error) => {
     if (error) {
       console.error(error);
       res.status(500).send('Failed to end poll early');
@@ -166,7 +172,7 @@ router.delete('/ENTER PATH HERE (DELETE POLL)', (req, res) => {
   WHERE id = $1;
   `;
 
-  pool.query(deletePollQuery, [pollId], (error) => {
+  db.query(deletePollQuery, [pollId], (error) => {
     if (error) {
     console.error(error);
     res.status(500).send('Failed to delete poll');
