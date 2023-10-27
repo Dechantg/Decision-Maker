@@ -16,7 +16,10 @@
       >
       <button type="submit" id="recheckEmail">Change Email</button>
     </form>
-    <h1>Final Results</h1>
+    <h1>List of Polls</h1>
+    <p><a href="/create">Create a Poll</a></p>
+
+
   </header>
 
   <main>
@@ -38,6 +41,7 @@
             <th>Created At</th>
             <th>Closes At</th>
             <th>Poll Active</th>
+            <th>Vote</th>
           </tr>
         </thead>
         <tbody>
@@ -55,6 +59,9 @@
               </td>
               <td>
                 <p><%= poll.poll_active ? 'Yes' : 'No' %></p>
+              </td>
+              <td class="add-row">
+                <p><a href="/vote/<%= poll.uuid %>">Vote</a></p>
               </td>
 
               <td class="add-row">

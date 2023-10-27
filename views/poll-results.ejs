@@ -13,7 +13,8 @@
         value="<%= userEmail %>"
       <% } %>
     >
-    <h1>Final Results</h1>
+    <h1>Current Results</h1>
+
   </header>
 
   <main>
@@ -23,6 +24,8 @@
 
 
     <h1><%= pollData[0].poll_name %></h1>
+    <p><a href="/vote/<%= values %>">Vote</a></p>
+
     <h3><%= pollData[0].poll_description %></h3>
 
 

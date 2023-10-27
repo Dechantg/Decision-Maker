@@ -68,7 +68,10 @@ router.post('/:id/submit', async (req, res) => {
     console.log(user);
 
     if (!user) {
-      return res.status(403).json({ error: 'You are not authorized for this poll'});
+      return res.status(403).send(
+        `You are not authorized for this poll.
+         <a href="/login">Please sign in</a> to access this page.`
+      );
     }
 
     if (user) {

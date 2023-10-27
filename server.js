@@ -43,12 +43,13 @@ app.use(cookieParser())
 const userApiRoutes     = require('./routes/users-api');
 const usersRoutes       = require('./routes/users');
 const widgetApiRoutes   = require('./routes/widgets-api');
-const createPoll        = require('./routes/create-poll');
+// const createPoll        = require('./routes/create-poll');
 const mailgun           = require('./routes/mailgun');
 const pollResults       = require('./routes/poll-results');
 const submitPolls       = require('./routes/submit-poll');
 const refreshEmail      = require('./routes/refreshEmail');
 const pollsList         = require('./routes/polls');
+const loginRegister    = require('./routes/login-register');
 // const admin         = require('./routes/admin-page');
 
 // const adminPage         = require('./routes/admin-page');
@@ -60,6 +61,7 @@ const uuid              = require('uuid');
 const newUuid           = uuid.v4();
 
 const { Pool }          = require('pg');
+const registerVotes = require('./db/queries/register_votes');
 
 const pool = new Pool({
   user:     process.env.DB_USER,
@@ -78,11 +80,12 @@ const pool = new Pool({
 app.use('/api/users', userApiRoutes);
 app.use('/api/widgets', widgetApiRoutes);
 app.use('/users', usersRoutes);
-app.use('/create', createPoll);
+// app.use('/create', createPoll);
 app.use('/vote', submitPolls);
 app.use('/results', pollResults);
 app.use('/refresh', refreshEmail);
 app.use('/polls', pollsList);
+app.use('/login', loginRegister);
 // app.use('/admin-page', admin);
 
 
