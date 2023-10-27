@@ -27,7 +27,7 @@ router.get('/:id', (req, res) => {
   // console.log("cookie does or does not exist", req.session.userId)
   console.log(values);
 
-  const userEmail = req.session.userEmail;
+  const userEmail = req.cookies.choiceMaker;
 
   pollExists(values)
     .then((uuidExists) => {
