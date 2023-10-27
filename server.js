@@ -76,6 +76,8 @@ app.use('/api/widgets', widgetApiRoutes);
 app.use('/users', usersRoutes);
 app.use('/create', createPoll);
 app.use('/vote', submitPolls);
+app.use('/results', pollResults);
+
 // app.use('/admin', adminPage);
 
 

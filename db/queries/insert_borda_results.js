@@ -29,6 +29,30 @@ const insertBorda = (pollId) => {
         GROUP BY option_id
         ORDER BY SUM(selection_made) DESC
         LIMIT 1 OFFSET 2
+      ),
+      borda_winner = (
+        SELECT SUM(selection_made) AS borda_talley
+        FROM user_choice
+        WHERE poll_id = $1
+        GROUP BY option_id
+        ORDER BY borda_talley DESC
+        LIMIT 1
+      ),
+      borda_runner = (
+        SELECT SUM(selection_made) AS borda_talley
+        FROM user_choice
+        WHERE poll_id = $1
+        GROUP BY option_id
+        ORDER BY borda_talley DESC
+        LIMIT 1 OFFSET 1
+      ),
+      borda_third = (
+        SELECT SUM(selection_made) AS borda_talley
+        FROM user_choice
+        WHERE poll_id = $1
+        GROUP BY option_id
+        ORDER BY borda_talley DESC
+        LIMIT 1 OFFSET 2
       )
     WHERE id = $1
     RETURNING *

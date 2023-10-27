@@ -12,6 +12,7 @@ const changeStatus    = require('../db/queries/change_vote_status');
 const userEmailById   = require('../db/queries/find_user_by_email');
 const userIdbyEmail   = require('../db/queries/find_id_by_email');
 const insertBorda     = require('../db/queries/insert_borda_results');
+const userExists     = require('../db/queries/user_exists');
 // const cookieSession  = require('cookie-session');
 // router.use(cookieSession({
 //   name: 'session',
@@ -19,6 +20,7 @@ const insertBorda     = require('../db/queries/insert_borda_results');
 // }));
 
 const db              = require('../db/connection');
+const authorizedToVote = require('../db/queries/authorized_to_vote');
 
 const newUuid         = uuid.v4();
 
@@ -29,6 +31,8 @@ router.get('/:id', (req, res) => {
   // console.log("here is the cookie value", myCookieValue)
   // console.log("cookie does or does not exist", req.session.userId)
   console.log(values);
+
+  const userEmail = req.cookies.choiceMaker;
 
   pollExists(values)
     .then((uuidExists) => {
@@ -41,7 +45,7 @@ router.get('/:id', (req, res) => {
           return getQuestions(values)
           .then((questionData) => {
             // res.json({ pollData, questionData });
-            res.render('submit-poll', { pollData, questionData });
+            res.render('submit-poll', { pollData, questionData, values, userEmail });
           })
         }).catch((pollDetailsError) => {
           console.error(pollDetailsError);
@@ -55,22 +59,52 @@ router.get('/:id', (req, res) => {
 });
 
 
+
 router.post('/:id/submit', async (req, res) => {
 
   try {
+    const userEmail = req.body.email;
+    delete req.body.email;
+    console.log(req.body)
+
+    const user = await userExists(userEmail);
+    console.log(user);
+
+    if (!user) {
+      return res.status(403).json({ error: 'You are not authorized for this poll'});
+    }
+
+    if (user) {
+      res.cookie('choiceMaker', userEmail)
+    }
+    const uuid = req.body.uuid;
+    delete req.body.uuid;
+    console.log("logging uuid from post page", uuid)
+
     const pollId = req.body.poll_id;
-    console.log("checking for pollid being placed properly", pollId);
     delete req.body.poll_id;
+    console.log("checking for pollid being placed properly", pollId);
+
     const responceData = req.body;
-    const userEmail = req.cookies.myCookie;
+    // const userEmail = req.cookies.myCookie;
     console.log("first user email so find breakage", userEmail)
+
+    if (typeof userEmail === 'undefined') {
+      console.log("checking for user email existing or being undevined", userEmail)
+      return res.status(401).json({ error: 'User not logged in. Please log in.' });
+    }
+
     const userIdObject = await userIdbyEmail(userEmail);
     console.log(userIdObject)
+
     const userId = userIdObject[0].id;
     console.log("second console log to find if userId is being retrieved", userId);
 
-    if (userId === null) {
-      return res.status(404).json({ error: 'User not found' });
+    const canVote = await authorizedToVote(userId, pollId);
+    console.log("checking to see if authorized to vote", canVote);
+
+    if (!canVote) {
+      return res.status(403).json({ error: 'You are not authorized for this poll'});
     }
 
     const hasVotedResult = await hasVoted(userId, pollId);
@@ -79,11 +113,8 @@ router.post('/:id/submit', async (req, res) => {
     if (hasVotedResult) {
       return res.status(403).json({ error: 'User has already voted' });
     }
-
     // The user is found; you can proceed
     console.log(userEmail);
-
-
 
     // Loop through and add the answers and add to the table
     for (const key in responceData) {

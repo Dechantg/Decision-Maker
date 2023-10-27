@@ -10,7 +10,16 @@
   <h3>Vote Submit</h3>
   <main style="margin: 1em;">
     <form id="pollForm" action="/vote/:id/submit" method="post">
+      <input type="hidden" name="uuid" value="<%= values %>">
       <input type="hidden" name="poll_id" value="<%= pollData[0].id %>">
+
+      <label for="email">Email:</label>
+      <input type="email" name="email" id="email" required
+        <% if (userEmail) { %>
+          value="<%= userEmail %>"
+        <% } %>
+      >
+
       <h1><%= pollData[0].poll_name %></h1>
       <h3><%= pollData[0].poll_description %></h3>
       <table>

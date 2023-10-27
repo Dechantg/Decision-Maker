@@ -20,13 +20,24 @@
 </head>
 
 <body>
+ 	<h1>decisionMAKER</h1>
 
-  <nav id="nav" name="navigation-bar">
+  <div class="container">
+    <div class="block" id="resultsBlock">
+      <a href="/results-page" id="resultsLink">Results Page</a>
+      <input type="text" id="resultsInput" placeholder="Enter Email/UUID">
+    </div>
 
-    <h1>decisionMAKER</h1>
+    <div class="block" id="adminBlock">
+      <a href="/admin-page" id="adminLink">Admin Page</a>
+      <input type="text" id="adminInput" placeholder="=Enter Email/UUID">
+    </div>
 
-  </nav>
+    <div class="block" id="createPollBlock">
+      <a href="/create-poll" id="createPollLink">Create Poll</a>
+    </div>
+  </div>
 
+  <script src="public/scripts/index-navigation.js"></script>
 </body>
-
 </html>

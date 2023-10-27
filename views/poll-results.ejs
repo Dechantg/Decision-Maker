@@ -7,33 +7,82 @@
 </head>
 <body>
   <header>
+    <label for="email">Email:</label>
+    <input type="email" name="email" id="email" required
+      <% if (userEmail) { %>
+        value="<%= userEmail %>"
+      <% } %>
+    >
     <h1>Final Results</h1>
-    <h2>poll UUID</h2>
   </header>
 
   <main>
+
+    <input type="hidden" name="uuid" value="<%= values %>">
+    <input type="hidden" name="poll_id" value="<%= pollData[0].id %>">
+
+
+    <h1><%= pollData[0].poll_name %></h1>
+    <h3><%= pollData[0].poll_description %></h3>
+
+
     <section id="pollDetails">
       <!-- Dynamic display of poll information -input by the the creator of the poll -->
-      <h2>Poll Name</h2>
-      <p>Poll Title: <span id="pollTitle">Your Poll Title</span></p>
       <p>Poll ID: <span id="pollId">Your Poll ID</span></p>
-      <p>End Time: <span id="endTime">End Time of Poll</span></p>
+      <p>Created At: <span id="createdTime"><%= pollData[0].created_at %></span></p>
+
+      <p>End Time: <span id="endTime"><%= pollData[0].closes_at %></span></p>
+    </section>
+
+    <section>
+
+      <table>
+        <tr>
+          <th>Rank</th>
+          <th>Option</th>
+          <th>Score</th>
+        </tr>
+        <tr>
+          <td>Winner Title:</td>
+          <td><%= winnerData[0].winner_title %></td>
+          <td><%= pollData[0].borda_winner %></td>
+        </tr>
+
+        <tr>
+          <td>Runner Up Title:</td>
+          <td><%= winnerData[0].runner_up_title %></td>
+          <td><%= pollData[0].borda_runner %></td>
+          </tr>
+          <tr>
+          <td>Third Choice Title:</td>
+          <td><%= winnerData[0].third_choice_title %></td>
+          <td><%= pollData[0].borda_third %></td>
+
+        </tr>
+
+      </table>
+
+
+
+
+
+
     </section>
 
     <section id="pollOptions">
-      <h2>Poll Options</h2>
-      <ul id="optionsList">
-        <!-- Dynamic display of poll options as tallys are calculated -->
-      </ul>
+      <% questionData.forEach((question) => { %>
+        <tr class="default-row">
+          <td class="choice-cell">
+            <p><%= question.option %>:</p>
+          </td>
+          <td>
+            <p><%= question.option_details %></p>
+          </td>
+        </tr>
+      <% }); %>
     </section>
 
-    <section id="pollManagement">
-      <h2>Poll Management</h2>
-      <button id="deletePoll">Delete Poll</button>
-      <button id="extendPoll">Extend Poll Time</button>
-      <button id="endPoll">End Poll Immediately</button>
-      <button id="addUser">Add User to Vote</button>
-    </section>
+
   </main>
 
   <script>

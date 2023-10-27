@@ -4,6 +4,7 @@ const uuid        = require('uuid');
 const newUuid     = uuid.v4();
 
 const db = require('../db/connection');
+const { calculateTimestamps } = require('../utils/calculateTimestamps');
 
 // Display the Creat a Poll form
 router.get('/ENTER PATH HERE (CREATE-POLL)', (req, res) => {
@@ -32,7 +33,7 @@ router.post('/ENTER PATH HERE (ADD-USERS)', (req, res) => {
       console.error(error);
       res.status(500).send(`Error registering email as an authorized voter:`);
     } else {
-      res.status(200).send(`${email} successfully added to the list of authorized voters.`);
+      res.status(200).send(`${email} suscessfully added to the list of authorized voters.`);
     }
   });
 });
@@ -44,7 +45,7 @@ router.post(`/ENTER PATH HERE (SUBMIT/CREATE-POLL)`, (req, res) => {
 
   const { opens_at, closes_at } = calculateTimestamps(days, hours, minutes);
 
-  const pollUuid = newUuid;
+  const pollUuid = uuid.v4();
 
   const pollCreatedQuery = `
   INSERT INTO polls (uuid, poll_creator_id, poll_name, poll_description, created_at, opens_at, closes_at, poll_active)
@@ -73,13 +74,13 @@ router.post(`/ENTER PATH HERE (SUBMIT/CREATE-POLL)`, (req, res) => {
       if (pollError) {
         console.error(`Error generating pollL`, pollError);
         res.status(500).send(`Server error`);
+        return;
       }
 
       const pollId = pollResult.rows[0].id;
       const recipientEmails = recipients.split(',');
 
-
-      const recipientsPromises = recipientEmails.map((email) => {
+      recipientEmails.forEach((email) => {
         db.query(addPollRecipientsQuery, [email], (recipientError) => {
           if (recipientError) {
             console.error(`Error adding recipients emails:`, recipientError);
@@ -90,7 +91,7 @@ router.post(`/ENTER PATH HERE (SUBMIT/CREATE-POLL)`, (req, res) => {
         });
       });
 
-      options.forEach((option) => {
+      option.forEach((option) => {
         const { title, description } = option;
         db.query(createOptionsQuery, [pollId, title, description], (optionError) => {
           if (optionError) {
