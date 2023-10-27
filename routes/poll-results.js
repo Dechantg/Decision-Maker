@@ -12,14 +12,38 @@ const changeStatus    = require('../db/queries/change_vote_status');
 const userEmailById   = require('../db/queries/find_user_by_email');
 const userIdbyEmail   = require('../db/queries/find_id_by_email');
 const insertBorda     = require('../db/queries/insert_borda_results');
-const userExists     = require('../db/queries/user_exists');
-const getWinners     = require('../db/queries/get_winners');
+const userExists      = require('../db/queries/user_exists');
+const getWinners      = require('../db/queries/get_winners');
+const authorizedToVote = require('../db/queries/authorized_to_vote');
+const allAuthorized   = require('../db/queries/get_all_authorized');
+const allOwned        = require('../db/queries/get_all_owned');
+const bodyParser      = require('body-parser');
 
+router.use(bodyParser.json());
 
-router.get('/', (req, res) => {
-  res.render('poll-results');
+router.get('/', async (req, res) => {
+  try {
+    // Fetch the user's email from cookies
+    const userEmail = req.cookies.choiceMaker;
 
+    // Fetch the user's ID
+    const userId = await userIdbyEmail(userEmail);
+    const usersId = userId[0].id;
+
+    // Fetch authorized and owned data
+    const authorized = await allAuthorized(usersId);
+    const owned = await allOwned(usersId);
+            // res.json({ authorized, owned, userEmail, usersId  });
+
+    res.render('poll-list', { authorized, owned, userEmail, usersId });
+  } catch (error) {
+
+    console.error('An error occurred:', error);
+
+    res.status(500).send('Internal Server Error');
+  }
 });
+
 
 router.get('/:id', (req, res) => {
   const values = req.params.id;
@@ -66,5 +90,10 @@ router.get('/:id', (req, res) => {
     res.status(500).send("Internal Server Error");
   });
 });
+
+
+
+
+
 
 module.exports = router;

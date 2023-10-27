@@ -13,11 +13,12 @@ const userEmailById   = require('../db/queries/find_user_by_email');
 const userIdbyEmail   = require('../db/queries/find_id_by_email');
 const insertBorda     = require('../db/queries/insert_borda_results');
 const userExists     = require('../db/queries/user_exists');
-// const cookieSession  = require('cookie-session');
-// router.use(cookieSession({
-//   name: 'session',
-//   keys: process.env.COOKIE_KEY
-// }));
+const cookieSession  = require('cookie-session');
+
+router.use(cookieSession({
+  name: 'session',
+  keys: process.env.COOKIE_KEY
+}));
 
 const db              = require('../db/connection');
 const authorizedToVote = require('../db/queries/authorized_to_vote');
@@ -32,7 +33,7 @@ router.get('/:id', (req, res) => {
   // console.log("cookie does or does not exist", req.session.userId)
   console.log(values);
 
-  const userEmail = req.cookies.choiceMaker;
+  const userEmail = req.session.userEmail;
 
   pollExists(values)
     .then((uuidExists) => {
@@ -64,6 +65,8 @@ router.post('/:id/submit', async (req, res) => {
 
   try {
     const userEmail = req.body.email;
+
+    console.log("testing to make sure userEmail is not empty", userEmail)
     delete req.body.email;
     console.log(req.body)
 
@@ -75,8 +78,12 @@ router.post('/:id/submit', async (req, res) => {
     }
 
     if (user) {
-      res.cookie('choiceMaker', userEmail)
-    }
+      // req.session.usersEmail = userEmail;
+      res.clearCookie('choiceMaker');
+      res.cookie('choiceMaker', userEmail);
+      console.log("cookie checking the if user fucntion", userEmail)
+        }
+
     const uuid = req.body.uuid;
     delete req.body.uuid;
     console.log("logging uuid from post page", uuid)
@@ -129,7 +136,7 @@ router.post('/:id/submit', async (req, res) => {
     await insertBorda(pollId);
 
     // Send a response or redirect as needed
-    res.json({ message: 'Email session cookie set and answers submitted successfully' });
+    res.redirect(`/results/${uuid}`);
   } catch (error) {
     console.error('An error occurred:', error);
     res.status(500).json({ error: 'Internal server error' });

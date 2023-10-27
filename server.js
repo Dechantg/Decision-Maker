@@ -33,10 +33,10 @@ app.use(
 
 
 
-// app.use(cookieSession({
-//   name: 'session',
-//   keys: process.env.COOKIE_KEY
-// }));
+app.use(cookieSession({
+  name: 'session',
+  keys: process.env.COOKIE_KEY
+}));
 
 
 app.use(cookieParser())
@@ -50,6 +50,8 @@ const createPoll        = require('./routes/create-poll');
 const mailgun           = require('./routes/mailgun');
 const pollResults       = require('./routes/poll-results');
 const submitPolls       = require('./routes/submit-poll');
+const refreshEmail      = require('./routes/refreshEmail');
+
 // const adminPage         = require('./routes/admin-page');
 
 const uuid              = require('uuid');
@@ -77,6 +79,7 @@ app.use('/users', usersRoutes);
 app.use('/create', createPoll);
 app.use('/vote', submitPolls);
 app.use('/results', pollResults);
+app.use('/refresh', refreshEmail);
 
 // app.use('/admin', adminPage);
 

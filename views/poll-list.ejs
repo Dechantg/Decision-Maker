@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>decisionMAKER... Results Page</title>
+</head>
+<body>
+  <header>
+    <form id="emailForm" method="post" action="/refresh">
+      <label for="email">Email:</label>
+      <input type="email" name="email" id="email" required
+        <% if (userEmail) { %>
+          value="<%= userEmail %>"
+        <% } %>
+      >
+      <button type="submit" id="recheckEmail">Change Email</button>
+    </form>
+    <h1>Final Results</h1>
+  </header>
+
+  <main>
+
+
+
+    <section id="pollDetails">
+      <!-- Dynamic display of poll information -input by the the creator of the poll -->
+
+
+    </section>
+
+    <section>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Poll Name</th>
+            <th>Created At</th>
+            <th>Closes At</th>
+            <th>Poll Active</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% authorized.forEach((poll, index) => { %>
+            <tr class="default-row">
+              <td class="choice-cell">
+                <p><a href="/results/<%= poll.uuid %>"><%= poll.poll_name %></a></p>
+              </td>
+
+              <td>
+                <p><%= poll.created_at %></p>
+              </td>
+              <td>
+                <p><%= poll.closes_at %></p>
+              </td>
+              <td>
+                <p><%= poll.poll_active ? 'Yes' : 'No' %></p>
+              </td>
+
+              <td class="add-row">
+              </td>
+            </tr>
+          <% }); %>
+        </tbody>
+      </table>
+    </section>
+    <section>
+
+
+       <table>
+        <thead>
+          <tr>
+            <th>Poll Name</th>
+            <th>Created At</th>
+            <th>Closes At</th>
+            <th>Poll Active</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% owned.forEach((poll, index) => { %>
+            <tr class="default-row">
+              <td class="choice-cell">
+                <p><a href="/results/<%= poll.uuid %>"><%= poll.poll_name %></a></p>
+              </td>
+
+              <td>
+                <p><%= poll.created_at %></p>
+              </td>
+              <td>
+                <p><%= poll.closes_at %></p>
+              </td>
+              <td>
+                <p><%= poll.poll_active ? 'Yes' : 'No' %></p>
+              </td>
+
+              <td class="add-row">
+              </td>
+            </tr>
+          <% }); %>
+        </tbody>
+      </table>
+
+    </section>
+
+
+
+  </main>
+
+
+</body>
+</html>
