@@ -58,6 +58,7 @@
               </td>
 
               <td class="add-row">
+
               </td>
             </tr>
           <% }); %>
@@ -74,6 +75,8 @@
             <th>Created At</th>
             <th>Closes At</th>
             <th>Poll Active</th>
+            <th>Admin Page</th>
+
           </tr>
         </thead>
         <tbody>
@@ -94,6 +97,7 @@
               </td>
 
               <td class="add-row">
+                <p><a href="/admin/<%= poll.uuid %>">Admin</a></p>
               </td>
             </tr>
           <% }); %>

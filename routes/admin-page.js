@@ -9,7 +9,10 @@ const pollDetails       = require('../db/queries/return_poll_details');
 
 const db = require('../db/connection');
 
-router.post('/')
+router.get('/ENTER PATH HERE (ADMIN-PAGE)', (req, res) => {
+  res.send('Here is a sample message on the Admin page');
+  // res.render('admin-page');
+});
 
 //
 router.get('/:id', (req, res) => {
@@ -170,7 +173,6 @@ router.delete('/ENTER PATH HERE (DELETE POLL)', (req, res) => {
       res.status(200).send('Poll deleted');
     }
   });
-
 });
 
 // Display a hyperlinked button to 'Create Poll' page

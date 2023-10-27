@@ -22,32 +22,29 @@ const bodyParser      = require('body-parser');
 router.use(bodyParser.json());
 
 
-router.post('/', async (req, res) => {
+router.get('/', async (req, res) => {
   try {
-    const userEmail = req.body.email;
-    console.log('Button clicked!', req.body.email);
+    // Fetch the user's email from cookies
+    const userEmail = req.cookies.choiceMaker;
 
-    const user = await userExists(userEmail);
-    console.log(user);
+    // Fetch the user's ID
+    const userId = await userIdbyEmail(userEmail);
+    const usersId = userId[0].id;
 
-    if (!user) {
-      return res.status(403).json({ error: 'You are not authorized for this poll' });
-    }
+    // Fetch authorized and owned data
+    const authorized = await allAuthorized(usersId);
+    const owned = await allOwned(usersId);
+            // res.json({ authorized, owned, userEmail, usersId  });
 
-    if (user) {
-      // Set the cookie
-      res.cookie('choiceMaker', userEmail);
-      console.log("Cookie set:", userEmail);
-    }
-
-    // Perform the redirect after the cookie is set
-    res.redirect('/polls');
-
+    res.render('poll-list', { authorized, owned, userEmail, usersId });
   } catch (error) {
+
     console.error('An error occurred:', error);
+
     res.status(500).send('Internal Server Error');
   }
 });
+
 
 
 

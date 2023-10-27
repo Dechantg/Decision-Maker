@@ -1,30 +1,24 @@
-const express         = require('express');
-const router          = express.Router();
-const userQueries     = require('../db/queries/users');
-const uuid            = require('uuid');
-const pollExists      = require('../db/queries/does_poll_exist');
-const getQuestions    = require('../db/queries/get_questions_for_poll');
-const reisterVotes    = require('../db/queries/register_votes')
-const pollDetails     = require('../db/queries/return_poll_details');
-const addAnswer       = require('../db/queries/add_result_to_answers');
-const hasVoted        = require('../db/queries/has_voted');
-const changeStatus    = require('../db/queries/change_vote_status');
-const userEmailById   = require('../db/queries/find_user_by_email');
-const userIdbyEmail   = require('../db/queries/find_id_by_email');
-const insertBorda     = require('../db/queries/insert_borda_results');
-const userExists     = require('../db/queries/user_exists');
-const cookieSession  = require('cookie-session');
+const express           = require('express');
+const router            = express.Router();
+const userQueries       = require('../db/queries/users');
+const uuid              = require('uuid');
+const pollExists        = require('../db/queries/does_poll_exist');
+const getQuestions      = require('../db/queries/get_questions_for_poll');
+const reisterVotes      = require('../db/queries/register_votes')
+const pollDetails       = require('../db/queries/return_poll_details');
+const addAnswer         = require('../db/queries/add_result_to_answers');
+const hasVoted          = require('../db/queries/has_voted');
+const changeStatus      = require('../db/queries/change_vote_status');
+const userEmailById     = require('../db/queries/find_user_by_email');
+const userIdbyEmail     = require('../db/queries/find_id_by_email');
+const insertBorda       = require('../db/queries/insert_borda_results');
+const userExists        = require('../db/queries/user_exists');
+const authorizedEmail   = require('../db/queries/authorized_email');
 
-router.use(cookieSession({
-  name: 'session',
-  keys: process.env.COOKIE_KEY
-}));
+const db                = require('../db/connection');
+const authorizedToVote  = require('../db/queries/authorized_to_vote');
 
-const db              = require('../db/connection');
-const authorizedToVote = require('../db/queries/authorized_to_vote');
-
-const newUuid         = uuid.v4();
-
+const newUuid           = uuid.v4();
 
 router.get('/:id', (req, res) => {
   const values = req.params.id;
@@ -98,7 +92,7 @@ router.post('/:id/submit', async (req, res) => {
 
     if (typeof userEmail === 'undefined') {
       console.log("checking for user email existing or being undevined", userEmail)
-      return res.status(401).json({ error: 'User not logged in. Please log in.' });
+      return res.status(401).send({ error: 'User not logged in. Please log in.' });
     }
 
     const userIdObject = await userIdbyEmail(userEmail);
@@ -113,6 +107,9 @@ router.post('/:id/submit', async (req, res) => {
     if (!canVote) {
       return res.status(403).json({ error: 'You are not authorized for this poll'});
     }
+
+    const emails = await authorizedEmail(userId, pollId);
+    console.log("lookinng to see what kind of emails come out", emails);
 
     const hasVotedResult = await hasVoted(userId, pollId);
     console.log("hasVotedResult:", hasVotedResult);

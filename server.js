@@ -7,7 +7,7 @@ const cookieSession  = require('cookie-session');
 const sassMiddleware = require('./lib/sass-middleware');
 const express        = require('express');
 const morgan         = require('morgan');
-const cookieParser = require('cookie-parser')
+const cookieParser   = require('cookie-parser');
 const PORT           = process.env.PORT || 8080;
 const app            = express();
 
@@ -31,13 +31,10 @@ app.use(
   })
 );
 
-
-
 app.use(cookieSession({
   name: 'session',
   keys: process.env.COOKIE_KEY
 }));
-
 
 app.use(cookieParser())
 
@@ -51,6 +48,11 @@ const mailgun           = require('./routes/mailgun');
 const pollResults       = require('./routes/poll-results');
 const submitPolls       = require('./routes/submit-poll');
 const refreshEmail      = require('./routes/refreshEmail');
+const pollsList         = require('./routes/polls');
+// const admin         = require('./routes/admin-page');
+
+// const adminPage         = require('./routes/admin-page');
+
 
 // const adminPage         = require('./routes/admin-page');
 
@@ -80,8 +82,8 @@ app.use('/create', createPoll);
 app.use('/vote', submitPolls);
 app.use('/results', pollResults);
 app.use('/refresh', refreshEmail);
-
-// app.use('/admin', adminPage);
+app.use('/polls', pollsList);
+// app.use('/admin-page', admin);
 
 
 // Note: mount other resources here, using the same pattern above
