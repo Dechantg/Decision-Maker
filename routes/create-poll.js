@@ -8,9 +8,10 @@ const db = require('../db/connection');
 const { calculateTimestamps } = require('../utils/calculateTimestamps');
 
 // Display the Creat a Poll form
-router.get('/ENTER PATH HERE (CREATE-POLL)', (req, res) => {
-  res.send('Here is a sample message on Create Poll page');
-  // res.render('create-poll');
+
+router.get('/', (req, res) => {
+  //res.send('Here is a sample message on Create Poll page');
+  res.render('create-poll');
 });
 
 // Adding users to the 'Recipients' list (authorized voters)

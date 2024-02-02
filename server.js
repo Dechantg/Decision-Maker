@@ -43,7 +43,7 @@ app.use(cookieParser())
 const userApiRoutes     = require('./routes/users-api');
 const usersRoutes       = require('./routes/users');
 const widgetApiRoutes   = require('./routes/widgets-api');
-// const createPoll        = require('./routes/create-poll');
+const createPoll        = require('./routes/create-poll');
 const mailgun           = require('./routes/mailgun');
 const pollResults       = require('./routes/poll-results');
 const submitPolls       = require('./routes/submit-poll');
@@ -80,7 +80,7 @@ const pool = new Pool({
 app.use('/api/users', userApiRoutes);
 app.use('/api/widgets', widgetApiRoutes);
 app.use('/users', usersRoutes);
-// app.use('/create', createPoll);
+app.use('/create', createPoll);
 app.use('/vote', submitPolls);
 app.use('/results', pollResults);
 app.use('/refresh', refreshEmail);
