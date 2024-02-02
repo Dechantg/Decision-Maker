@@ -138,15 +138,13 @@ document.querySelectorAll("#dynamic-options-container .option").forEach((option,
   formData.options.push(optionObject);
 });
 
-//   document.querySelectorAll("#dynamic-options-container .option").forEach(option => formData.options.push(option.value));
-// document.querySelectorAll(".description").forEach(description => formData.descriptions.push(description.value));
+
 
 
 document.querySelectorAll(".email").forEach(email => formData.emails.push(email.value));
 
-  console.log(formData); // You can remove or modify this line after testing
+  console.log(formData);
 
-  // Use fetch to send the data as JSON in the request body
   fetch('/create/generate', {
     method: 'POST',
     headers: {
@@ -158,7 +156,7 @@ document.querySelectorAll(".email").forEach(email => formData.emails.push(email.
     .then(data => console.log('Server response:', data))
     .catch(error => console.error('Error:', error));
 
-  return false; // Prevent the form from submitting (for testing purposes)
+  return false;
 }
 
 

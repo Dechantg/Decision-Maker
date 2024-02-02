@@ -16,7 +16,6 @@ router.post('/', (req, res) => {
     const formData = req.body;
     console.log('Received data:', formData);
 
-    // Your existing logic here
 
     res.send('Data received successfully!');
   } catch (error) {
