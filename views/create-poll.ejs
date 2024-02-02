@@ -10,13 +10,13 @@
   <h1>decisionMAKER</h1>
 
   <div>
-    <label>fill out below</label>
+    <label>Fill out below</label>
   </div><br>
-  <form>
+  <form id="decisionForm" action="/create/generate" method="post" onsubmit="return validateForm()">
     <div>
-      <input type="text" placeholder="The Decision Title/Topic" maxlength="55" class="option"/>
+      <input type="text" id="title-input" placeholder="The Decision Title/Topic" maxlength="55" class="option" required/>
     </div>
-    <table>
+    <table id="dynamic-options-container">
       <tr>
         <th class="votes-heading">
           <div class="subheading">3	2	1</div>
@@ -26,30 +26,142 @@
       <tr class="default-row">
         <td class="choice-cell">
           <button type="button" class="remove-button">-</button>
-          <input type="text" placeholder="Options" maxlength="55" class="option">
+          <input type="text" placeholder="Options" maxlength="55" class="option" required>
         </td>
         <td>
-          <input type="text" placeholder="Description" maxlength="125" class="description">
-        </td>
-        <td class="votes">
-          <input type="checkbox" class="custom-checkbox">
-          <input type="checkbox" class="custom-checkbox">
-          <input type="checkbox" class="custom-checkbox">
+          <input type="text" placeholder="Description" maxlength="125" class="description" required>
         </td>
         <td class="add-row">
           <button type="button" class="add-button">+</button>
         </td>
       </tr>
     </table><br>
+    <div id="dynamic-emails-container">
+      <label>Emails:</label>
+      <div class="email-row default-row">
+        <input type="text" placeholder="Email" maxlength="55" class="email" required>
+        <button type="button" class="remove-email-button">-</button>
+      </div>
+      <button type="button" class="add-email-button">+ Add Email</button>
+    </div><br>
     <div>
-      <form>
-        <input type="text" placeholder="Enter email for the Admin of this poll" maxlength="55" class="admin-email">
-      </form><br>
+      <input type="text" placeholder="Enter email for the Admin of this poll" maxlength="55" class="admin-email" required>
     </div><br>
     <div class="submit-button">
       <button type="submit">Submit</button>
     </div>
   </form>
-  <script src="script.js"></script>
+
+
+
+  <script>
+    const dynamicOptionsContainer = document.getElementById("dynamic-options-container");
+    const dynamicEmailsContainer = document.getElementById("dynamic-emails-container");
+
+    dynamicOptionsContainer.addEventListener("click", function (event) {
+      if (event.target.classList.contains("remove-button")) {
+        removeDynamicRow(event.target.closest("tr"));
+      }
+      if (event.target.classList.contains("add-button")) {
+        addDynamicRow();
+      }
+    });
+
+    dynamicEmailsContainer.addEventListener("click", function (event) {
+      if (event.target.classList.contains("remove-email-button")) {
+        removeDynamicEmailRow(event.target.closest(".email-row"));
+      }
+      if (event.target.classList.contains("add-email-button")) {
+        addDynamicEmailRow();
+      }
+    });
+
+    function addDynamicRow() {
+      const newRow = document.createElement("tr");
+      newRow.innerHTML = `
+        <td class="choice-cell">
+          <button type="button" class="remove-button">-</button>
+          <input type="text" placeholder="Options" maxlength="55" class="option" required>
+        </td>
+        <td>
+          <input type="text" placeholder="Description" maxlength="125" class="description" required>
+        </td>
+        <td class="add-row">
+          <button type="button" class="add-button">+</button>
+        </td>
+      `;
+      dynamicOptionsContainer.appendChild(newRow);
+    }
+
+    function removeDynamicRow(row) {
+      dynamicOptionsContainer.removeChild(row);
+    }
+
+    function addDynamicEmailRow() {
+      const newEmailRow = document.createElement("div");
+      newEmailRow.classList.add("email-row");
+      newEmailRow.innerHTML = `
+        <input type="text" placeholder="Email" maxlength="55" class="email" required>
+        <button type="button" class="remove-email-button">-</button>
+      `;
+      dynamicEmailsContainer.insertBefore(newEmailRow, dynamicEmailsContainer.lastChild);
+    }
+
+    function removeDynamicEmailRow(emailRow) {
+      dynamicEmailsContainer.removeChild(emailRow);
+    }
+
+    function validateForm() {
+  // Validate all required fields
+  const requiredFields = document.querySelectorAll("[required]");
+  for (const field of requiredFields) {
+    if (!field.value.trim()) {
+      alert("Please fill out all fields.");
+      return false;
+    }
+  }
+
+  // Collect data and send it to the specified route
+  const formData = {
+  title: document.getElementById("title-input").value,
+  options: [],
+  emails: [],
+  adminEmail: document.querySelector(".admin-email").value,
+};
+
+document.querySelectorAll("#dynamic-options-container .option").forEach((option, index) => {
+  const description = document.querySelectorAll(".description")[index].value;
+  const optionObject = {
+    [option.value]: description,
+    // You can add more properties if needed
+  };
+  formData.options.push(optionObject);
+});
+
+//   document.querySelectorAll("#dynamic-options-container .option").forEach(option => formData.options.push(option.value));
+// document.querySelectorAll(".description").forEach(description => formData.descriptions.push(description.value));
+
+
+document.querySelectorAll(".email").forEach(email => formData.emails.push(email.value));
+
+  console.log(formData); // You can remove or modify this line after testing
+
+  // Use fetch to send the data as JSON in the request body
+  fetch('/create/generate', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(formData),
+  })
+    .then(response => response.json())
+    .then(data => console.log('Server response:', data))
+    .catch(error => console.error('Error:', error));
+
+  return false; // Prevent the form from submitting (for testing purposes)
+}
+
+
+  </script>
 </body>
 </html>

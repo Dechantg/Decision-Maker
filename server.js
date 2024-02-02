@@ -8,10 +8,20 @@ const sassMiddleware = require('./lib/sass-middleware');
 const express        = require('express');
 const morgan         = require('morgan');
 const cookieParser   = require('cookie-parser');
+const bodyParser     = require('body-parser');
+
 const PORT           = process.env.PORT || 8080;
+
 const app            = express();
 
+
 app.set('view engine', 'ejs');
+
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+
+// app.use(express.json());
+// app.use(express.urlencoded({ extended: true }));
 
 // Load the logger first so all (static) HTTP requests are logged to STDOUT
 // 'dev' = Concise output colored by response status for development use.
@@ -49,7 +59,9 @@ const pollResults       = require('./routes/poll-results');
 const submitPolls       = require('./routes/submit-poll');
 const refreshEmail      = require('./routes/refreshEmail');
 const pollsList         = require('./routes/polls');
-const loginRegister    = require('./routes/login-register');
+const loginRegister     = require('./routes/login-register');
+const generatePoll      = require('./routes/generate-poll');
+
 // const admin         = require('./routes/admin-page');
 
 // const adminPage         = require('./routes/admin-page');
@@ -86,6 +98,7 @@ app.use('/results', pollResults);
 app.use('/refresh', refreshEmail);
 app.use('/polls', pollsList);
 app.use('/login', loginRegister);
+app.use('/create/generate', generatePoll);
 // app.use('/admin-page', admin);
 
 
