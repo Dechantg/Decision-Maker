@@ -14,12 +14,20 @@
   </div><br>
   <form id="decisionForm" action="/create/generate" method="post" onsubmit="return validateForm()">
     <div>
-      <input type="text" id="title-input" placeholder="The Decision Title/Topic" maxlength="55" class="option" required/>
-    </div>
+      <div class="subheading">Poll Name</div>
+
+      <input type="text" id="poll-name" placeholder="The Decision Title/Topic" maxlength="55" class="option" required/>
+    </div><br>
+    <div>
+      <div class="subheading">Poll Description</div>
+
+      <input type="text" id="poll-description" placeholder="The Decision Title/Topic" maxlength="255" class="option" required/>
+    </div><br>
     <table id="dynamic-options-container">
       <tr>
         <th class="votes-heading">
-          <div class="subheading">3	2	1</div>
+          <p></p>
+          <div class="subheading">Options</div>
         </th>
         <th> </th>
       </tr>
@@ -37,15 +45,27 @@
       </tr>
     </table><br>
     <div id="dynamic-emails-container">
-      <label>Emails:</label>
+      <label>Voter Emails:</label><br>
+      <button type="button" class="add-email-button">+ Add Email</button>
+
       <div class="email-row default-row">
         <input type="text" placeholder="Email" maxlength="55" class="email" required>
         <button type="button" class="remove-email-button">-</button>
       </div>
-      <button type="button" class="add-email-button">+ Add Email</button>
     </div><br>
     <div>
-      <input type="text" placeholder="Enter email for the Admin of this poll" maxlength="55" class="admin-email" required>
+      <p>
+        <label>Opens at:</label>
+      </p>
+      <input type="date" id="opens-at-date" required>
+      <input type="time" id="opens-at-time" required>
+    </div><br>
+    <div>
+      <p>
+        <label>Closes at:</label>
+      </p>
+      <input type="date" id="closes-at-date" required>
+      <input type="time" id="closes-at-time" required>
     </div><br>
     <div class="submit-button">
       <button type="submit">Submit</button>
@@ -112,7 +132,6 @@
     }
 
     function validateForm() {
-  // Validate all required fields
   const requiredFields = document.querySelectorAll("[required]");
   for (const field of requiredFields) {
     if (!field.value.trim()) {
@@ -121,19 +140,21 @@
     }
   }
 
-  // Collect data and send it to the specified route
   const formData = {
-  title: document.getElementById("title-input").value,
+  pollName: document.getElementById("poll-name").value,
+  pollDescription: document.getElementById("poll-description").value,
   options: [],
   emails: [],
-  adminEmail: document.querySelector(".admin-email").value,
+  opensAt: `${document.getElementById("opens-at-date").value} ${document.getElementById("opens-at-time").value}:00`,
+  closesAt: `${document.getElementById("closes-at-date").value} ${document.getElementById("closes-at-time").value}:00`,
+
+
 };
 
 document.querySelectorAll("#dynamic-options-container .option").forEach((option, index) => {
   const description = document.querySelectorAll(".description")[index].value;
   const optionObject = {
     [option.value]: description,
-    // You can add more properties if needed
   };
   formData.options.push(optionObject);
 });

@@ -13,7 +13,7 @@ CREATE TABLE IF NOT EXISTS polls (
   poll_creator_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
   poll_name VARCHAR(255),
   poll_description TEXT,
-  created_at TIMESTAMP,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   opens_at TIMESTAMP,
   closes_at TIMESTAMP,
   poll_active BOOLEAN DEFAULT FALSE,
