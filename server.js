@@ -2,13 +2,11 @@
 require('dotenv').config();
 
 // Web server config
-const cookieSession  = require('cookie-session');
-
 const sassMiddleware = require('./lib/sass-middleware');
 const express        = require('express');
 const morgan         = require('morgan');
-const cookieParser   = require('cookie-parser');
 const bodyParser     = require('body-parser');
+const session        = require('express-session');
 
 const PORT           = process.env.PORT || 8080;
 
@@ -19,6 +17,18 @@ app.set('view engine', 'ejs');
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+
+app.use(session({
+  secret: process.env.SESSION_KEY,
+  resave: false,
+  saveUninitialized: true,
+  name: 'Decision',
+  cookie: {
+    secure: false,
+    sameSite: 'Lax',
+  },
+}));
+
 
 // app.use(express.json());
 // app.use(express.urlencoded({ extended: true }));
@@ -41,12 +51,7 @@ app.use(
   })
 );
 
-app.use(cookieSession({
-  name: 'session',
-  keys: process.env.COOKIE_KEY
-}));
 
-app.use(cookieParser())
 
 // Separated Routes for each Resource
 // Note: Feel free to replace the example routes below with your own
@@ -59,7 +64,8 @@ const pollResults       = require('./routes/poll-results');
 const submitPolls       = require('./routes/submit-poll');
 const refreshEmail      = require('./routes/refreshEmail');
 const pollsList         = require('./routes/polls');
-const loginRegister     = require('./routes/login-register');
+const login             = require('./routes/login');
+const register             = require('./routes/register');
 const generatePoll      = require('./routes/generate-poll');
 
 // const admin         = require('./routes/admin-page');
@@ -97,7 +103,8 @@ app.use('/vote', submitPolls);
 app.use('/results', pollResults);
 app.use('/refresh', refreshEmail);
 app.use('/polls', pollsList);
-app.use('/login', loginRegister);
+app.use('/login', login);
+app.use('/register', register);
 app.use('/create/generate', generatePoll);
 // app.use('/admin-page', admin);
 

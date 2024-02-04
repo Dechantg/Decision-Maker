@@ -5,14 +5,14 @@ const db = require('../connection');
 const userExists = async (email) => {
   try {
     const data = await db.query(`
-      SELECT id
+      SELECT id, email, password_hash, signed_up
       FROM users
       WHERE email = $1;
     `, [email]);
 
     console.log('Query results:', data.rows);
 
-    const userExists = data.rows.length > 0;
+    const userExists = data.rows[0];
 
     return userExists;
   } catch (error) {

@@ -13,8 +13,6 @@
   "license": "ISC",
   "dependencies": {
     "chalk": "^2.4.2",
-    "cookie-parser": "^1.4.6",
-    "cookie-session": "^2.0.0",
     "dotenv": "^2.0.0",
     "ejs": "^2.6.2",
     "express": "^4.17.1",
@@ -26,7 +24,9 @@
     "uuid": "^9.0.1"
   },
   "devDependencies": {
+    "bcrypt": "^5.1.1",
     "body-parser": "^1.20.2",
+    "express-session": "^1.18.0",
     "nodemon": "^2.0.10"
   },
   "bin": {
