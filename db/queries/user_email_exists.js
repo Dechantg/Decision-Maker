@@ -14,7 +14,6 @@ const userExists = async (email) => {
     console.log('Query results:', data.rows);
 
     const userExists = data.rows[0];
-    console.log(`The user ${email} exists: ${userExists}`);
 
     return userExists;
   } catch (error) {
