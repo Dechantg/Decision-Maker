@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link rel="stylesheet" href="/vendor/normalize-4.1.1.css" />
+  <link rel="stylesheet" href="/vendor/border-box.css" />
+  <link rel="stylesheet" href="/styles/main.css" />
+  <link rel="stylesheet" href="/styles/layout.css" />
+
+  <script src="/vendor/jquery-3.0.0.js"></script>
+  <script defer src="/scripts/app.js"></script>
+
+  <title>Home of the ...decisionMAKER</title>
+
+</head>
+<body>
+
+<%- include('partials/_header') %>
+
+<h2>Administration Page</h2>
+<h1>decisionMAKER</h1>
+
+<div>
+  <label>Make changes and update poll below</label>
+</div><br>
+<form id="decisionForm" action="/create/generate" method="post" onsubmit="return validateForm()">
+  <div>
+    <div class="subheading">Poll Name</div>
+    <input type="text" id="poll-name" placeholder="The Decision Title/Topic" maxlength="55" class="option" value="<%= formData.pollName %>" required/>
+  </div><br>
+  <div>
+    <div class="subheading">Poll Description</div>
+    <input type="text" id="poll-description" placeholder="The Decision Title/Topic" maxlength="255" class="option" value="<%= formData.pollDescription %>" required/>
+  </div><br>
+  <table id="dynamic-options-container">
+    <tr>
+      <th class="votes-heading">
+        <p></p>
+        <div class="subheading">Options</div>
+      </th>
+      <th> </th>
+    </tr>
+    <% formData.options.forEach((option, index) => { %>
+      <tr class="default-row">
+        <td class="choice-cell">
+          <button type="button" class="remove-button">-</button>
+          <input type="text" placeholder="Options" maxlength="55" class="option" value="<%= Object.keys(option)[0] %>" required>
+        </td>
+        <td>
+          <input type="text" placeholder="Description" maxlength="125" class="description" value="<%= option[Object.keys(option)[0]] %>" required>
+        </td>
+        <td class="add-row">
+          <button type="button" class="add-button">+</button>
+        </td>
+      </tr>
+    <% }); %>
+  </table><br>
+  <div id="dynamic-emails-container">
+    <label>Voter Emails:</label><br>
+    <button type="button" class="add-email-button">+ Add Email</button>
+    <% formData.emails.forEach((email) => { %>
+      <div class="email-row default-row">
+        <input type="text" placeholder="Email" maxlength="55" class="email" value="<%= email %>" required>
+        <button type="button" class="remove-email-button">-</button>
+      </div>
+    <% }); %>
+  </div><br>
+  <div>
+    <p>
+      <label>Opens at:</label>
+    </p>
+    <input type="date" id="opens-at-date" value="<%= formData.opensAt.substring(0, 10) %>" required>
+    <input type="time" id="opens-at-time" value="<%= formData.opensAt.substring(11, 16) %>" required>
+  </div><br>
+  <div>
+    <p>
+      <label>Closes at:</label>
+    </p>
+    <input type="date" id="closes-at-date" value="<%= formData.closesAt.substring(0, 10) %>" required>
+    <input type="time" id="closes-at-time" value="<%= formData.closesAt.substring(11, 16) %>" required>
+  </div><br>
+  <input type="hidden" id="poll-id" name="pollId" value="<%= pollId %>" />
+  <input type="hidden" id="uuid" name="uuid" value="<%= uuid %>" />
+  <div class="submit-button">
+    <button type="submit">Update</button>
+  </div>
+
+  <script>
+    const dynamicOptionsContainer = document.getElementById("dynamic-options-container");
+    const dynamicEmailsContainer = document.getElementById("dynamic-emails-container");
+
+    dynamicOptionsContainer.addEventListener("click", function (event) {
+      if (event.target.classList.contains("remove-button")) {
+        removeDynamicRow(event.target.closest("tr"));
+      }
+      if (event.target.classList.contains("add-button")) {
+        addDynamicRow();
+      }
+    });
+
+    dynamicEmailsContainer.addEventListener("click", function (event) {
+      if (event.target.classList.contains("remove-email-button")) {
+        removeDynamicEmailRow(event.target.closest(".email-row"));
+      }
+      if (event.target.classList.contains("add-email-button")) {
+        addDynamicEmailRow();
+      }
+    });
+
+    function addDynamicRow(existingData) {
+      const newRow = document.createElement("tr");
+      newRow.innerHTML = `
+        <td class="choice-cell">
+          <button type="button" class="remove-button">-</button>
+          <input type="text" placeholder="Options" maxlength="55" class="option" value="${existingData ? Object.keys(existingData)[0] : ''}" required>
+        </td>
+        <td>
+          <input type="text" placeholder="Description" maxlength="125" class="description" value="${existingData ? existingData[Object.keys(existingData)[0]] : ''}" required>
+        </td>
+        <td class="add-row">
+          <button type="button" class="add-button">+</button>
+        </td>
+      `;
+      dynamicOptionsContainer.appendChild(newRow);
+    }
+
+    function removeDynamicRow(row) {
+      dynamicOptionsContainer.removeChild(row);
+    }
+
+    function addDynamicEmailRow(existingEmail) {
+      const newEmailRow = document.createElement("div");
+      newEmailRow.classList.add("email-row");
+      newEmailRow.innerHTML = `
+        <input type="text" placeholder="Email" maxlength="55" class="email" value="${existingEmail || ''}" required>
+        <button type="button" class="remove-email-button">-</button>
+      `;
+      dynamicEmailsContainer.insertBefore(newEmailRow, dynamicEmailsContainer.lastChild);
+    }
+
+    function removeDynamicEmailRow(emailRow) {
+      dynamicEmailsContainer.removeChild(emailRow);
+    }
+
+    function validateForm() {
+      const requiredFields = document.querySelectorAll("[required]");
+      for (const field of requiredFields) {
+        if (!field.value.trim()) {
+          alert("Please fill out all fields.");
+          return false;
+        }
+      }
+
+      const formData = {
+        pollName: document.getElementById("poll-name").value,
+        pollDescription: document.getElementById("poll-description").value,
+        options: [],
+        emails: [],
+        opensAt: `${document.getElementById("opens-at-date").value} ${document.getElementById("opens-at-time").value}:00`,
+        closesAt: `${document.getElementById("closes-at-date").value} ${document.getElementById("closes-at-time").value}:00`,
+      };
+
+      document.querySelectorAll("#dynamic-options-container .option").forEach((option, index) => {
+        const description = document.querySelectorAll(".description")[index].value;
+        const optionObject = {
+          [option.value]: description,
+        };
+        formData.options.push(optionObject);
+      });
+
+      document.querySelectorAll(".email").forEach(email => formData.emails.push(email.value));
+
+      console.log(formData);
+
+      fetch('/create/generate', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      })
+        .then(response => response.json())
+        .then(data => console.log('Server response:', data))
+        .catch(error => console.error('Error:', error));
+
+      return false;
+    }
+  </script>
+</form>
+
+</body>
+</html>

@@ -63,7 +63,7 @@ const register          = require('./routes/register');
 const generatePoll      = require('./routes/generate-poll');
 const logout            = require('./routes/logout');
 
-// const admin         = require('./routes/admin-page');
+const admin             = require('./routes/admin');
 
 // const adminPage         = require('./routes/admin-page');
 
@@ -102,7 +102,7 @@ app.use('/login', login);
 app.use('/register', register);
 app.use('/create/generate', generatePoll);
 app.use('/logout', logout);
-// app.use('/admin-page', admin);
+app.use('/admin', admin);
 
 
 // Note: mount other resources here, using the same pattern above

@@ -35,51 +35,33 @@ router.get('/', async (req, res) => {
 });
 
 
-router.get('/:id', (req, res) => {
-  const values = req.params.id;
-  // const myCookieValue = req.cookies.myCookie;
-  // console.log("here is the cookie value", myCookieValue)
-  // console.log("cookie does or does not exist", req.session.userId)
-  console.log(values);
+router.get('/:id', async (req, res) => {
+  try {
+    const values = req.params.id;
+    console.log(values);
 
-  const userId = req.session.user.id
-  const userEmail = req.session.user.email
+    const userId = req.session.user.id;
+    const userEmail = req.session.user.email;
 
-  pollExists(values)
-    .then((uuidExists) => {
-      if (!uuidExists) {
-        res.send("Error: That is not a valid uuid");
-      } else {
-        console.log('log for the id being passed in for the voting link', values);
-        return pollDetails(values)
-          .then((pollData) => {
-            return getQuestions(values)
-              .then((questionData) => {
-                // Now call getWinners and pass its result to render
-                getWinners(values).then((winnerData) => {
-                  console.log(userEmail);
-                  //  res.json({ pollData, questionData, values, userEmail, winnerData });
-                  res.render('poll-results', { pollData, questionData, values, userEmail, winnerData });
-                }).catch((getWinnersError) => {
-                  console.error(getWinnersError);
-                  res.status(500).send("Internal Server Error");
-                });
-              })
-              .catch((getQuestionsError) => {
-                console.error(getQuestionsError);
-                res.status(500).send("Internal Server Error");
-              });
-          })
-          .catch((pollDetailsError) => {
-            console.error(pollDetailsError);
-            res.status(500).send("Internal Server Error");
-          });
-      }
+    const uuidExists = await pollExists(values);
 
-  }).catch((error) => {
+    if (!uuidExists) {
+      res.send("Error: That is not a valid uuid");
+    } else {
+      console.log('log for the id being passed in for the voting link', values);
+
+      const pollData = await pollDetails(values);
+      const questionData = await getQuestions(values);
+      const winnerData = await getWinners(values);
+
+      console.log(userEmail);
+
+      res.render('poll-results', { pollData, questionData, values, userEmail, winnerData });
+    }
+  } catch (error) {
     console.error(error);
     res.status(500).send("Internal Server Error");
-  });
+  }
 });
 
 
