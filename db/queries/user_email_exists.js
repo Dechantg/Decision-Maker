@@ -1,5 +1,6 @@
 
 
+
 const db = require('../connection');
 
 const userExists = async (email) => {
@@ -12,7 +13,7 @@ const userExists = async (email) => {
 
     console.log('Query results:', data.rows);
 
-    const userExists = data.rows.length > 0;
+    const userExists = data.rows[0];
     console.log(`The user ${email} exists: ${userExists}`);
 
     return userExists;

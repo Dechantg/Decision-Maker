@@ -3,7 +3,9 @@ CREATE TABLE IF NOT EXISTS users (
   id SERIAL PRIMARY KEY NOT NULL,
   email VARCHAR(255) NOT NULL,
   first_name VARCHAR(100),
-  last_name VARCHAR(100)
+  last_name VARCHAR(100),
+  password_hash TEXT,
+  signed_up BOOLEAN DEFAULT FALSE
 );
 
 -- Create the 'polls' table
