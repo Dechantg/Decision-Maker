@@ -40,9 +40,9 @@ router.post('/', async (req, res) => {
     console.log("Console.log of the button being clicked")
     // res.send("the button was clicked")
 
-    const { userEmail, password } = req.body;
+    const { email, password } = req.body;
 
-    const user = await userExists(userEmail);
+    const user = await userExists(email);
     console.log(user);
 
     if (!user) {
@@ -50,7 +50,8 @@ router.post('/', async (req, res) => {
     }
 
     if (!user.signed_up) {
-      return res.status(401).json({ message: 'This Account Must Still Be Registered' });
+      const loginLink = '/register';
+  return res.status(200).send(`Account must still be registered. Please <a href="${loginLink}">register</a>.`);
     }
 
     const hashedPasswordFromDB = user.password_hash;

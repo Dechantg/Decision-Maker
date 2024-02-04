@@ -3,23 +3,28 @@
 const db = require('../connection');
 
 
-const addUser = async (email, firstName, lastName, hashedPassword) => {
+const updateUser = async (email, firstName, lastName, hashedPassword) => {
   try {
     const data = await db.query(
       `
-      INSERT INTO users (email, first_name, last_name, password_hash, signed_up)
-      VALUES ($1, $2, $3, $4, TRUE)
+      UPDATE users
+      SET first_name = $2, last_name = $3, password_hash = $4, signed_up = TRUE
+      WHERE email = $1
       RETURNING id, email;
       `,
       [email, firstName, lastName, hashedPassword]
     );
 
-    console.log(`New ${email} has been added`);
+    if (data.rows.length === 0) {
+      console.log(`No user found with email ${email}`);
+      return null;
+    }
+
+    console.log(`User with email ${email} has been updated`);
     return { id: data.rows[0].id, email: data.rows[0].email };
   } catch (error) {
-    console.error(`An error has occurred while adding ${user_email}: `, error);
+    console.error(`An error has occurred while updating ${email}: `, error);
     return false;
   }
 };
-
-module.exports = addUser;
+module.exports = updateUser;

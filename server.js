@@ -65,8 +65,9 @@ const submitPolls       = require('./routes/submit-poll');
 const refreshEmail      = require('./routes/refreshEmail');
 const pollsList         = require('./routes/polls');
 const login             = require('./routes/login');
-const register             = require('./routes/register');
+const register          = require('./routes/register');
 const generatePoll      = require('./routes/generate-poll');
+const logout            = require('./routes/logout');
 
 // const admin         = require('./routes/admin-page');
 
@@ -106,6 +107,7 @@ app.use('/polls', pollsList);
 app.use('/login', login);
 app.use('/register', register);
 app.use('/create/generate', generatePoll);
+app.use('/logout', logout);
 // app.use('/admin-page', admin);
 
 

@@ -10,7 +10,7 @@ const userQueries     = require('../db/queries/users');
 const uuid            = require('uuid');
 
 const userExists      = require('../db/queries/user_exists');
-
+const updateUser      = require('../db/queries/update_user')
 const addUser         = require('../db/queries/add_user')
 const bodyParser      = require('body-parser');
 
@@ -45,8 +45,15 @@ router.post('/', async (req, res) => {
 
     console.log(user);
 
+    if (user.email && user.signed_up) {
+      // User exists and has signed up
+      const loginLink = '/';
+  return res.status(200).send(`Account already exists. Please <a href="${loginLink}">login</a>.`);
+    }
+
     if (!user.email) {
       const userAdded = await addUser(email, firstName, lastName, hashedPassword);
+      console.log("the no email in database was triggered")
 
       if (userAdded && userAdded.id && userAdded.email) {
         req.session.user = { id: userAdded.id, email: userAdded.email };
@@ -58,10 +65,10 @@ router.post('/', async (req, res) => {
 
 
     if (user.email && !user.signed_up) {
-      const userUpdated = await addUser(email, firstName, lastName, hashedPassword);
+      const userUpdated = await updateUser(email, firstName, lastName, hashedPassword);
 
-      if (userAdded && userAdded.id && userAdded.email) {
-        req.session.user = { id: userAdded.id, email: userAdded.email };
+      if (userUpdated && userUpdated.id && userUpdated.email) {
+        req.session.user = { id: userUpdated.id, email: userUpdated.email };
         res.redirect('polls');
       } else {
         res.status(500).send('Failed to add user');
@@ -69,24 +76,23 @@ router.post('/', async (req, res) => {
     };
 
 
-    const hashedPasswordFromDB = user.password_hash;
+    // const hashedPasswordFromDB = user.password_hash;
 
 
-    if (bcrypt.compareSync(password, hashedPasswordFromDB)) {
+    // if (bcrypt.compareSync(password, hashedPasswordFromDB)) {
 
       // Set the user information in the session
-      req.session.user = { id: user.id, email: user.email };
+      // req.session.user = { id: user.id, email: user.email };
 
       console.log("user login information", req.session.user)
 
-    }
+
 
     // else {
     //   const newEmail = await addUser(userEmail);
     //   req.session.user = { email: newEmail }; // Adjust the session user object as needed
     // }
 
-    res.redirect('polls');
   } catch (error) {
     console.error('An error occurred:', error);
     res.status(500).send('Internal Server Error');
