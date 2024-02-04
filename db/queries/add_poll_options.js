@@ -16,7 +16,6 @@ const addOptions = async (pollId, options) => {
     );
 
     const insertedOptions = data.rows;
-    console.log("Inserted options:", insertedOptions);
     return insertedOptions;
   } catch (error) {
     console.error('An error occurred while adding options:', error);

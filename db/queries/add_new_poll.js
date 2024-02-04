@@ -14,7 +14,6 @@ const addPoll = async (pollName, pollDescription, userId, pollUuid, opensAt, clo
     [pollName, pollDescription, userId, pollUuid, opensAt, closesAt]
   )
     const newPoll = data.rows[0];
-    console.log("new poll created isntide the query", newPoll)
     return newPoll;
 
     } catch(error) {

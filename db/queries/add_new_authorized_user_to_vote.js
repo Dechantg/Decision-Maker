@@ -16,7 +16,6 @@ const insertAuthorizedToVote = async (userIds, pollId) => {
     );
 
     const areAdded = data.rows.length === userIds.length;
-    console.log(`New users have been added as authorized voters in poll ${pollId}`);
     return areAdded;
   } catch (error) {
     console.error(`An error has occurred while adding users as authorized voters in poll ${pollId}:`, error);

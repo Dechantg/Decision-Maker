@@ -7,7 +7,6 @@ const addNewEmails = async (emails) => {
   try {
 
     if (emails.length === 0) {
-      console.log("No emails to add.");
       return [];
     }
     const placeholders = emails.map((_, index) => `($${index + 1})`).join(',');
@@ -20,7 +19,6 @@ const addNewEmails = async (emails) => {
     );
 
     const insertedEmails = data.rows;
-    console.log("Inserted emails:", insertedEmails);
     return insertedEmails;
   } catch (error) {
     console.error('An error occurred while adding emails:', error);

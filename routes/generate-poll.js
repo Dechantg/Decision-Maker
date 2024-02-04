@@ -22,22 +22,12 @@ router.post('/', async (req, res) => {
 
     const pollUuid = uuid.v4();
 
-    // console.log('Received data:', formData);
-    console.log("Poll Name: ", pollName);
-    console.log("Poll Description: ", pollDescription);
-    console.log("Options Array: ", options);
-    console.log("user emails: ", emails);
-    console.log("poll opens at: ", opensAt);
-    console.log("poll closes at: ", closesAt);
-    console.log("Poll uuid: ", pollUuid);
 
     const createdPoll = await newPoll(pollName, pollDescription, userId, pollUuid, opensAt, closesAt)
 
     const addedOptions = await addOptions(createdPoll.id, options)
 
-    console.log("here are the added options ", addedOptions)
 
-    console.log("here are the voter emails added")
 
     const processEmails = async (emails) => {
       const idsToAuthorize = {};
@@ -63,21 +53,14 @@ router.post('/', async (req, res) => {
 const { authorizedIds, emailsToAdd } = await processEmails(emails);
 
 
-console.log("here is the ids to authoriz: ", authorizedIds);
-console.log("here is the emails to add: ", emailsToAdd);
-
 const newEmailsAdded = await addNewEmails(emailsToAdd);
 
 newEmailsAdded.forEach(obj => authorizedIds.push(obj.id));
 
+authorizedIds.push(userId);
 
-console.log("here is the updated ids for the newly added emails: ", authorizedIds);
 
 const updatedAuthorizedToVote = await addAuthorizedToVote(authorizedIds, createdPoll.id)
-
-console.log("no clue whats coming abck from the authadtedauthorizedtov ote function", updatedAuthorizedToVote)
-
-console.log("the poll has been sucessfully created", createdPoll.id);
 
 
 
