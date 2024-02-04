@@ -18,7 +18,7 @@ const { calculateTimestamps } = require('../utils/calculateTimestamps');
 router.post('/', async (req, res) => {
   try {
     const {pollName, pollDescription, options, emails, opensAt, closesAt} = req.body;
-    const userId = 1
+    const userId = req.session.user.id
 
     const pollUuid = uuid.v4();
 

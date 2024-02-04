@@ -111,9 +111,19 @@ app.use('/logout', logout);
 // Warning: avoid creating more routes in this file!
 // Separate them into separate routes files (see above).
 
-app.get('/', (req, res) => {
-  res.render('index');
-  console.log('the sample index was just rendered');
+app.get('/', async (req, res) => {
+  try {
+    let userEmail = null;
+
+    if (req.session.user && req.session.user.email) {
+      userEmail = req.session.user.email;
+    }
+
+    res.render('index', { userEmail });
+    console.log('The sample index was just rendered');
+  } catch (error) {
+    console.error('An error has occurred:', error);
+  }
 });
 
 

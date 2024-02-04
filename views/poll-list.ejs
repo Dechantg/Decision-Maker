@@ -9,15 +9,7 @@
   <%- include('partials/_header') %>
 
   <header>
-    <form id="emailForm" method="post" action="/refresh">
-      <label for="email">Email:</label>
-      <input type="email" name="email" id="email" required
-        <% if (userEmail) { %>
-          value="<%= userEmail %>"
-        <% } %>
-      >
-      <button type="submit" id="recheckEmail">Change Email</button>
-    </form>
+
     <h1>List of Polls</h1>
     <p><a href="/create">Create a Poll</a></p>
 

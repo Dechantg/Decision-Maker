@@ -14,7 +14,7 @@ router.use(bodyParser.json());
 router.get('/', async (req, res) => {
   try {
     // Fetch the user's email from cookies
-    const userEmail = req.cookies.choiceMaker;
+    const userEmail = req.session.user.email
 
     // Fetch the user's ID
     const userId = await userIdbyEmail(userEmail);
@@ -42,7 +42,8 @@ router.get('/:id', (req, res) => {
   // console.log("cookie does or does not exist", req.session.userId)
   console.log(values);
 
-  const userEmail = req.cookies.choiceMaker;
+  const userId = req.session.user.id
+  const userEmail = req.session.user.email
 
   pollExists(values)
     .then((uuidExists) => {

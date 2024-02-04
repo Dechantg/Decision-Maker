@@ -27,7 +27,8 @@ router.get('/:id', (req, res) => {
   // console.log("cookie does or does not exist", req.session.userId)
   console.log(values);
 
-  const userEmail = req.cookies.choiceMaker;
+  const userId = req.session.user.id
+  const userEmail = req.session.user.email
 
   pollExists(values)
     .then((uuidExists) => {
@@ -58,7 +59,9 @@ router.get('/:id', (req, res) => {
 router.post('/:id/submit', async (req, res) => {
 
   try {
-    const userEmail = req.body.email;
+
+    // const userId = req.session.user.id
+    const userEmail = req.session.user.email
 
     console.log("testing to make sure userEmail is not empty", userEmail)
     delete req.body.email;

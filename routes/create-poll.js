@@ -9,10 +9,19 @@ const { calculateTimestamps } = require('../utils/calculateTimestamps');
 
 // Display the Creat a Poll form
 
-router.get('/', (req, res) => {
-  //res.send('Here is a sample message on Create Poll page');
+router.get('/', async (req, res) => {
 
-  res.render('create-poll');
+  try {
+    let userEmail = null;
+
+    if (req.session.user && req.session.user.email) {
+      userEmail = req.session.user.email;
+    }
+    res.render('create-poll', { userEmail });
+    console.log('The sample index was just rendered');
+  } catch (error) {
+    console.error('An error has occurred:', error);
+  }
 });
 
 
