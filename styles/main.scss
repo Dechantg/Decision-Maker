@@ -1,10 +1,11 @@
+/* layout.css */
+
 body {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   min-height: 100vh;
-
   background: rgb(163, 208, 219);
   background: linear-gradient(
     227deg,
@@ -17,13 +18,11 @@ body {
   );
 }
 
-
 header {
   background-color: blue;
   color: #ffffff;
   text-align: center;
   padding: 20px;
-
 }
 
 main {
@@ -31,7 +30,6 @@ main {
   margin: 0 auto;
   padding: 20px;
   background-color: #000000;
-
 }
 
 h1 {
@@ -42,3 +40,24 @@ h2 {
   font-size: 24px;
 }
 
+.poll-status-box {
+  padding: 10px;
+  margin-bottom: 20px;
+  border: 2px solid #333;
+  border-radius: 5px;
+}
+
+.poll-status-label {
+  font-weight: bold;
+  margin-right: 10px;
+}
+
+.poll-status-true {
+  background-color: green;
+  color: white;
+}
+
+.poll-status-false {
+  background-color: red;
+  color: white;
+}

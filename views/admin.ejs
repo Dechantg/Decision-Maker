@@ -2,13 +2,13 @@
 <html lang="en">
 
 <head>
-
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <link rel="stylesheet" href="/vendor/normalize-4.1.1.css" />
   <link rel="stylesheet" href="/vendor/border-box.css" />
+
   <link rel="stylesheet" href="/styles/main.css" />
   <link rel="stylesheet" href="/styles/layout.css" />
 
@@ -16,8 +16,8 @@
   <script defer src="/scripts/app.js"></script>
 
   <title>Home of the ...decisionMAKER</title>
-
 </head>
+
 <body>
 
 <%- include('partials/_header') %>
@@ -28,7 +28,23 @@
 <div>
   <label>Make changes and update poll below</label>
 </div><br>
-<form id="decisionForm" action="/create/generate" method="post" onsubmit="return validateForm()">
+
+<div class="poll-status-box" id="pollActiveBox">
+  <label class="poll-status-label">Poll Active:</label>
+  <span class="poll-status-value"><%= formData.pollActive %></span>
+</div>
+
+
+<% if (formData.pollDeleted) { %>
+  <div class="poll-status-box" id="pollDeletedBox">
+    <label class="poll-status-label">Poll Deleted:</label>
+    <span class="poll-status-value"><%= formData.pollDeleted %></span>
+  </div>
+<% } %>
+
+
+
+<form id="decisionForm" action="/admin/update" method="post" onsubmit="return validateForm()">
   <div>
     <div class="subheading">Poll Name</div>
     <input type="text" id="poll-name" placeholder="The Decision Title/Topic" maxlength="55" class="option" value="<%= formData.pollName %>" required/>
@@ -50,6 +66,7 @@
         <td class="choice-cell">
           <button type="button" class="remove-button">-</button>
           <input type="text" placeholder="Options" maxlength="55" class="option" value="<%= Object.keys(option)[0] %>" required>
+          <input type="hidden" name="options[<%= index %>][id]" value="<%= option.id %>" />
         </td>
         <td>
           <input type="text" placeholder="Description" maxlength="125" class="description" value="<%= option[Object.keys(option)[0]] %>" required>
@@ -86,8 +103,14 @@
   </div><br>
   <input type="hidden" id="poll-id" name="pollId" value="<%= pollId %>" />
   <input type="hidden" id="uuid" name="uuid" value="<%= uuid %>" />
+  <input type="hidden" id="poll-active" name="pollActive" value="<%= formData.pollActive %>" />
+
   <div class="submit-button">
     <button type="submit">Update</button>
+    <button type="button" class="delete-button">Delete</button>
+    <button type="button" class="active-button">Active</button>
+
+
   </div>
 
   <script>
@@ -103,6 +126,63 @@
       }
     });
 
+
+    const deleteButton = document.querySelector(".delete-button");
+
+deleteButton.addEventListener("click", function () {
+  const pollId = document.getElementById("poll-id").value;
+  const uuid = document.getElementById("uuid").value;
+
+  const formData = {
+    pollId: pollId,
+    uuid: uuid
+  };
+
+  fetch(`/delete/${pollId}`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(formData),
+  })
+  .then(response => response.json())
+  .then(data => {
+    console.log('Server response:', data);
+    location.reload(); // Refresh the page
+  })
+  .catch(error => console.error('Error:', error));
+});
+
+const activeButton = document.querySelector(".active-button");
+
+activeButton.addEventListener("click", function () {
+  const pollId = document.getElementById("poll-id").value;
+  const uuid = document.getElementById("uuid").value;
+  const pollActive = document.getElementById("poll-active").value;
+
+  const formData = {
+    pollId: pollId,
+    uuid: uuid,
+    pollActive: pollActive
+  };
+
+  fetch(`/active/${pollId}`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(formData),
+  })
+  .then(response => response.json())
+  .then(data => {
+    console.log('Server response:', data);
+    location.reload(); // Refresh the page
+  })
+  .catch(error => console.error('Error:', error));
+});
+
+
+
     dynamicEmailsContainer.addEventListener("click", function (event) {
       if (event.target.classList.contains("remove-email-button")) {
         removeDynamicEmailRow(event.target.closest(".email-row"));
@@ -113,25 +193,26 @@
     });
 
     function addDynamicRow(existingData) {
-      const newRow = document.createElement("tr");
-      newRow.innerHTML = `
-        <td class="choice-cell">
-          <button type="button" class="remove-button">-</button>
-          <input type="text" placeholder="Options" maxlength="55" class="option" value="${existingData ? Object.keys(existingData)[0] : ''}" required>
-        </td>
-        <td>
-          <input type="text" placeholder="Description" maxlength="125" class="description" value="${existingData ? existingData[Object.keys(existingData)[0]] : ''}" required>
-        </td>
-        <td class="add-row">
-          <button type="button" class="add-button">+</button>
-        </td>
-      `;
-      dynamicOptionsContainer.appendChild(newRow);
-    }
+  const newRow = document.createElement("tr");
+  newRow.innerHTML = `
+    <td class="choice-cell">
+      <button type="button" class="remove-button">-</button>
+      <input type="text" placeholder="Options" maxlength="55" class="option" value="${existingData ? Object.keys(existingData)[0] : ''}" required>
+      <input type="hidden" name="options[${document.querySelectorAll("#dynamic-options-container .option").length}][id]" value="${existingData ? Object.keys(existingData)[0] : ''}" />
+    </td>
+    <td>
+      <input type="text" placeholder="Description" maxlength="125" class="description" value="${existingData ? existingData[Object.keys(existingData)[0]] : ''}" required>
+    </td>
+    <td class="add-row">
+      <button type="button" class="add-button">+</button>
+    </td>
+  `;
+  dynamicOptionsContainer.appendChild(newRow);
+}
 
-    function removeDynamicRow(row) {
-      dynamicOptionsContainer.removeChild(row);
-    }
+function removeDynamicRow(row) {
+  dynamicOptionsContainer.removeChild(row);
+}
 
     function addDynamicEmailRow(existingEmail) {
       const newEmailRow = document.createElement("div");
@@ -148,48 +229,54 @@
     }
 
     function validateForm() {
-      const requiredFields = document.querySelectorAll("[required]");
-      for (const field of requiredFields) {
-        if (!field.value.trim()) {
-          alert("Please fill out all fields.");
-          return false;
-        }
-      }
-
-      const formData = {
-        pollName: document.getElementById("poll-name").value,
-        pollDescription: document.getElementById("poll-description").value,
-        options: [],
-        emails: [],
-        opensAt: `${document.getElementById("opens-at-date").value} ${document.getElementById("opens-at-time").value}:00`,
-        closesAt: `${document.getElementById("closes-at-date").value} ${document.getElementById("closes-at-time").value}:00`,
-      };
-
-      document.querySelectorAll("#dynamic-options-container .option").forEach((option, index) => {
-        const description = document.querySelectorAll(".description")[index].value;
-        const optionObject = {
-          [option.value]: description,
-        };
-        formData.options.push(optionObject);
-      });
-
-      document.querySelectorAll(".email").forEach(email => formData.emails.push(email.value));
-
-      console.log(formData);
-
-      fetch('/create/generate', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formData),
-      })
-        .then(response => response.json())
-        .then(data => console.log('Server response:', data))
-        .catch(error => console.error('Error:', error));
-
+  const requiredFields = document.querySelectorAll("[required]");
+  for (const field of requiredFields) {
+    if (!field.value.trim()) {
+      alert("Please fill out all fields.");
       return false;
     }
+  }
+
+  const formData = {
+    pollName: document.getElementById("poll-name").value,
+    pollId: document.getElementById("poll-id").value,
+    uuid: document.getElementById("uuid").value,
+    pollDescription: document.getElementById("poll-description").value,
+    options: [],
+    emails: [],
+    opensAt: `${document.getElementById("opens-at-date").value} ${document.getElementById("opens-at-time").value}:00`,
+    closesAt: `${document.getElementById("closes-at-date").value} ${document.getElementById("closes-at-time").value}:00`,
+  };
+
+  document.querySelectorAll("#dynamic-options-container .option").forEach((option, index) => {
+    const description = document.querySelectorAll(".description")[index].value;
+    const optionObject = {
+      id: document.querySelector(`input[name="options[${index}][id]"]`).value,
+      [option.value]: description,  // Use the value as a dynamic property name
+    };
+    formData.options.push(optionObject);
+  });
+
+  document.querySelectorAll(".email").forEach(email => formData.emails.push(email.value));
+
+  console.log(formData);
+
+  fetch('/update', {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+  },
+  body: JSON.stringify(formData),
+})
+  .then(response => response.json())
+  .then(data => {
+    console.log('Server response:', data);
+    location.reload();
+  })
+  .catch(error => console.error('Error:', error));
+
+  return false;
+}
   </script>
 </form>
 

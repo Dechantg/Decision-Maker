@@ -2,12 +2,10 @@
 
 const express           = require('express');
 const router            = express.Router();
-const userEmailById     = require('../db/queries/find_user_by_email');
-const uuid              = require('uuid');
-const newUuid           = uuid.v4();
-
-const pollExists        = require('../db/queries/does_poll_exist');
-const pollDetails       = require('../db/queries/return_poll_details');
+const getByUuid         = require('../db/queries/get_poll_by_uuid')
+const moment            = require('moment');
+const getQuestions      = require('../db/queries/get_questions_by_id')
+const authorizedEmails  = require('../db/queries/get_authorized_emails')
 
 
 const db = require('../db/connection');
@@ -20,35 +18,45 @@ router.get('/:id', async (req, res) => {
     // Fetch the user's email from cookies
     // const userEmail = req.cookies.choiceMaker;
     // console.log("user email when no cookie", userEmail)
+
     const uuid = req.params.id
+    // const uuid = '2a411155-d49a-4f1b-b3b6-f6da34ab0f0e';
 
     let userEmail = null;
 
-    const pollName = 'sample 1';
-    const pollDescription = 'decriptioon 1';
-    const options = [
-        { option1: 'description1' },
-        { option2: 'description2' },
-        { option3: 'description3' }
-      ];
-    const emails = [ 'email1@here.com', 'email2@here.com', 'email3@here.com' ];
-    const opensAt = '2024-02-05 12:01:00';
-    const closesAt = '2024-02-06 12:01:00';
+    const pollDetails = await getByUuid(uuid);
 
-    const pollId = '53';
+    const formattedOpensAt = moment(pollDetails.opens_at).format('YYYY-MM-DD HH:mm:ss');
+    const formattedClosesAt = moment(pollDetails.closes_at).format('YYYY-MM-DD HH:mm:ss');
 
+    const pollId = pollDetails.id;
+
+    const pollCreator = pollDetails.poll_creator_id
+
+    const allAuthorizedEmails = await authorizedEmails(pollId, pollCreator);
+
+    const fetchedOptions = await getQuestions(pollId);
+
+    const mappedOptions = fetchedOptions.map(option => ({
+      [option.title]: option.description,
+      id: option.id
+    }));
+
+    // console.log("here are the fetched questiuons", mappedOptions)
 
 
     const formData = {
-      pollName,
-      pollDescription,
-      options: options.map(option => ({ ...option})),
-      emails,
-      opensAt,
-      closesAt,
+      pollName: pollDetails.poll_name,
+      pollDescription: pollDetails.poll_description,
+      options: mappedOptions.map(option => ({ ...option})),
+      emails: allAuthorizedEmails,
+      opensAt: formattedOpensAt,
+      closesAt: formattedClosesAt,
+      pollActive: pollDetails.poll_active,
+      pollDeleted: pollDetails.poll_deleted
     };
 
-    console.log("here is thge form data from the newly parsed cosnt: ", formData)
+    // console.log("here is thge form data from the newly parsed cosnt: ", formData)
 
     if (req.session.user && req.session.user.email) {
       userEmail = req.session.user.email;
@@ -64,6 +72,8 @@ router.get('/:id', async (req, res) => {
     res.status(500).send('Internal Server Error');
   }
 });
+
+
 
 
 module.exports = router;

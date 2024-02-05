@@ -21,7 +21,8 @@ CREATE TABLE IF NOT EXISTS polls (
   poll_active BOOLEAN DEFAULT FALSE,
   result_winner INTEGER REFERENCES poll_options(id),
   result_runner_up INTEGER REFERENCES poll_options(id),
-  result_third_choice INTEGER REFERENCES poll_options(id)
+  result_third_choice INTEGER REFERENCES poll_options(id),
+  poll_deleted BOOLEAN DEFAULT false
 );
 
 -- Create the 'poll_options' table

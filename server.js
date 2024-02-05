@@ -62,16 +62,18 @@ const login             = require('./routes/login');
 const register          = require('./routes/register');
 const generatePoll      = require('./routes/generate-poll');
 const logout            = require('./routes/logout');
-
+const updatePoll        = require('./routes/admin-update');
+const deletePoll        = require('./routes/delete-poll');
 const admin             = require('./routes/admin');
+const pollActive        = require('./routes/active-switch');
+
 
 // const adminPage         = require('./routes/admin-page');
 
 
 // const adminPage         = require('./routes/admin-page');
 
-const uuid              = require('uuid');
-const newUuid           = uuid.v4();
+
 
 const { Pool }          = require('pg');
 const registerVotes = require('./db/queries/register_votes');
@@ -101,8 +103,12 @@ app.use('/polls', pollsList);
 app.use('/login', login);
 app.use('/register', register);
 app.use('/create/generate', generatePoll);
+app.use('/update', updatePoll);
 app.use('/logout', logout);
 app.use('/admin', admin);
+app.use('/delete', deletePoll);
+app.use('/active', pollActive);
+
 
 
 // Note: mount other resources here, using the same pattern above
@@ -120,7 +126,7 @@ app.get('/', async (req, res) => {
     }
 
     res.render('index', { userEmail });
-    console.log('The sample index was just rendered');
+    // console.log('The sample index was just rendered');
   } catch (error) {
     console.error('An error has occurred:', error);
   }
