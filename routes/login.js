@@ -18,10 +18,9 @@ router.use(bodyParser.json());
 
 router.get('/', async (req, res) => {
   try {
-    // Fetch the user's email from cookies
-    // const userEmail = req.cookies.choiceMaker;
-    // console.log("user email when no cookie", userEmail)
-
+    
+    const userId = req.session.user ? req.session.user.id : null;
+    const userEmail = req.session.user ? req.session.user.email : null;
 
 
     res.render('login');

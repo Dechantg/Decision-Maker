@@ -10,9 +10,10 @@ const userExists = async (email) => {
       WHERE email = $1;
     `, [email]);
 
-    console.log('Query results:', data.rows);
 
     const userExists = data.rows[0];
+    console.log('Query results:', userExists);
+
 
     return userExists;
   } catch (error) {

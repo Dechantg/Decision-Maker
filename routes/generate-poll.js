@@ -67,7 +67,7 @@ const updatedAuthorizedToVote = await addAuthorizedToVote(authorizedIds, created
 
 
 
-    res.json({ message: 'Data received successfully!' });
+    res.json({ message: 'Data received successfully!', pollUuid });
   } catch (error) {
     console.error('Error processing request:', error);
     res.status(500).json({ error: 'Internal Server Error' });

@@ -13,9 +13,8 @@ router.use(bodyParser.json());
 
 router.get('/', async (req, res) => {
   try {
-    const userEmail = req.session.user.email
-
-    const usersId = req.session.user.id;
+    const userId = req.session.user ? req.session.user.id : null;
+    const userEmail = req.session.user ? req.session.user.email : null;
 
     const authorized = await allAuthorized(usersId);
     const owned = await allOwned(usersId);
@@ -51,7 +50,7 @@ router.get('/:id', async (req, res) => {
 
       console.log(userEmail);
 
-      res.render('poll-results', { pollData, questionData, values, userEmail, winnerData });
+      res.render('poll-results', { pollData, questionData, values, userEmail, winnerData, userId });
     }
   } catch (error) {
     console.error(error);

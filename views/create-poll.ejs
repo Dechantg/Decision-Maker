@@ -151,15 +151,21 @@
     }
   }
 
+  const opensAt = new Date(`${document.getElementById("opens-at-date").value} ${document.getElementById("opens-at-time").value}:00`);
+  const closesAt = new Date(`${document.getElementById("closes-at-date").value} ${document.getElementById("closes-at-time").value}:00`);
+
+  if (opensAt >= closesAt) {
+    alert("Closes at must be later than Opens at.");
+    return false;
+  }
+
   const formData = {
   pollName: document.getElementById("poll-name").value,
   pollDescription: document.getElementById("poll-description").value,
   options: [],
   emails: [],
-  opensAt: `${document.getElementById("opens-at-date").value} ${document.getElementById("opens-at-time").value}:00`,
-  closesAt: `${document.getElementById("closes-at-date").value} ${document.getElementById("closes-at-time").value}:00`,
-
-
+  opensAt: opensAt.toISOString(),
+  closesAt: closesAt.toISOString(),
 };
 
 document.querySelectorAll("#dynamic-options-container .option").forEach((option, index) => {
@@ -185,7 +191,16 @@ document.querySelectorAll(".email").forEach(email => formData.emails.push(email.
     body: JSON.stringify(formData),
   })
     .then(response => response.json())
-    .then(data => console.log('Server response:', data))
+    .then(data => {
+      console.log('Server response:', data);
+      // Check if the data contains pollUuid
+      if (data.pollUuid) {
+        // Redirect to the results page
+        window.location.href = `/results/${data.pollUuid}`;
+      } else {
+        console.error('Poll UUID not received in the response.');
+      }
+    })
     .catch(error => console.error('Error:', error));
 
   return false;

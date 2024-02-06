@@ -4,13 +4,10 @@ const userQueries       = require('../db/queries/users');
 const uuid              = require('uuid');
 const pollExists        = require('../db/queries/does_poll_exist');
 const getQuestions      = require('../db/queries/get_questions_for_poll');
-const reisterVotes      = require('../db/queries/register_votes')
 const pollDetails       = require('../db/queries/return_poll_details');
 const addAnswer         = require('../db/queries/add_result_to_answers');
 const hasVoted          = require('../db/queries/has_voted');
 const changeStatus      = require('../db/queries/change_vote_status');
-const userEmailById     = require('../db/queries/find_user_by_email');
-const userIdbyEmail     = require('../db/queries/find_id_by_email');
 const insertBorda       = require('../db/queries/insert_borda_results');
 const userExists        = require('../db/queries/user_exists');
 const authorizedEmail   = require('../db/queries/authorized_email');
@@ -20,48 +17,39 @@ const authorizedToVote  = require('../db/queries/authorized_to_vote');
 
 const newUuid           = uuid.v4();
 
-router.get('/:id', (req, res) => {
-  const values = req.params.id;
-  // const myCookieValue = req.cookies.myCookie;
-  // console.log("here is the cookie value", myCookieValue)
-  // console.log("cookie does or does not exist", req.session.userId)
-  console.log(values);
+router.get('/:id', async (req, res) => {
+  try {
+    const values = req.params.id;
+    console.log(values);
 
-  const userId = req.session.user ? req.session.user.id : null;
-  const userEmail = req.session.user ? req.session.user.email : null;
+    const userId = req.session.user ? req.session.user.id : null;
+    const userEmail = req.session.user ? req.session.user.email : null;
 
-  pollExists(values)
-    .then((uuidExists) => {
-      if (!uuidExists) {
-        res.send("Error: That is not a valid uuid");
-      } else {
-        console.log('log for the id being passed in for the voting link', values);
-        return pollDetails(values)
-        .then((pollData) => {
-          return getQuestions(values)
-          .then((questionData) => {
-            // res.json({ pollData, questionData });
-            res.render('submit-poll', { pollData, questionData, values, userEmail });
-          })
-        }).catch((pollDetailsError) => {
-          console.error(pollDetailsError);
-          res.status(500).send("Internal Server Error");
-        });
-      }
-  }).catch((error) => {
+    const uuidExists = await pollExists(values);
+
+    if (!uuidExists) {
+      res.send("Error: That is not a valid uuid");
+    } else {
+      console.log('log for the id being passed in for the voting link', values);
+
+      const pollData = await pollDetails(values);
+      const questionData = await getQuestions(values);
+
+      res.render('submit-poll', { pollData, questionData, values, userEmail });
+    }
+  } catch (error) {
     console.error(error);
     res.status(500).send("Internal Server Error");
-  });
+  }
 });
-
 
 
 router.post('/:id/submit', async (req, res) => {
 
   try {
 
-    const userId = req.session.user.id
-    const userEmail = req.session.user.email
+    const userId = req.session.user ? req.session.user.id : null;
+    const userEmail = req.session.user ? req.session.user.email : null;
 
     console.log("testing to make sure userEmail is not empty", userEmail)
     delete req.body.email;
@@ -112,10 +100,8 @@ router.post('/:id/submit', async (req, res) => {
     if (hasVotedResult) {
       return res.status(403).json({ error: 'User has already voted' });
     }
-    // The user is found; you can proceed
     console.log(userEmail);
 
-    // Loop through and add the answers and add to the table
     for (const key in responceData) {
       if (responceData.hasOwnProperty(key)) {
         const question = key;
@@ -127,7 +113,6 @@ router.post('/:id/submit', async (req, res) => {
     await changeStatus(userId, pollId);
     await insertBorda(pollId);
 
-    // Send a response or redirect as needed
     res.redirect(`/results/${uuid}`);
   } catch (error) {
     console.error('An error occurred:', error);

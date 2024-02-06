@@ -55,9 +55,9 @@ router.get('/:id', async (req, res) => {
 
     // console.log("here is thge form data from the newly parsed cosnt: ", formData)
 
-    if (req.session.user && req.session.user.email) {
-      userEmail = req.session.user.email;
-    }
+    // if (req.session.user && req.session.user.email) {
+    //   userEmail = req.session.user.email;
+    // }
 
 
 

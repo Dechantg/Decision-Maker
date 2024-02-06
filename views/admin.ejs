@@ -28,16 +28,17 @@
   <label>Make changes and update poll below</label>
 </div><br>
 
-<div class="poll-status-box" id="pollActiveBox">
-  <label class="poll-status-label">Poll Active:</label>
-  <span class="poll-status-value"><%= formData.pollActive %></span>
+<div class="poll-status-box <%= formData.pollActive ? 'poll-status-true' : 'poll-status-false' %>" id="pollActiveBox">
+  <label class="poll-status-label"></label>
+  <span class="poll-status-value">
+    <%= formData.pollActive ? 'Poll Active' : 'Poll Inactive' %>
+  </span>
 </div>
 
 
 <% if (formData.pollDeleted) { %>
-  <div class="poll-status-box" id="pollDeletedBox">
-    <label class="poll-status-label">Poll Deleted:</label>
-    <span class="poll-status-value"><%= formData.pollDeleted %></span>
+  <div class="poll-status-box poll-status-false" id="pollDeletedBox">
+    <label class="poll-status-label">Poll Deleted</label>
   </div>
 <% } %>
 
@@ -240,6 +241,14 @@ function removeDynamicRow(row) {
     }
   }
 
+  const opensAt = new Date(`${document.getElementById("opens-at-date").value} ${document.getElementById("opens-at-time").value}:00`);
+  const closesAt = new Date(`${document.getElementById("closes-at-date").value} ${document.getElementById("closes-at-time").value}:00`);
+
+  if (opensAt >= closesAt) {
+    alert("Closes at must be later than Opens at.");
+    return false;
+  }
+
   const formData = {
     pollName: document.getElementById("poll-name").value,
     pollId: document.getElementById("poll-id").value,
@@ -247,8 +256,8 @@ function removeDynamicRow(row) {
     pollDescription: document.getElementById("poll-description").value,
     options: [],
     emails: [],
-    opensAt: `${document.getElementById("opens-at-date").value} ${document.getElementById("opens-at-time").value}:00`,
-    closesAt: `${document.getElementById("closes-at-date").value} ${document.getElementById("closes-at-time").value}:00`,
+    opensAt: opensAt.toISOString(),
+  closesAt: closesAt.toISOString(),
   };
 
   document.querySelectorAll("#dynamic-options-container .option").forEach((option, index) => {
