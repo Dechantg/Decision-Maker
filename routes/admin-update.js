@@ -12,6 +12,12 @@ const getQuestions      = require('../db/queries/get_questions_by_id')
 const authorizedEmails  = require('../db/queries/get_authorized_emails')
 const addOptions        = require('../db/queries/add_poll_options')
 const updateOptions     = require('../db/queries/update_options')
+const userExists = require('../db/queries/user_email_exists');
+const addNewEmails = require('../db/queries/add_new_unregistered_emails');
+const addAuthorizedToVote = require('../db/queries/add_new_authorized_user_to_vote');
+const removeAuthorizedEmail = require('../db/queries/remove_auuthorized_email')
+const updateDetails = require('../db/queries/update_poll_details')
+const removeUnauthorizedVotes = require('../db/queries/remove_unauthorized_votes')
 
 
 const db = require('../db/connection');
@@ -23,12 +29,71 @@ router.post('/', async (req, res) => {
   try {
     const {pollName, pollDescription, options, emails, opensAt, closesAt, pollId, uuid} = req.body;
 
-    console.log("is the coming from inside my update poll?", options)
+    // console.log("is the coming from inside my update poll?", options)
 
     // const userId = req.session.user.id
+// const userEmail = 'bob@example.com'
+    // const creatorEmail = req.session.user.email
 
-    const existingOptions = [];
+    const details = await getByUuid(uuid);
+
+    pollCreator = details.poll_creator_id
+
+    const updatedPollDetails = await updateDetails(pollId, pollName, pollDescription, opensAt, closesAt, pollCreator)
+
+    console.log("data back from the details update: ", updatedPollDetails)
+
+
+const existingOptions = [];
 const newOptions = [];
+
+const allAuthorizedEmails = await authorizedEmails(pollId, details.poll_creator_id);
+
+const newEmails = await emails.filter(email => !allAuthorizedEmails.includes(email));
+
+const deletedEmails = await allAuthorizedEmails.filter(email => !emails.includes(email));
+
+
+
+
+
+
+const processEmails = async (emails) => {
+  const idsToAuthorize = {};
+  const emailsToAdd = [];
+
+  for (const email of emails) {
+    const userEmail = await userExists(email);
+
+    if (userEmail && userEmail.id) {
+      idsToAuthorize[userEmail.id] = true;
+    } else {
+      emailsToAdd.push(email);
+    }
+  }
+
+  const authorizedIds = Object.keys(idsToAuthorize);
+
+  return { authorizedIds, emailsToAdd };
+};
+
+if (newEmails.length >0) {
+const { authorizedIds, emailsToAdd } = await processEmails(newEmails);
+const newEmailsAdded = await addNewEmails(emailsToAdd);
+newEmailsAdded.forEach(obj => authorizedIds.push(obj.id));
+const updatedAuthorizedToVote = await addAuthorizedToVote(authorizedIds, pollId)
+}
+
+if (deletedEmails.length >0) {
+  console.log("triggered inside the delete function")
+  const { authorizedIds, emailsToAdd } = await processEmails(deletedEmails);
+  const newEmailsAdded = await addNewEmails(emailsToAdd);
+  newEmailsAdded.forEach(obj => authorizedIds.push(obj.id));
+  const updatedAuthorizedToVote = await removeAuthorizedEmail(authorizedIds, pollId);
+  const unauthorizedVotesRemoved = await removeUnauthorizedVotes(authorizedIds, pollId);
+
+  }
+
 
 options.forEach(option => {
   if (option.id) {
@@ -39,14 +104,16 @@ options.forEach(option => {
   }
 });
 
-// const addedOptions = await addOptions(pollId, newOptions);
-// const updatedOptions = await updateOptions(existingOptions);
 
-console.log('Existing Options:', existingOptions);
-console.log('New Options:', newOptions);
-// console.log('here is the post new options add', addedOptions)
+if (newOptions.length > 0) {
+const addedOptions = await addOptions(pollId, newOptions);
+return addedOptions
+}
 
 
+
+
+const updatedOptions = await updateOptions(existingOptions);
 
 
 res.json({ message: 'Data received successfully!' });

@@ -7,7 +7,6 @@ const newUuid     = uuid.v4();
 const db = require('../db/connection');
 const { calculateTimestamps } = require('../utils/calculateTimestamps');
 
-// Display the Creat a Poll form
 
 router.get('/', async (req, res) => {
 

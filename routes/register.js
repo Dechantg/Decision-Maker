@@ -19,10 +19,6 @@ router.use(bodyParser.json());
 
 router.get('/', async (req, res) => {
   try {
-    // Fetch the user's email from cookies
-    // const userEmail = req.cookies.choiceMaker;
-    // console.log("user email when no cookie", userEmail)
-
 
 
     res.render('register');
@@ -76,22 +72,8 @@ router.post('/', async (req, res) => {
     };
 
 
-    // const hashedPasswordFromDB = user.password_hash;
-
-
-    // if (bcrypt.compareSync(password, hashedPasswordFromDB)) {
-
-      // Set the user information in the session
-      // req.session.user = { id: user.id, email: user.email };
-
       console.log("user login information", req.session.user)
 
-
-
-    // else {
-    //   const newEmail = await addUser(userEmail);
-    //   req.session.user = { email: newEmail }; // Adjust the session user object as needed
-    // }
 
   } catch (error) {
     console.error('An error occurred:', error);

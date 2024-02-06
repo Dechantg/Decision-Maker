@@ -10,14 +10,10 @@ router.use(bodyParser.json());
 
 router.get('/', async (req, res) => {
   try {
-    // Fetch the user's email from cookies
-    console.log("here is the cookie inform ation from inside the polls page", req.session.user)
 
     const userId = req.session.user.id
     const userEmail = req.session.user.email
 
-    console.log("user email when no cookie", userEmail)
-    console.log("here is the user id", userId)
 
     if (userEmail === undefined || userEmail === null) {
       console.log("this shows that the email was undefined and caught")
@@ -25,14 +21,10 @@ router.get('/', async (req, res) => {
       return;
     }
 
-    // Fetch the user's ID
-    // const userId = await userIdbyEmail(userEmail);
-    // const usersId = userId[0].id;
 
-    // Fetch authorized and owned data
+
     const authorized = await allAuthorized(userId);
     const owned = await allOwned(userId);
-            // res.json({ authorized, owned, userEmail, usersId  });
 
     res.render('poll-list', { authorized, owned, userEmail, userId });
   } catch (error) {

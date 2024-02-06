@@ -3,13 +3,13 @@
 
 const db = require('../connection');
 
-const deletePoll = async (pollId, userId) => {
+const deletePoll = async (pollId, userId, pollStatus) => {
   try {
     const result = await db.query(`
       UPDATE polls
-      SET poll_deleted = true, poll_active = false
+      SET poll_deleted = $3
       WHERE id = $1 AND poll_creator_id = $2
-      RETURNING *;`, [pollId, userId]);
+      RETURNING *;`, [pollId, userId, pollStatus]);
 
     if (result.rowCount === 0) {
       console.error(`Invalid user or no poll found with ID ${pollId}`);

@@ -104,6 +104,8 @@
   <input type="hidden" id="poll-id" name="pollId" value="<%= pollId %>" />
   <input type="hidden" id="uuid" name="uuid" value="<%= uuid %>" />
   <input type="hidden" id="poll-active" name="pollActive" value="<%= formData.pollActive %>" />
+  <input type="hidden" id="poll-deleted" name="pollDeleted" value="<%= formData.pollDeleted %>" />
+
 
   <div class="submit-button">
     <button type="submit">Update</button>
@@ -129,13 +131,15 @@
 
     const deleteButton = document.querySelector(".delete-button");
 
-deleteButton.addEventListener("click", function () {
+    deleteButton.addEventListener("click", function () {
   const pollId = document.getElementById("poll-id").value;
   const uuid = document.getElementById("uuid").value;
+  const pollDeleted = document.getElementById("poll-deleted").value;
 
   const formData = {
     pollId: pollId,
-    uuid: uuid
+    uuid: uuid,
+    pollDeleted: pollDeleted  // Set pollDeleted based on your logic
   };
 
   fetch(`/delete/${pollId}`, {
@@ -176,7 +180,7 @@ activeButton.addEventListener("click", function () {
   .then(response => response.json())
   .then(data => {
     console.log('Server response:', data);
-    location.reload(); // Refresh the page
+    location.reload();
   })
   .catch(error => console.error('Error:', error));
 });
@@ -252,7 +256,7 @@ function removeDynamicRow(row) {
     const description = document.querySelectorAll(".description")[index].value;
     const optionObject = {
       id: document.querySelector(`input[name="options[${index}][id]"]`).value,
-      [option.value]: description,  // Use the value as a dynamic property name
+      [option.value]: description,
     };
     formData.options.push(optionObject);
   });

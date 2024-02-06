@@ -15,11 +15,6 @@ const db = require('../db/connection');
 
 router.use(bodyParser.json());
 
-// const formData = {
-//   pollId: pollId,
-//   uuid: uuid,
-//   pollActive: pollActive
-// };
 
 router.post('/:pollId', async (req, res) => {
   try {
@@ -27,14 +22,14 @@ router.post('/:pollId', async (req, res) => {
     const uuid = req.body.uuid;
     const pollStatus = req.body.pollActive === 'true';
     const invertedPollStatus = !pollStatus;
-    const userId = '1';
+    // const userId = '1';
     // const userEmail = req.session.user.email
-    // const userId = req.session.user.id
+    const userId = req.session.user.id
     // const authorized = await allAuthorized(userId);
     // const owned = await allOwned(userId);
 
 
-
+    console.log("from inside the switch ehre is  poll id number", pollId);
 
 
 
@@ -45,7 +40,7 @@ router.post('/:pollId', async (req, res) => {
 
     const pollStatusChanged = await changeStatus(pollId, userId, invertedPollStatus);
 
-    console.log("here is from inside my delete post query return: ", pollStatusChanged);
+    console.log("here is from inside my active status post query return: ", pollStatusChanged);
 
 
 

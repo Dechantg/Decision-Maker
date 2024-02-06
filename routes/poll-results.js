@@ -13,17 +13,12 @@ router.use(bodyParser.json());
 
 router.get('/', async (req, res) => {
   try {
-    // Fetch the user's email from cookies
     const userEmail = req.session.user.email
 
-    // Fetch the user's ID
-    const userId = await userIdbyEmail(userEmail);
-    const usersId = userId[0].id;
+    const usersId = req.session.user.id;
 
-    // Fetch authorized and owned data
     const authorized = await allAuthorized(usersId);
     const owned = await allOwned(usersId);
-            // res.json({ authorized, owned, userEmail, usersId  });
 
     res.render('poll-list', { authorized, owned, userEmail, usersId });
   } catch (error) {

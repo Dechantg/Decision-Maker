@@ -68,11 +68,6 @@ const admin             = require('./routes/admin');
 const pollActive        = require('./routes/active-switch');
 
 
-// const adminPage         = require('./routes/admin-page');
-
-
-// const adminPage         = require('./routes/admin-page');
-
 
 
 const { Pool }          = require('pg');

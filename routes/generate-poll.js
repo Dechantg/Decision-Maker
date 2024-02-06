@@ -22,6 +22,7 @@ router.post('/', async (req, res) => {
     console.log(req.body)
 
     const userId = req.session.user.id
+    // const creatorEmail = req.session.user.email
 
     const pollUuid = uuid.v4();
 
@@ -40,14 +41,12 @@ router.post('/', async (req, res) => {
         const userEmail = await userExists(email);
 
         if (userEmail && userEmail.id) {
-          // Use the user ID as the key in the idsToAuthorize object
           idsToAuthorize[userEmail.id] = true;
         } else {
           emailsToAdd.push(email);
         }
       }
 
-      // Extract the IDs from the object keys
       const authorizedIds = Object.keys(idsToAuthorize);
 
       return { authorizedIds, emailsToAdd };

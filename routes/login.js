@@ -35,10 +35,7 @@ router.get('/', async (req, res) => {
 
 router.post('/', async (req, res) => {
   try {
-    // Fetch the user's email from cookies
-    // const userEmail = req.cookies.choiceMaker;
     console.log("Console.log of the button being clicked")
-    // res.send("the button was clicked")
 
     const { email, password } = req.body;
 
@@ -59,17 +56,12 @@ router.post('/', async (req, res) => {
 
     if (bcrypt.compareSync(password, hashedPasswordFromDB)) {
 
-      // Set the user information in the session
       req.session.user = { id: user.id, email: user.email };
 
       console.log("user login information", req.session.user)
 
     }
 
-    // else {
-    //   const newEmail = await addUser(userEmail);
-    //   req.session.user = { email: newEmail }; // Adjust the session user object as needed
-    // }
 
     res.redirect('polls');
   } catch (error) {

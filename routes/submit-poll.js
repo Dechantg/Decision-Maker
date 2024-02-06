@@ -60,7 +60,7 @@ router.post('/:id/submit', async (req, res) => {
 
   try {
 
-    // const userId = req.session.user.id
+    const userId = req.session.user.id
     const userEmail = req.session.user.email
 
     console.log("testing to make sure userEmail is not empty", userEmail)
@@ -77,12 +77,7 @@ router.post('/:id/submit', async (req, res) => {
       );
     }
 
-    if (user) {
-      // req.session.usersEmail = userEmail;
-      res.clearCookie('choiceMaker');
-      res.cookie('choiceMaker', userEmail);
-      console.log("cookie checking the if user fucntion", userEmail)
-        }
+
 
     const uuid = req.body.uuid;
     delete req.body.uuid;
@@ -93,7 +88,6 @@ router.post('/:id/submit', async (req, res) => {
     console.log("checking for pollid being placed properly", pollId);
 
     const responceData = req.body;
-    // const userEmail = req.cookies.myCookie;
     console.log("first user email so find breakage", userEmail)
 
     if (typeof userEmail === 'undefined') {
@@ -101,11 +95,6 @@ router.post('/:id/submit', async (req, res) => {
       return res.status(401).send({ error: 'User not logged in. Please log in.' });
     }
 
-    const userIdObject = await userIdbyEmail(userEmail);
-    console.log(userIdObject)
-
-    const userId = userIdObject[0].id;
-    console.log("second console log to find if userId is being retrieved", userId);
 
     const canVote = await authorizedToVote(userId, pollId);
     console.log("checking to see if authorized to vote", canVote);
