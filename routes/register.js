@@ -19,13 +19,16 @@ router.use(bodyParser.json());
 
 router.get('/', async (req, res) => {
   try {
+    const userId = req.session.user ? req.session.user.id : null;
+    const userEmail = req.session.user ? req.session.user.email : null;
 
+    if (!userEmail) {
+      return res.render('register', { userEmail });
+    }
 
     res.render('register');
   } catch (error) {
-
     console.error('An error occurred:', error);
-
     res.status(500).send('Internal Server Error');
   }
 });

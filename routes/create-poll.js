@@ -11,7 +11,8 @@ const { calculateTimestamps } = require('../utils/calculateTimestamps');
 router.get('/', async (req, res) => {
 
   try {
-    let userEmail = null;
+    const userId = req.session.user ? req.session.user.id : null;
+    const userEmail = req.session.user ? req.session.user.email : null;
 
     if (req.session.user && req.session.user.email) {
       userEmail = req.session.user.email;

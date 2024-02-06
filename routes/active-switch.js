@@ -22,11 +22,8 @@ router.post('/:pollId', async (req, res) => {
     const uuid = req.body.uuid;
     const pollStatus = req.body.pollActive === 'true';
     const invertedPollStatus = !pollStatus;
-    // const userId = '1';
-    // const userEmail = req.session.user.email
-    const userId = req.session.user.id
-    // const authorized = await allAuthorized(userId);
-    // const owned = await allOwned(userId);
+    const userId = req.session.user ? req.session.user.id : null;
+    const userEmail = req.session.user ? req.session.user.email : null;
 
 
     console.log("from inside the switch ehre is  poll id number", pollId);
@@ -35,7 +32,6 @@ router.post('/:pollId', async (req, res) => {
 
     console.log("is status the coming from inside my switch?", invertedPollStatus)
 
-    // const userId = req.session.user.id
 
 
     const pollStatusChanged = await changeStatus(pollId, userId, invertedPollStatus);

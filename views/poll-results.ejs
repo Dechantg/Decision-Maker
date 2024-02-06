@@ -2,33 +2,54 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link rel="stylesheet" href="/vendor/normalize-4.1.1.css" />
+  <link rel="stylesheet" href="/vendor/border-box.css" />
+
+  <link rel="stylesheet" href="/styles/main.css" />
+
+  <script src="/vendor/jquery-3.0.0.js"></script>
+  <script defer src="/scripts/app.js"></script>
   <title>decisionMAKER... Results Page</title>
+
+  <style>
+    .table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 20px;
+    }
+
+    .table th, .table td {
+      padding: 10px;
+      text-align: center;
+      border: 1px solid #ddd;
+    }
+
+      </style>
+
 </head>
 <body>
   <%- include('partials/_header') %>
 
-  <header>
-   
+
     <h1>Current Results</h1>
 
-  </header>
 
-  <main>
 
     <input type="hidden" name="uuid" value="<%= values %>">
     <input type="hidden" name="poll_id" value="<%= pollData[0].id %>">
 
 
     <h1><%= pollData[0].poll_name %></h1>
-    <p><a href="/vote/<%= values %>">Vote</a></p>
+    <h1><a href="/vote/<%= values %>">Vote</a></h1>
 
     <h3><%= pollData[0].poll_description %></h3>
 
 
     <section id="pollDetails">
       <!-- Dynamic display of poll information -input by the the creator of the poll -->
-      <p>Poll ID: <span id="pollId">Your Poll ID</span></p>
       <p>Created At: <span id="createdTime"><%= pollData[0].created_at %></span></p>
 
       <p>End Time: <span id="endTime"><%= pollData[0].closes_at %></span></p>
@@ -36,7 +57,7 @@
 
     <section>
 
-      <table>
+      <table class="table">
         <tr>
           <th>Rank</th>
           <th>Option</th>
@@ -63,30 +84,28 @@
       </table>
 
 
-
-
-
-
     </section>
 
     <section id="pollOptions">
-      <% questionData.forEach((question) => { %>
-        <tr class="default-row">
-          <td class="choice-cell">
-            <p><%= question.option %>:</p>
-          </td>
-          <td>
-            <p><%= question.option_details %></p>
-          </td>
-        </tr>
-      <% }); %>
+      <table class="table">
+        <tbody> <!-- Add a tbody to contain the table rows -->
+          <% questionData.forEach((question) => { %>
+            <tr class="default-row">
+              <td class="choice-cell">
+                <p><%= question.option %>:</p>
+              </td>
+              <td>
+                <p><%= question.option_details %></p>
+              </td>
+            </tr>
+          <% }); %>
+        </tbody>
+      </table>
     </section>
 
 
-  </main>
 
-  <script>
-    // Add JavaScript logic to dynamically update poll details, options, and interact with poll management features.
-  </script>
+
+
 </body>
 </html>

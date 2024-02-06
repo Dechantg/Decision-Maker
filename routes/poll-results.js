@@ -35,8 +35,8 @@ router.get('/:id', async (req, res) => {
     const values = req.params.id;
     console.log(values);
 
-    const userId = req.session.user.id;
-    const userEmail = req.session.user.email;
+    const userId = req.session.user ? req.session.user.id : null;
+    const userEmail = req.session.user ? req.session.user.email : null;
 
     const uuidExists = await pollExists(values);
 

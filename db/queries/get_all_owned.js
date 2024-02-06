@@ -7,7 +7,7 @@ const allOwned = (userId) => {
   `
   SELECT polls.uuid, poll_name, poll_description, created_at, closes_at, poll_active
   FROM polls
-  WHERE poll_creator_id = $1;
+  WHERE poll_creator_id = $1 AND NOT poll_deleted;
   `, [userId])
     .then(data => {
       const pollDetails = data.rows;

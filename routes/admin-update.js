@@ -29,11 +29,9 @@ router.post('/', async (req, res) => {
   try {
     const {pollName, pollDescription, options, emails, opensAt, closesAt, pollId, uuid} = req.body;
 
-    // console.log("is the coming from inside my update poll?", options)
+    const userId = req.session.user ? req.session.user.id : null;
+    const userEmail = req.session.user ? req.session.user.email : null;
 
-    // const userId = req.session.user.id
-// const userEmail = 'bob@example.com'
-    // const creatorEmail = req.session.user.email
 
     const details = await getByUuid(uuid);
 

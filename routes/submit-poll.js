@@ -27,8 +27,8 @@ router.get('/:id', (req, res) => {
   // console.log("cookie does or does not exist", req.session.userId)
   console.log(values);
 
-  const userId = req.session.user.id
-  const userEmail = req.session.user.email
+  const userId = req.session.user ? req.session.user.id : null;
+  const userEmail = req.session.user ? req.session.user.email : null;
 
   pollExists(values)
     .then((uuidExists) => {

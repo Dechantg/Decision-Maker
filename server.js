@@ -49,9 +49,7 @@ app.use(
 
 // Separated Routes for each Resource
 // Note: Feel free to replace the example routes below with your own
-const userApiRoutes     = require('./routes/users-api');
-const usersRoutes       = require('./routes/users');
-const widgetApiRoutes   = require('./routes/widgets-api');
+// const usersRoutes       = require('./routes/users');
 const createPoll        = require('./routes/create-poll');
 const mailgun           = require('./routes/mailgun');
 const pollResults       = require('./routes/poll-results');
@@ -87,9 +85,7 @@ const pool = new Pool({
 // Note: Endpoints that return data (eg. JSON) usually start with `/api`
 
 
-app.use('/api/users', userApiRoutes);
-app.use('/api/widgets', widgetApiRoutes);
-app.use('/users', usersRoutes);
+// app.use('/users', usersRoutes);
 app.use('/create', createPoll);
 app.use('/vote', submitPolls);
 app.use('/results', pollResults);

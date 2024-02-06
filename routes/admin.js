@@ -15,14 +15,11 @@ const db = require('../db/connection');
 
 router.get('/:id', async (req, res) => {
   try {
-    // Fetch the user's email from cookies
-    // const userEmail = req.cookies.choiceMaker;
-    // console.log("user email when no cookie", userEmail)
 
     const uuid = req.params.id
-    // const uuid = '2a411155-d49a-4f1b-b3b6-f6da34ab0f0e';
 
-    let userEmail = null;
+    const userId = req.session.user ? req.session.user.id : null;
+    const userEmail = req.session.user ? req.session.user.email : null;
 
     const pollDetails = await getByUuid(uuid);
 

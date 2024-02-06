@@ -7,7 +7,7 @@ const allAuthorized = async (userId) => {
       SELECT poll_id, polls.uuid, poll_name, poll_description, created_at, closes_at, poll_active
       FROM authorized_to_vote
       JOIN polls ON polls.id = poll_id
-      WHERE user_id = $1;
+      WHERE user_id = $1 AND NOT poll_deleted;
       `, [userId]
     );
 
