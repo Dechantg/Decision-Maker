@@ -38,6 +38,8 @@ router.post('/', async (req, res) => {
 
 const { authorizedIds, emailsToAdd } = await processEmails(emails);
 
+console.log("one more test to see the format of the emails coming back", emailsToAdd)
+
 
 
 const newEmailsAdded = await addNewEmails(emailsToAdd);

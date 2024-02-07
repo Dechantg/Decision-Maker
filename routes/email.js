@@ -20,6 +20,9 @@ const updateDetails = require('../db/queries/update_poll_details')
 const removeUnauthorizedVotes = require('../db/queries/remove_unauthorized_votes')
 const updateEmailStatus = require('../db/queries/set_emailed_status')
 const processEmails = require('../public/scripts/processEmails')
+const getCreatorDetails = require('../db/queries/get_user_data_by_id')
+const {sendEmail, sendAdminEmail} = require('../public/scripts/mailgun')
+
 
 
 
@@ -39,14 +42,34 @@ router.post('/', async (req, res) => {
     console.log("here is the uuid being passed in: ", uuid);
     console.log("here is the pollId being passed in: ", pollId);
 
+    const pollData = await pollDetails(uuid);
+    const { authorizedIds, emailsToAdd } = await processEmails(emails);
+
+    const opensAt = moment(pollData[0].created_at).format('MMM DD, YYYY hh:mm A');
+    const closesAt = moment(pollData[0].closes_at).format('MMM DD, YYYY hh:mm A');
 
 
+    const creator = await getCreatorDetails(pollData[0].poll_creator_id);
 
-const { authorizedIds, emailsToAdd } = await processEmails(emails);
+    console.log("here is the pollData fetch test", pollData);
+    console.log("here is the creator fetch test", creator);
 
+    const pollDataToEmail = {
+      email: emails,
+      uuid: uuid,
+      firstName: creator.first_name,
+      lastName: creator.last_name,
+      pollName: pollData[0].poll_name,
+      pollDescription: pollData[0].poll_description,
+      creatorEmail: creator.email,
+      opensAt: opensAt,
+      closesAt: closesAt
+    };
 
-console.log("authorized shit coming back", authorizedIds);
-console.log("emails to add coming back", emailsToAdd);
+    const emailSent = await sendEmail(pollDataToEmail);
+
+    console.log("email send information to see what coems back", emailSent)
+
 
     const changeToTrue = true;
 
@@ -54,13 +77,6 @@ console.log("emails to add coming back", emailsToAdd);
 
 
     const emailSet = await updateEmailStatus(authorizedIds, pollId, changeToTrue)
-
-
-
-
-
-
-
 
 
 

@@ -7,9 +7,9 @@ const mailgun = require('mailgun-js')({
   domain: process.env.MAIL_GUN_DOMAIN
 });
 
-const sendEmail = async (emails) => {
+const sendEmail = async (pollDataToEmail) => {
 
-const {email, uuid, firstName, lastName, pollName, pollDescription, creatorEmail, opensAt, closesAt } = emails
+const {email, uuid, firstName, lastName, pollName, pollDescription, creatorEmail, opensAt, closesAt } = pollDataToEmail
 
 const data = {
   from: "polls@decisionmaker.com",
@@ -37,18 +37,18 @@ const data = {
 };
 
 try {
-  const body = await mailgun.messages().send(data);
-  console.log('Email sent:', body);
-  return body;
+  // const body = await mailgun.messages().send(data);
+  console.log('Email sent:');
+  return data;
 } catch (error) {
   console.error('Error sending email:', error);
   throw error;
 }
 };
 
-const sendAdminEmail = async (emails) => {
+const sendAdminEmail = async (pollDataToEmail) => {
 
-  const {email, uuid, firstName, lastName, pollName, pollDescription, creatorEmail, opensAt, closesAt } = emails
+  const {email, uuid, firstName, lastName, pollName, pollDescription, creatorEmail, opensAt, closesAt } = pollDataToEmail
 
   const data = {
     from: "polls@decisionmaker.com",
@@ -79,9 +79,9 @@ const sendAdminEmail = async (emails) => {
   };
 
   try {
-    const body = await mailgun.messages().send(data);
-    console.log('Email sent:', body);
-    return body;
+    // const body = await mailgun.messages().send(data);
+    console.log('Admin Email sent:');
+    return data;
   } catch (error) {
     console.error('Error sending email:', error);
     throw error;
