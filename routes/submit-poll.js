@@ -33,9 +33,13 @@ router.get('/:id', async (req, res) => {
       console.log('log for the id being passed in for the voting link', values);
 
       const pollData = await pollDetails(values);
-      const questionData = await getQuestions(values);
 
-      res.render('submit-poll', { pollData, questionData, values, userEmail });
+      const questionData = await getQuestions(values);
+      const voteStatus = await hasVoted(userId, pollData[0].id)
+      console.log("poll data being sent back from voteStatus", voteStatus)
+
+
+      res.render('submit-poll', { pollData, questionData, values, userEmail, voteStatus });
     }
   } catch (error) {
     console.error(error);

@@ -7,6 +7,8 @@ const userIdbyEmail   = require('../db/queries/find_id_by_email');
 const getWinners      = require('../db/queries/get_winners');
 const allAuthorized   = require('../db/queries/get_all_authorized');
 const allOwned        = require('../db/queries/get_all_owned');
+const moment            = require('moment');
+
 const bodyParser      = require('body-parser');
 
 router.use(bodyParser.json());
@@ -44,9 +46,16 @@ router.get('/:id', async (req, res) => {
     } else {
       console.log('log for the id being passed in for the voting link', values);
 
-      const pollData = await pollDetails(values);
+      const fetchedPollData = await pollDetails(values);
+
       const questionData = await getQuestions(values);
       const winnerData = await getWinners(values);
+
+      const pollData = fetchedPollData.map((item) => ({
+        ...item,
+        created_at: moment(item.created_at).format('MMM DD, YYYY hh:mm A'),
+        closes_at: moment(item.closes_at).format('MMM DD, YYYY hh:mm A'),
+      }));
 
       console.log(userEmail);
 

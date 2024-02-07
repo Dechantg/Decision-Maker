@@ -1,10 +1,10 @@
-<!-- Your EJS header template -->
 <header class="navbar-fixed-top">
   <nav class="navbar navbar-expand-md navbar-dark bg-success">
     <div class="container">
       <div class="brand-container">
         <a class="navbar-brand" href="/polls">decisionMAKER</a>
       </div>
+
 
       <div class="auth-container">
         <% if (userEmail !== null) { %>
@@ -21,17 +21,6 @@
             <a href="/" class="btn btn-primary">Log In</a>
             <a href="/register" class="btn btn-secondary">Register</a>
           </div>
-
-          <!-- Script to check for the presence of a session cookie -->
-          <script>
-            const isUserSignedIn = <%= userEmail !== null %>;
-
-            if (!isUserSignedIn) {
-              alert('You are not signed in. Please sign in or register.');
-              // You can also redirect the user to the login or registration page
-              window.location.href = '/';
-            }
-          </script>
         <% } %>
       </div>
     </div>

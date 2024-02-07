@@ -15,17 +15,9 @@ router.get('/', async (req, res) => {
     const userId = req.session.user ? req.session.user.id : null;
     const userEmail = req.session.user ? req.session.user.email : null;
 
-
-    if (userEmail === undefined || userEmail === null) {
-      console.log("this shows that the email was undefined and caught")
-      res.send("Please sign in to view this page");
-      return;
-    }
-
-
-
+    const deleted = false;
     const authorized = await allAuthorized(userId);
-    const owned = await allOwned(userId);
+    const owned = await allOwned(userId, deleted);
 
     const formattedAuthorized = authorized.map((item) => ({
       ...item,
