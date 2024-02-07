@@ -54,6 +54,9 @@ router.post('/', async (req, res) => {
 
 const { authorizedIds, emailsToAdd } = await processEmails(emails);
 
+console.log("generate poll path emails from processing: ", emails)
+
+console.log("generate poll path authorized Ids before push of user: ", authorizedIds)
 
 const newEmailsAdded = await addNewEmails(emailsToAdd);
 
@@ -61,6 +64,7 @@ newEmailsAdded.forEach(obj => authorizedIds.push(obj.id));
 
 authorizedIds.push(userId);
 
+console.log("generate poll path authorized Ids after push of user: ", authorizedIds)
 
 const updatedAuthorizedToVote = await addAuthorizedToVote(authorizedIds, createdPoll.id)
 

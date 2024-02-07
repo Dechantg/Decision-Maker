@@ -12,8 +12,8 @@ const getQuestions      = require('../db/queries/get_questions_by_id')
 const authorizedEmails  = require('../db/queries/get_authorized_emails')
 const addOptions        = require('../db/queries/add_poll_options')
 const updateOptions     = require('../db/queries/update_options')
-const userExists = require('../db/queries/user_email_exists');
-const addNewEmails = require('../db/queries/add_new_unregistered_emails');
+const userExists        = require('../db/queries/user_email_exists');
+const addNewEmails      = require('../db/queries/add_new_unregistered_emails');
 const addAuthorizedToVote = require('../db/queries/add_new_authorized_user_to_vote');
 const removeAuthorizedEmail = require('../db/queries/remove_auuthorized_email')
 const updateDetails = require('../db/queries/update_poll_details')
@@ -78,8 +78,10 @@ const processEmails = async (emails) => {
 if (newEmails.length >0) {
 const { authorizedIds, emailsToAdd } = await processEmails(newEmails);
 const newEmailsAdded = await addNewEmails(emailsToAdd);
+console.log("insdie th4 add emails updata newEmailsAdded: ", newEmailsAdded);
 newEmailsAdded.forEach(obj => authorizedIds.push(obj.id));
 const updatedAuthorizedToVote = await addAuthorizedToVote(authorizedIds, pollId)
+console.log("from inside the new emails update authorizedIds: ", authorizedIds)
 }
 
 if (deletedEmails.length >0) {

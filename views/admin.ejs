@@ -239,7 +239,7 @@ dynamicEmailsContainer.addEventListener("click", function (event) {
     }
 
     const formData = {
-      email: email,
+      emails: [email],
       uuid: document.getElementById("uuid").value,
       pollId: pollId,
 
@@ -256,8 +256,8 @@ dynamicEmailsContainer.addEventListener("click", function (event) {
     .then(data => {
       console.log('Server response:', data);
       if (data && data.message === 'Data received successfully!') {
-        // Display a green check mark or any other confirmation
         alert('Email resent successfully.');
+
       } else {
         alert('Failed to resend email.');
       }

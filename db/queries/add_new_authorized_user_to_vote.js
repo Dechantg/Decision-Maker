@@ -4,6 +4,8 @@ const db = require('../connection');
 
 const insertAuthorizedToVote = async (userIds, pollId) => {
   try {
+    console.log("from inside the add authorized here is the userIds: ", userIds);
+
     const placeholders = userIds.map((_, index) => `($${index * 2 + 1}, $${index * 2 + 2})`).join(',');
 
     const values = [].concat(...userIds.map(userId => [userId, pollId]));
