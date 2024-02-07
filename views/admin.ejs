@@ -257,6 +257,7 @@ dynamicEmailsContainer.addEventListener("click", function (event) {
       console.log('Server response:', data);
       if (data && data.message === 'Data received successfully!') {
         alert('Email resent successfully.');
+        location.reload();
 
       } else {
         alert('Failed to resend email.');

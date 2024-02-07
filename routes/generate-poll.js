@@ -8,6 +8,8 @@ const addOptions = require('../db/queries/add_poll_options');
 const userExists = require('../db/queries/user_email_exists');
 const addNewEmails = require('../db/queries/add_new_unregistered_emails');
 const addAuthorizedToVote = require('../db/queries/add_new_authorized_user_to_vote');
+const processEmails = require('../public/scripts/processEmails')
+
 
 
 const db = require('../db/connection');
@@ -33,30 +35,10 @@ router.post('/', async (req, res) => {
 
 
 
-    const processEmails = async (emails) => {
-      const idsToAuthorize = {};
-      const emailsToAdd = [];
-
-      for (const email of emails) {
-        const userEmail = await userExists(email);
-
-        if (userEmail && userEmail.id) {
-          idsToAuthorize[userEmail.id] = true;
-        } else {
-          emailsToAdd.push(email);
-        }
-      }
-
-      const authorizedIds = Object.keys(idsToAuthorize);
-
-      return { authorizedIds, emailsToAdd };
-    };
 
 const { authorizedIds, emailsToAdd } = await processEmails(emails);
 
-console.log("generate poll path emails from processing: ", emails)
 
-console.log("generate poll path authorized Ids before push of user: ", authorizedIds)
 
 const newEmailsAdded = await addNewEmails(emailsToAdd);
 
@@ -64,9 +46,10 @@ newEmailsAdded.forEach(obj => authorizedIds.push(obj.id));
 
 authorizedIds.push(userId);
 
-console.log("generate poll path authorized Ids after push of user: ", authorizedIds)
 
 const updatedAuthorizedToVote = await addAuthorizedToVote(authorizedIds, createdPoll.id)
+
+
 
 
 

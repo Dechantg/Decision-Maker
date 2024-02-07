@@ -1,17 +1,15 @@
 const db = require('../connection');
 
-
 const setEmailStatus = async (userIds, pollId, emailStatus) => {
   try {
-    const userIdArray = userIds.map(user => user.id);
-    const placeholders = userIdArray.map((_, index) => `$${index + 1}`).join(',');
+    const placeholders = userIds.map((_, index) => `$${index + 1}`).join(',');
 
     const data = await db.query(`
     UPDATE authorized_to_vote
-    SET email_sent = $${userIdArray.length + 1}
-    WHERE user_id IN (${placeholders}) AND poll_id = $${userIdArray.length + 2}
+    SET email_sent = $${userIds.length + 1}
+    WHERE user_id IN (${placeholders}) AND poll_id = $${userIds.length + 2}
     RETURNING id, email_sent;`,
-      [...userIdArray, emailStatus, pollId]
+      [...userIds, emailStatus, pollId]
     );
 
     const emailStatusUpdate = data.rows;
@@ -21,4 +19,5 @@ const setEmailStatus = async (userIds, pollId, emailStatus) => {
     throw error;
   }
 };
+
 module.exports = setEmailStatus;

@@ -51,7 +51,6 @@ app.use(
 // Note: Feel free to replace the example routes below with your own
 // const usersRoutes       = require('./routes/users');
 const createPoll        = require('./routes/create-poll');
-const mailgun           = require('./routes/mailgun');
 const pollResults       = require('./routes/poll-results');
 const submitPolls       = require('./routes/submit-poll');
 const refreshEmail      = require('./routes/refreshEmail');
