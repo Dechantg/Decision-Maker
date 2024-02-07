@@ -39,8 +39,9 @@ router.get('/:id', async (req, res) => {
       id: option.id
     }));
 
-    // console.log("here are the fetched questiuons", mappedOptions)
+    console.log("here are the fetched questiuons", allAuthorizedEmails)
 
+    // map(row => row.email)
 
     const formData = {
       pollName: pollDetails.poll_name,

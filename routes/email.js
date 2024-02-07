@@ -3,7 +3,7 @@
 
 const express           = require('express');
 const router            = express.Router();
-const userEmailById     = require('../db/queries/find_user_by_email');
+const userIdByEmail     = require('../db/queries/find_id_by_email');
 const getByUuid         = require('../db/queries/get_poll_by_uuid')
 const pollExists        = require('../db/queries/does_poll_exist');
 const pollDetails       = require('../db/queries/return_poll_details');
@@ -20,19 +20,29 @@ const updateDetails = require('../db/queries/update_poll_details')
 const removeUnauthorizedVotes = require('../db/queries/remove_unauthorized_votes')
 
 
+
 const db = require('../db/connection');
 
 
 
 router.post('/', async (req, res) => {
   try {
-    const {email, uuid} = req.body;
+    const {email, uuid, pollId} = req.body;
 
     const userId = req.session.user ? req.session.user.id : null;
     const userEmail = req.session.user ? req.session.user.email : null;
 
     console.log("here is the email being passed in:", email);
     console.log("here is the uuid being passed in: ", uuid);
+    console.log("here is the pollId being passed in: ", pollId);
+
+    const voterId = await userIdByEmail(email);
+
+    console.log("here is the voter id being fetched by email: ", voterId[0].id);
+
+
+
+
 
 
 

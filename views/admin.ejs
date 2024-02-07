@@ -82,10 +82,19 @@
     <button type="button" class="add-email-button">+ Add Email</button>
     <% formData.emails.forEach((email) => { %>
       <div class="email-row default-row">
-        <input type="text" placeholder="Email" maxlength="55" class="email" value="<%= email %>" required>
+        <input type="text" placeholder="Email" maxlength="55" class="email" value="<%= email.email %>" required>
         <button type="button" class="remove-email-button">-</button>
 
         <button type="button" class="resend-email-button">Resend Email</button>
+
+        <% if (email.email_sent) { %>
+          <span class="check-mark">&#10004;</span>
+          <span>Email Sent</span>
+        <% } else { %>
+          <span style="visibility: hidden;">&#10004;</span>
+          <span style="visibility: hidden;">Email Sent</span>
+        <% } %>
+
       </div>
     <% }); %>
   </div><br>
@@ -221,6 +230,8 @@ dynamicEmailsContainer.addEventListener("click", function (event) {
   });
   function resendEmail(emailInput) {
     const email = emailInput.value;
+    const pollId = document.getElementById("poll-id").value;
+
 
     if (!email.trim()) {
       alert("Please enter a valid email address.");
@@ -230,6 +241,8 @@ dynamicEmailsContainer.addEventListener("click", function (event) {
     const formData = {
       email: email,
       uuid: document.getElementById("uuid").value,
+      pollId: pollId,
+
     };
 
     fetch('/email', {
