@@ -84,6 +84,8 @@
       <div class="email-row default-row">
         <input type="text" placeholder="Email" maxlength="55" class="email" value="<%= email %>" required>
         <button type="button" class="remove-email-button">-</button>
+
+        <button type="button" class="resend-email-button">Resend Email</button>
       </div>
     <% }); %>
   </div><br>
@@ -187,15 +189,6 @@ activeButton.addEventListener("click", function () {
 
 
 
-    dynamicEmailsContainer.addEventListener("click", function (event) {
-      if (event.target.classList.contains("remove-email-button")) {
-        removeDynamicEmailRow(event.target.closest(".email-row"));
-      }
-      if (event.target.classList.contains("add-email-button")) {
-        addDynamicEmailRow();
-      }
-    });
-
     function addDynamicRow(existingData) {
   const newRow = document.createElement("tr");
   newRow.innerHTML = `
@@ -214,6 +207,51 @@ activeButton.addEventListener("click", function () {
   dynamicOptionsContainer.appendChild(newRow);
 }
 
+dynamicEmailsContainer.addEventListener("click", function (event) {
+    if (event.target.classList.contains("remove-email-button")) {
+      removeDynamicEmailRow(event.target.closest(".email-row"));
+    }
+    if (event.target.classList.contains("add-email-button")) {
+      addDynamicEmailRow();
+    }
+    if (event.target.classList.contains("resend-email-button")) {
+      const emailInput = event.target.parentElement.querySelector(".email");
+      resendEmail(emailInput);
+    }
+  });
+  function resendEmail(emailInput) {
+    const email = emailInput.value;
+
+    if (!email.trim()) {
+      alert("Please enter a valid email address.");
+      return;
+    }
+
+    const formData = {
+      email: email,
+      uuid: document.getElementById("uuid").value,
+    };
+
+    fetch('/email', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(formData),
+    })
+    .then(response => response.json())
+    .then(data => {
+      console.log('Server response:', data);
+      if (data && data.message === 'Data received successfully!') {
+        // Display a green check mark or any other confirmation
+        alert('Email resent successfully.');
+      } else {
+        alert('Failed to resend email.');
+      }
+    })
+    .catch(error => console.error('Error:', error));
+  }
+
 function removeDynamicRow(row) {
   dynamicOptionsContainer.removeChild(row);
 }
@@ -224,6 +262,7 @@ function removeDynamicRow(row) {
       newEmailRow.innerHTML = `
         <input type="text" placeholder="Email" maxlength="55" class="email" value="${existingEmail || ''}" required>
         <button type="button" class="remove-email-button">-</button>
+
       `;
       dynamicEmailsContainer.insertBefore(newEmailRow, dynamicEmailsContainer.lastChild);
     }

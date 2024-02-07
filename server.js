@@ -64,6 +64,7 @@ const updatePoll        = require('./routes/admin-update');
 const deletePoll        = require('./routes/delete-poll');
 const admin             = require('./routes/admin');
 const pollActive        = require('./routes/active-switch');
+const sendEmail         = require('./routes/email')
 
 
 
@@ -99,6 +100,7 @@ app.use('/logout', logout);
 app.use('/admin', admin);
 app.use('/delete', deletePoll);
 app.use('/active', pollActive);
+app.use('/email', sendEmail)
 
 
 
