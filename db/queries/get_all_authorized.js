@@ -8,7 +8,7 @@ const allAuthorized = async (userId) => {
       FROM authorized_to_vote
       JOIN polls ON polls.id = poll_id
       WHERE user_id = $1 AND NOT poll_deleted
-      ORDER BY created_at DESC;
+      ORDER BY opens_at DESC;
       `, [userId]
     );
 
