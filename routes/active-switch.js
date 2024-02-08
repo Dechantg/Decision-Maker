@@ -3,21 +3,17 @@ const router            = express.Router();
 const bodyParser        = require('body-parser');
 const changeStatus      = require('../db/queries/change_poll_status');
 
-
-const db = require('../db/connection');
-
 router.use(bodyParser.json());
 
 
-router.post('/:pollId', async (req, res) => {
+router.post('/:pollId', async(req, res) => {
   try {
     const pollId = req.params.pollId;
     const pollStatus = req.body.pollActive === 'true';
     const invertedPollStatus = !pollStatus;
     const userId = req.session.user ? req.session.user.id : null;
-    const userEmail = req.session.user ? req.session.user.email : null;
 
-    const pollStatusChanged = await changeStatus(pollId, userId, invertedPollStatus);
+    await changeStatus(pollId, userId, invertedPollStatus);
 
 
 

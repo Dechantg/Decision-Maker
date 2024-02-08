@@ -5,21 +5,19 @@ const express           = require('express');
 const router            = express.Router();
 const pollDetails       = require('../db/queries/return_poll_details');
 const moment            = require('moment');
-const updateEmailStatus = require('../db/queries/set_emailed_status')
-const processEmails = require('../public/scripts/processEmails')
-const getCreatorDetails = require('../db/queries/get_user_data_by_id')
-const {sendEmail, sendAdminEmail} = require('../public/scripts/mailgun')
-
-const db = require('../db/connection');
+const updateEmailStatus = require('../db/queries/set_emailed_status');
+const processEmails = require('../public/scripts/processEmails');
+const getCreatorDetails = require('../db/queries/get_user_data_by_id');
+const {sendEmail, sendAdminEmail} = require('../public/scripts/mailgun');
 
 
 
-router.post('/', async (req, res) => {
+router.post('/', async(req, res) => {
   try {
     const {emails, uuid, pollId} = req.body;
 
-    const userId = req.session.user ? req.session.user.id : null;
-    const userEmail = req.session.user ? req.session.user.email : null;
+    // const userId = req.session.user ? req.session.user.id : null;
+    // const userEmail = req.session.user ? req.session.user.email : null;
 
     console.log("here is the email being passed in:", emails);
     console.log("here is the uuid being passed in: ", uuid);
@@ -49,16 +47,16 @@ router.post('/', async (req, res) => {
       closesAt: closesAt
     };
 
-    const emailSent = await sendEmail(pollDataToEmail);
+    await sendEmail(pollDataToEmail);
 
     const changeToTrue = true;
 
-    const emailSet = await updateEmailStatus(authorizedIds, pollId, changeToTrue)
+    await updateEmailStatus(authorizedIds, pollId, changeToTrue);
 
 
 
 
-res.json({ message: 'Data received successfully!' });
+    res.json({ message: 'Data received successfully!' });
 
   } catch (error) {
     console.error('Error processing request:', error);

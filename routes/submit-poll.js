@@ -12,7 +12,7 @@ const authorizedEmail   = require('../db/queries/authorized_email');
 const authorizedToVote  = require('../db/queries/authorized_to_vote');
 
 
-router.get('/:id', async (req, res) => {
+router.get('/:id', async(req, res) => {
   try {
     const values = req.params.id;
 
@@ -28,8 +28,8 @@ router.get('/:id', async (req, res) => {
       const pollData = await pollDetails(values);
 
       const questionData = await getQuestions(values);
-      const voteStatus = await hasVoted(userId, pollData[0].id)
-      const pollClosed = pollData[0].poll_active
+      const voteStatus = await hasVoted(userId, pollData[0].id);
+      const pollClosed = pollData[0].poll_active;
 
       res.render('submit-poll', { pollData, questionData, values, userEmail, voteStatus, pollClosed });
     }
@@ -40,7 +40,7 @@ router.get('/:id', async (req, res) => {
 });
 
 
-router.post('/:id/submit', async (req, res) => {
+router.post('/:id/submit', async(req, res) => {
 
   try {
 
@@ -79,7 +79,7 @@ router.post('/:id/submit', async (req, res) => {
       return res.status(403).json({ error: 'You are not authorized for this poll'});
     }
 
-    const emails = await authorizedEmail(userId, pollId);
+    await authorizedEmail(userId, pollId);
 
     const hasVotedResult = await hasVoted(userId, pollId);
 

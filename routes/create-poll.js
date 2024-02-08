@@ -1,12 +1,11 @@
 
 const express     = require('express');
 const router      = express.Router();
-const uuid        = require('uuid');
 
-router.get('/', async (req, res) => {
+router.get('/', async(req, res) => {
 
   try {
-    const userId = req.session.user ? req.session.user.id : null;
+    // const userId = req.session.user ? req.session.user.id : null;
     const userEmail = req.session.user ? req.session.user.email : null;
 
 

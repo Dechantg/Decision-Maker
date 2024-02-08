@@ -12,15 +12,15 @@ const bodyParser      = require('body-parser');
 
 router.use(bodyParser.json());
 
-router.get('/', async (req, res) => {
+router.get('/', async(req, res) => {
   try {
     const userId = req.session.user ? req.session.user.id : null;
     const userEmail = req.session.user ? req.session.user.email : null;
 
-    const authorized = await allAuthorized(usersId);
-    const owned = await allOwned(usersId);
+    const authorized = await allAuthorized(userId);
+    const owned = await allOwned(userId);
 
-    res.render('poll-list', { authorized, owned, userEmail, usersId });
+    res.render('poll-list', { authorized, owned, userEmail, userId });
   } catch (error) {
 
     console.error('An error occurred:', error);
@@ -30,7 +30,7 @@ router.get('/', async (req, res) => {
 });
 
 
-router.get('/:id', async (req, res) => {
+router.get('/:id', async(req, res) => {
   try {
     const values = req.params.id;
     console.log(values);

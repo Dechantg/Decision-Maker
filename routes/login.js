@@ -10,11 +10,11 @@ const bodyParser      = require('body-parser');
 router.use(bodyParser.json());
 
 
-router.get('/', async (req, res) => {
+router.get('/', async(req, res) => {
   try {
 
-    const userId = req.session.user ? req.session.user.id : null;
-    const userEmail = req.session.user ? req.session.user.email : null;
+    // const userId = req.session.user ? req.session.user.id : null;
+    // const userEmail = req.session.user ? req.session.user.email : null;
 
 
     res.render('login');
@@ -26,9 +26,9 @@ router.get('/', async (req, res) => {
   }
 });
 
-router.post('/', async (req, res) => {
+router.post('/', async(req, res) => {
   try {
-    console.log("Console.log of the button being clicked")
+    console.log("Console.log of the button being clicked");
 
     const { email, password } = req.body;
 
@@ -41,7 +41,7 @@ router.post('/', async (req, res) => {
 
     if (!user.signed_up) {
       const loginLink = '/register';
-  return res.status(200).send(`Account must still be registered. Please <a href="${loginLink}">register</a>.`);
+      return res.status(200).send(`Account must still be registered. Please <a href="${loginLink}">register</a>.`);
     }
 
     const hashedPasswordFromDB = user.password_hash;
@@ -51,7 +51,7 @@ router.post('/', async (req, res) => {
 
       req.session.user = { id: user.id, email: user.email };
 
-      console.log("user login information", req.session.user)
+      console.log("user login information", req.session.user);
 
     }
 

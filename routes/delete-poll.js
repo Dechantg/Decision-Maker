@@ -7,18 +7,17 @@ const bodyParser      = require('body-parser');
 const deletePoll        = require('../db/queries/delete_poll');
 
 
-const db = require('../db/connection');
 
 router.use(bodyParser.json());
 
 
 
-router.post('/:pollId', async (req, res) => {
+router.post('/:pollId', async(req, res) => {
   try {
 
     const pollId = req.params.pollId;
     const userId = req.session.user ? req.session.user.id : null;
-    const userEmail = req.session.user ? req.session.user.email : null;
+    // const userEmail = req.session.user ? req.session.user.email : null;
 
     const pollStatus = req.body.pollDeleted === 'true';
     const invertedPollStatus = !pollStatus;

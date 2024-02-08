@@ -8,7 +8,7 @@ const moment            = require('moment');
 router.use(bodyParser.json());
 
 
-router.get('/', async (req, res) => {
+router.get('/', async(req, res) => {
   try {
 
     const userId = req.session.user ? req.session.user.id : null;
@@ -18,7 +18,7 @@ router.get('/', async (req, res) => {
 
     const activeAuthorized = authorized.filter(item => item.poll_active);
 
-    const inactiveAuthorized = authorized.filter(item => !item.poll_active)
+    const inactiveAuthorized = authorized.filter(item => !item.poll_active);
 
     const formattedAuthorized = activeAuthorized.map((item) => ({
       ...item,

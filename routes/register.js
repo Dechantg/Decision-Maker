@@ -3,16 +3,16 @@ const express         = require('express');
 const router          = express.Router();
 const bcrypt          = require('bcrypt');
 const userExists      = require('../db/queries/user_exists');
-const updateUser      = require('../db/queries/update_user')
-const addUser         = require('../db/queries/add_user')
+const updateUser      = require('../db/queries/update_user');
+const addUser         = require('../db/queries/add_user');
 const bodyParser      = require('body-parser');
 
 router.use(bodyParser.json());
 
 
-router.get('/', async (req, res) => {
+router.get('/', async(req, res) => {
   try {
-    const userId = req.session.user ? req.session.user.id : null;
+    // const userId = req.session.user ? req.session.user.id : null;
     const userEmail = req.session.user ? req.session.user.email : null;
 
     if (!userEmail) {
@@ -26,7 +26,7 @@ router.get('/', async (req, res) => {
   }
 });
 
-router.post('/', async (req, res) => {
+router.post('/', async(req, res) => {
   try {
 
     const { firstName, lastName, email, password } = req.body;
@@ -47,12 +47,12 @@ router.post('/', async (req, res) => {
       } else {
         res.status(500).send('Failed to add user');
       }
-    };
+    }
 
     if (user.email && user.signed_up) {
       // User exists and has signed up
       const loginLink = '/';
-  return res.status(200).send(`Account already exists. Please <a href="${loginLink}">login</a>.`);
+      return res.status(200).send(`Account already exists. Please <a href="${loginLink}">login</a>.`);
     }
 
 
@@ -66,7 +66,7 @@ router.post('/', async (req, res) => {
       } else {
         res.status(500).send('Failed to add user');
       }
-    };
+    }
 
   } catch (error) {
     console.error('An error occurred:', error);
