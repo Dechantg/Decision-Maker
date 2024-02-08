@@ -36,10 +36,12 @@ router.get('/:id', async (req, res) => {
 
       const questionData = await getQuestions(values);
       const voteStatus = await hasVoted(userId, pollData[0].id)
+      const pollClosed = pollData[0].poll_active
+      console.log("from loading the voting page is the poll active?", pollClosed)
       console.log("poll data being sent back from voteStatus", voteStatus)
 
 
-      res.render('submit-poll', { pollData, questionData, values, userEmail, voteStatus });
+      res.render('submit-poll', { pollData, questionData, values, userEmail, voteStatus, pollClosed });
     }
   } catch (error) {
     console.error(error);

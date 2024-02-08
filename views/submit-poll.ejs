@@ -25,7 +25,16 @@
     </div>
     <h3><a class="navbar-brand" href="/results/<%= values %>">Go to Poll Results</a></h3>
 
+  <% } else if (!pollClosed) { %>
+    <!-- Poll Closed status section -->
+    <div class="poll-status-box <%= pollClosed ? 'poll-status-true' : 'poll-status-false' %>" id="pollClosedBox">
+      <label class="poll-status-label"><%= pollClosed ? 'Poll Active' : 'Poll Closed' %></label>
+    </div>
+    <h3><a class="navbar-brand" href="/results/<%= values %>">Go to Poll Results</a></h3>
+
   <% } %>
+
+
 
     <form id="pollForm" action="/vote/:id/submit" method="post">
       <input type="hidden" name="uuid" value="<%= values %>">
@@ -61,11 +70,11 @@
             <td class="votes">
               <input type="radio" name="<%= question.question_id %>" value="1" data-row="<%= index %>" data-col="1">
             </td>
-            
+
           </tr>
         <% }); %>
       </table>
-      <% if (!voteStatus) { %>
+      <% if (!voteStatus && pollClosed) { %>
         <button type="submit" id="submitButton">Submit Choices</button>
         <button type="button" id="clearButton">Clear Choices</button>
       <% } %>
