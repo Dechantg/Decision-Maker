@@ -16,12 +16,9 @@ router.get('/', async (req, res) => {
 
     const authorized = await allAuthorized(userId);
 
-    console.log("From inside polls the authorized", authorized);
-
     const activeAuthorized = authorized.filter(item => item.poll_active);
 
     const inactiveAuthorized = authorized.filter(item => !item.poll_active)
-
 
     const formattedAuthorized = activeAuthorized.map((item) => ({
       ...item,

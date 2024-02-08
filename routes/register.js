@@ -28,16 +28,13 @@ router.get('/', async (req, res) => {
 
 router.post('/', async (req, res) => {
   try {
-    console.log("Console.log of the button being clicked")
 
     const { firstName, lastName, email, password } = req.body;
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    console.log("req body before the crash", req.body)
 
     const user = await userExists(email);
 
-    console.log(user);
 
 
     if (!user) {
@@ -70,10 +67,6 @@ router.post('/', async (req, res) => {
         res.status(500).send('Failed to add user');
       }
     };
-
-
-      console.log("user login information", req.session.user)
-
 
   } catch (error) {
     console.error('An error occurred:', error);

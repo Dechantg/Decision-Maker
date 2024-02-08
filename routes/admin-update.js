@@ -1,18 +1,10 @@
 
-
-
 const express           = require('express');
 const router            = express.Router();
-const userEmailById     = require('../db/queries/find_user_by_email');
 const getByUuid         = require('../db/queries/get_poll_by_uuid')
-const pollExists        = require('../db/queries/does_poll_exist');
-const pollDetails       = require('../db/queries/return_poll_details');
-const moment            = require('moment');
-const getQuestions      = require('../db/queries/get_questions_by_id')
 const authorizedEmails  = require('../db/queries/get_authorized_emails')
 const addOptions        = require('../db/queries/add_poll_options')
 const updateOptions     = require('../db/queries/update_options')
-const userExists        = require('../db/queries/user_email_exists');
 const addNewEmails       = require('../db/queries/add_new_unregistered_emails');
 const addAuthorizedToVote = require('../db/queries/add_new_authorized_user_to_vote');
 const removeAuthorizedEmail = require('../db/queries/remove_auuthorized_email')
@@ -48,28 +40,18 @@ const newOptions = [];
 
 const allAuthorizedEmails = await authorizedEmails(pollId, pollCreator);
 
-
-
 const emailArray = allAuthorizedEmails.map(item => item.email);
-
-
-
-
 
 const newEmails = emails.filter(email => !emailArray.includes(email));
 
-
 const deletedEmails = emailArray.filter(email => !emails.includes(email));
-
-
 
 if (newEmails.length >0) {
 const { authorizedIds, emailsToAdd } = await processEmails(newEmails);
 const newEmailsAdded = await addNewEmails(emailsToAdd);
 newEmailsAdded.forEach(obj => authorizedIds.push(obj.id));
-const updatedAuthorizedToVote = await addAuthorizedToVote(authorizedIds, pollId)
-
-}
+const updatedAuthorizedToVote = await addAuthorizedToVote(authorizedIds, pollId);
+};
 
 if (deletedEmails.length >0) {
   const { authorizedIds, emailsToAdd } = await processEmails(deletedEmails);
@@ -77,8 +59,7 @@ if (deletedEmails.length >0) {
   newEmailsAdded.forEach(obj => authorizedIds.push(obj.id));
   const updatedAuthorizedToVote = await removeAuthorizedEmail(authorizedIds, pollId);
   const unauthorizedVotesRemoved = await removeUnauthorizedVotes(authorizedIds, pollId);
-
-  }
+  };
 
 
 options.forEach(option => {
@@ -95,8 +76,6 @@ if (newOptions.length > 0) {
 const addedOptions = await addOptions(pollId, newOptions);
 return addedOptions
 }
-
-
 
 
 const updatedOptions = await updateOptions(existingOptions);

@@ -3,7 +3,6 @@ const router          = express.Router();
 const pollExists      = require('../db/queries/does_poll_exist');
 const getQuestions    = require('../db/queries/get_questions_for_poll');
 const pollDetails     = require('../db/queries/return_poll_details');
-const userIdbyEmail   = require('../db/queries/find_id_by_email');
 const getWinners      = require('../db/queries/get_winners');
 const allAuthorized   = require('../db/queries/get_all_authorized');
 const allOwned        = require('../db/queries/get_all_owned');

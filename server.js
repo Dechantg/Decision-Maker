@@ -53,7 +53,6 @@ app.use(
 const createPoll        = require('./routes/create-poll');
 const pollResults       = require('./routes/poll-results');
 const submitPolls       = require('./routes/submit-poll');
-const refreshEmail      = require('./routes/refreshEmail');
 const pollsList         = require('./routes/polls');
 const login             = require('./routes/login');
 const register          = require('./routes/register');
@@ -68,10 +67,7 @@ const cron              = require('node-cron');
 const setStatus      = require('./public/scripts/updateActiveStatus')
 
 
-
-
 const { Pool }          = require('pg');
-const registerVotes = require('./db/queries/register_votes');
 
 const pool = new Pool({
   user:     process.env.DB_USER,
@@ -91,7 +87,6 @@ cron.schedule('*/15 * * * *', () => {
 app.use('/create', createPoll);
 app.use('/vote', submitPolls);
 app.use('/results', pollResults);
-app.use('/refresh', refreshEmail);
 app.use('/polls', pollsList);
 app.use('/login', login);
 app.use('/register', register);

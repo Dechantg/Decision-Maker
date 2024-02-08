@@ -6,7 +6,6 @@ const getByUuid         = require('../db/queries/get_poll_by_uuid')
 const moment            = require('moment');
 const getQuestions      = require('../db/queries/get_questions_by_id')
 const authorizedEmails  = require('../db/queries/get_authorized_emails')
-const allAuthorized   = require('../db/queries/get_all_authorized');
 const allOwned        = require('../db/queries/get_all_owned');
 const bodyParser      = require('body-parser');
 
@@ -46,7 +45,6 @@ module.exports = router;
 
 
 
-
 router.get('/:id', async (req, res) => {
   try {
 
@@ -61,11 +59,6 @@ router.get('/:id', async (req, res) => {
       return res.redirect('/polls');
     }
 
-
-
-    // if (pollDetails.poll_creator_id !== userId) {
-    //   return validAccess = false;
-    // }
 
     const formattedOpensAt = moment(pollDetails.opens_at).format('YYYY-MM-DD HH:mm:ss');
     const formattedClosesAt = moment(pollDetails.closes_at).format('YYYY-MM-DD HH:mm:ss');
@@ -83,9 +76,7 @@ router.get('/:id', async (req, res) => {
       id: option.id
     }));
 
-    console.log("here are the fetched questiuons", allAuthorizedEmails)
 
-    // map(row => row.email)
 
     const formData = {
       pollName: pollDetails.poll_name,
@@ -98,12 +89,6 @@ router.get('/:id', async (req, res) => {
       pollDeleted: pollDetails.poll_deleted,
       pollForcedStatus: pollDetails.force_active_status
     };
-
-    // console.log("here is thge form data from the newly parsed cosnt: ", formData)
-
-    // if (req.session.user && req.session.user.email) {
-    //   userEmail = req.session.user.email;
-    // }
 
 
 

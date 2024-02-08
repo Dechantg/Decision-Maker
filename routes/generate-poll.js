@@ -17,7 +17,6 @@ const updateEmailStatus = require('../db/queries/set_emailed_status')
 
 
 const db = require('../db/connection');
-const { calculateTimestamps } = require('../utils/calculateTimestamps');
 
 
 

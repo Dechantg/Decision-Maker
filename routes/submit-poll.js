@@ -1,7 +1,5 @@
 const express           = require('express');
 const router            = express.Router();
-const userQueries       = require('../db/queries/users');
-const uuid              = require('uuid');
 const pollExists        = require('../db/queries/does_poll_exist');
 const getQuestions      = require('../db/queries/get_questions_for_poll');
 const pollDetails       = require('../db/queries/return_poll_details');
@@ -11,16 +9,12 @@ const changeStatus      = require('../db/queries/change_vote_status');
 const insertBorda       = require('../db/queries/insert_borda_results');
 const userExists        = require('../db/queries/user_exists');
 const authorizedEmail   = require('../db/queries/authorized_email');
-
-const db                = require('../db/connection');
 const authorizedToVote  = require('../db/queries/authorized_to_vote');
 
-const newUuid           = uuid.v4();
 
 router.get('/:id', async (req, res) => {
   try {
     const values = req.params.id;
-    console.log(values);
 
     const userId = req.session.user ? req.session.user.id : null;
     const userEmail = req.session.user ? req.session.user.email : null;
@@ -30,16 +24,12 @@ router.get('/:id', async (req, res) => {
     if (!uuidExists) {
       res.send("Error: That is not a valid uuid");
     } else {
-      console.log('log for the id being passed in for the voting link', values);
 
       const pollData = await pollDetails(values);
 
       const questionData = await getQuestions(values);
       const voteStatus = await hasVoted(userId, pollData[0].id)
       const pollClosed = pollData[0].poll_active
-      console.log("from loading the voting page is the poll active?", pollClosed)
-      console.log("poll data being sent back from voteStatus", voteStatus)
-
 
       res.render('submit-poll', { pollData, questionData, values, userEmail, voteStatus, pollClosed });
     }
@@ -57,12 +47,9 @@ router.post('/:id/submit', async (req, res) => {
     const userId = req.session.user ? req.session.user.id : null;
     const userEmail = req.session.user ? req.session.user.email : null;
 
-    console.log("testing to make sure userEmail is not empty", userEmail)
     delete req.body.email;
-    console.log(req.body)
 
     const user = await userExists(userEmail);
-    console.log(user);
 
     if (!user) {
       return res.status(403).send(
@@ -75,38 +62,30 @@ router.post('/:id/submit', async (req, res) => {
 
     const uuid = req.body.uuid;
     delete req.body.uuid;
-    console.log("logging uuid from post page", uuid)
 
     const pollId = req.body.poll_id;
     delete req.body.poll_id;
-    console.log("checking for pollid being placed properly", pollId);
 
     const responceData = req.body;
-    console.log("first user email so find breakage", userEmail)
 
     if (typeof userEmail === 'undefined') {
-      console.log("checking for user email existing or being undevined", userEmail)
       return res.status(401).send({ error: 'User not logged in. Please log in.' });
     }
 
 
     const canVote = await authorizedToVote(userId, pollId);
-    console.log("checking to see if authorized to vote", canVote);
 
     if (!canVote) {
       return res.status(403).json({ error: 'You are not authorized for this poll'});
     }
 
     const emails = await authorizedEmail(userId, pollId);
-    console.log("lookinng to see what kind of emails come out", emails);
 
     const hasVotedResult = await hasVoted(userId, pollId);
-    console.log("hasVotedResult:", hasVotedResult);
 
     if (hasVotedResult) {
       return res.status(403).json({ error: 'User has already voted' });
     }
-    console.log(userEmail);
 
     for (const key in responceData) {
       if (responceData.hasOwnProperty(key)) {

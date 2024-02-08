@@ -17,18 +17,11 @@ router.post('/:pollId', async (req, res) => {
   try {
 
     const pollId = req.params.pollId;
-    const uuid = req.body.uuid;
     const userId = req.session.user ? req.session.user.id : null;
     const userEmail = req.session.user ? req.session.user.email : null;
 
     const pollStatus = req.body.pollDeleted === 'true';
     const invertedPollStatus = !pollStatus;
-    // const userId = '1';
-
-
-    console.log("is the coming from inside my delete poll?", invertedPollStatus)
-
-
 
     const pollMarkedDeleted = await deletePoll(pollId, userId, invertedPollStatus);
 
