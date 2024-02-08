@@ -55,7 +55,7 @@ router.post('/', async (req, res) => {
     console.log("here is the creator fetch test", creator);
 
     const pollDataToEmail = {
-      email: emails,
+      emails: emails,
       uuid: uuid,
       firstName: creator.first_name,
       lastName: creator.last_name,
@@ -68,13 +68,7 @@ router.post('/', async (req, res) => {
 
     const emailSent = await sendEmail(pollDataToEmail);
 
-    console.log("email send information to see what coems back", emailSent)
-
-
     const changeToTrue = true;
-
-    console.log("here is the voter id being fetched by email: ", authorizedIds);
-
 
     const emailSet = await updateEmailStatus(authorizedIds, pollId, changeToTrue)
 

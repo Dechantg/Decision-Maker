@@ -5,10 +5,14 @@ const router = require("express").Router();
 const uuid        = require('uuid');
 const newPoll = require('../db/queries/add_new_poll');
 const addOptions = require('../db/queries/add_poll_options');
-const userExists = require('../db/queries/user_email_exists');
 const addNewEmails = require('../db/queries/add_new_unregistered_emails');
 const addAuthorizedToVote = require('../db/queries/add_new_authorized_user_to_vote');
 const processEmails = require('../public/scripts/processEmails')
+const getCreatorDetails = require('../db/queries/get_user_data_by_id')
+const {sendEmail, sendAdminEmail} = require('../public/scripts/mailgun')
+const moment            = require('moment');
+const updateEmailStatus = require('../db/queries/set_emailed_status')
+
 
 
 
@@ -23,8 +27,8 @@ router.post('/', async (req, res) => {
 
     console.log(req.body)
 
-    const userId = req.session.user.id
-    // const creatorEmail = req.session.user.email
+    const userId = req.session.user ? req.session.user.id : null;
+    const userEmail = req.session.user ? req.session.user.email : null;
 
     const pollUuid = uuid.v4();
 
@@ -38,9 +42,8 @@ router.post('/', async (req, res) => {
 
 const { authorizedIds, emailsToAdd } = await processEmails(emails);
 
-console.log("one more test to see the format of the emails coming back", emailsToAdd)
 
-
+console.log("here is the createdPoll variable after initial poll set", createdPoll)
 
 const newEmailsAdded = await addNewEmails(emailsToAdd);
 
@@ -50,6 +53,34 @@ authorizedIds.push(userId);
 
 
 const updatedAuthorizedToVote = await addAuthorizedToVote(authorizedIds, createdPoll.id)
+
+
+const opensAtFormatted = moment(opensAt).format('MMM DD, YYYY hh:mm A');
+const closesAtFormatted = moment(closesAt).format('MMM DD, YYYY hh:mm A');
+
+
+const creator = await getCreatorDetails(userId);
+
+
+const pollDataToEmail = {
+  emails: emails,
+  uuid: pollUuid,
+  firstName: creator.first_name,
+  lastName: creator.last_name,
+  pollName: pollName,
+  pollDescription: pollDescription,
+  creatorEmail: creator.email,
+  opensAt: opensAtFormatted,
+  closesAt: closesAtFormatted
+};
+
+const sentEmails = await sendEmail(pollDataToEmail);
+const sentAdminEmail = await sendAdminEmail(pollDataToEmail);
+
+const changeToTrue = true;
+
+const emailSet = await updateEmailStatus(authorizedIds, createdPoll.id, changeToTrue)
+
 
 
 

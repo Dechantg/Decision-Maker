@@ -13,13 +13,11 @@ const authorizedEmails  = require('../db/queries/get_authorized_emails')
 const addOptions        = require('../db/queries/add_poll_options')
 const updateOptions     = require('../db/queries/update_options')
 const userExists        = require('../db/queries/user_email_exists');
-const addNewEmails      = require('../db/queries/add_new_unregistered_emails');
+const addNewEmails       = require('../db/queries/add_new_unregistered_emails');
 const addAuthorizedToVote = require('../db/queries/add_new_authorized_user_to_vote');
 const removeAuthorizedEmail = require('../db/queries/remove_auuthorized_email')
 const updateDetails = require('../db/queries/update_poll_details')
 const removeUnauthorizedVotes = require('../db/queries/remove_unauthorized_votes')
-const processEmails = require('../public/scripts/processEmails')
-
 
 
 const db = require('../db/connection');
@@ -58,13 +56,30 @@ const deletedEmails = await allAuthorizedEmails.filter(email => !emails.includes
 
 
 
+const processEmails = async (emails) => {
+  const idsToAuthorize = {};
+  const emailsToAdd = [];
+
+  for (const email of emails) {
+    const userEmail = await userExists(email);
+
+    if (userEmail && userEmail.id) {
+      idsToAuthorize[userEmail.id] = true;
+    } else {
+      emailsToAdd.push(email);
+    }
+  }
+
+  const authorizedIds = Object.keys(idsToAuthorize);
+
+  return { authorizedIds, emailsToAdd };
+};
+
 if (newEmails.length >0) {
 const { authorizedIds, emailsToAdd } = await processEmails(newEmails);
 const newEmailsAdded = await addNewEmails(emailsToAdd);
-console.log("insdie th4 add emails updata newEmailsAdded: ", newEmailsAdded);
 newEmailsAdded.forEach(obj => authorizedIds.push(obj.id));
 const updatedAuthorizedToVote = await addAuthorizedToVote(authorizedIds, pollId)
-console.log("from inside the new emails update authorizedIds: ", authorizedIds)
 }
 
 if (deletedEmails.length >0) {

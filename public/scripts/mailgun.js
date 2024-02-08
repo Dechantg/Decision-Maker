@@ -8,47 +8,47 @@ const mailgun = require('mailgun-js')({
 });
 
 const sendEmail = async (pollDataToEmail) => {
+  const { emails, uuid, firstName, lastName, pollName, pollDescription, creatorEmail, opensAt, closesAt } = pollDataToEmail;
 
-const {email, uuid, firstName, lastName, pollName, pollDescription, creatorEmail, opensAt, closesAt } = pollDataToEmail
+  for (const email of emails) {
+    const data = {
+      from: "polls@decisionmaker.com",
+      to: [email],
+      subject: `Poll for ${pollName}`,
+      text: `
+        Hi ${email}!!
 
-const data = {
-  from: "polls@decisionmaker.com",
-		to: [email],
-		subject: `Poll for ${pollName}`,
-		text:`
+        You have been invited to take part in a Decision Maker poll by ${firstName} ${lastName} at ${creatorEmail}!
 
-    Hi ${email}!!
+        The poll is for:
+        Name: ${pollName},
+        Description: ${pollDescription}
 
-    You have been invited to take part in a Decision Maker poll by ${firstName} ${lastName} at ${creatorEmail}!
+        The poll opens at ${opensAt} and closes at ${closesAt}!!
 
-    The poll is for:
-    Name: ${pollName},
-    Description: ${pollDescription}
+        You can find the link at http://localhost:3000/results/${uuid}
 
-    The poll opens at ${opensAt} and closes at ${closesAt}!!
+        Cheers,
+        The Decision Maker Team
+      `,
+    };
 
-    You can find the link at http://localhost:3000/results/${uuid}
-
-    Cheers,
-    The Decision Maker Team
-
-
-    `,
+    try {
+      // const body = await mailgun.messages().send(data);
+      console.log(`Email sent to ${email}`, data);
+    } catch (error) {
+      console.error(`Error sending email to ${email}:`, error);
+      throw error;
+    }
+  }
 };
 
-try {
-  // const body = await mailgun.messages().send(data);
-  console.log('Email sent:');
-  return data;
-} catch (error) {
-  console.error('Error sending email:', error);
-  throw error;
-}
-};
+
+
 
 const sendAdminEmail = async (pollDataToEmail) => {
 
-  const {email, uuid, firstName, lastName, pollName, pollDescription, creatorEmail, opensAt, closesAt } = pollDataToEmail
+  const {emails, uuid, firstName, lastName, pollName, pollDescription, creatorEmail, opensAt, closesAt } = pollDataToEmail
 
   const data = {
     from: "polls@decisionmaker.com",
@@ -80,7 +80,7 @@ const sendAdminEmail = async (pollDataToEmail) => {
 
   try {
     // const body = await mailgun.messages().send(data);
-    console.log('Admin Email sent:');
+    console.log('Admin Email sent:', data);
     return data;
   } catch (error) {
     console.error('Error sending email:', error);
