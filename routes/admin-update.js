@@ -18,6 +18,7 @@ const addAuthorizedToVote = require('../db/queries/add_new_authorized_user_to_vo
 const removeAuthorizedEmail = require('../db/queries/remove_auuthorized_email')
 const updateDetails = require('../db/queries/update_poll_details')
 const removeUnauthorizedVotes = require('../db/queries/remove_unauthorized_votes')
+const processEmails = require('../public/scripts/processEmails')
 
 
 const db = require('../db/connection');
@@ -45,45 +46,32 @@ router.post('/', async (req, res) => {
 const existingOptions = [];
 const newOptions = [];
 
-const allAuthorizedEmails = await authorizedEmails(pollId, details.poll_creator_id);
-
-const newEmails = await emails.filter(email => !allAuthorizedEmails.includes(email));
-
-const deletedEmails = await allAuthorizedEmails.filter(email => !emails.includes(email));
+const allAuthorizedEmails = await authorizedEmails(pollId, pollCreator);
 
 
+
+const emailArray = allAuthorizedEmails.map(item => item.email);
 
 
 
 
-const processEmails = async (emails) => {
-  const idsToAuthorize = {};
-  const emailsToAdd = [];
 
-  for (const email of emails) {
-    const userEmail = await userExists(email);
+const newEmails = emails.filter(email => !emailArray.includes(email));
 
-    if (userEmail && userEmail.id) {
-      idsToAuthorize[userEmail.id] = true;
-    } else {
-      emailsToAdd.push(email);
-    }
-  }
 
-  const authorizedIds = Object.keys(idsToAuthorize);
+const deletedEmails = emailArray.filter(email => !emails.includes(email));
 
-  return { authorizedIds, emailsToAdd };
-};
+
 
 if (newEmails.length >0) {
 const { authorizedIds, emailsToAdd } = await processEmails(newEmails);
 const newEmailsAdded = await addNewEmails(emailsToAdd);
 newEmailsAdded.forEach(obj => authorizedIds.push(obj.id));
 const updatedAuthorizedToVote = await addAuthorizedToVote(authorizedIds, pollId)
+
 }
 
 if (deletedEmails.length >0) {
-  console.log("triggered inside the delete function")
   const { authorizedIds, emailsToAdd } = await processEmails(deletedEmails);
   const newEmailsAdded = await addNewEmails(emailsToAdd);
   newEmailsAdded.forEach(obj => authorizedIds.push(obj.id));
