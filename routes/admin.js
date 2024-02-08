@@ -2,10 +2,10 @@
 
 const express           = require('express');
 const router          = express.Router();
-const getByUuid         = require('../db/queries/get_poll_by_uuid')
+const getByUuid         = require('../db/queries/get_poll_by_uuid');
 const moment            = require('moment');
-const getQuestions      = require('../db/queries/get_questions_by_id')
-const authorizedEmails  = require('../db/queries/get_authorized_emails')
+const getQuestions      = require('../db/queries/get_questions_by_id');
+const authorizedEmails  = require('../db/queries/get_authorized_emails');
 const allOwned        = require('../db/queries/get_all_owned');
 const bodyParser      = require('body-parser');
 
@@ -13,7 +13,7 @@ const bodyParser      = require('body-parser');
 router.use(bodyParser.json());
 
 
-router.get('/', async (req, res) => {
+router.get('/', async(req, res) => {
   try {
 
     const userId = req.session.user ? req.session.user.id : null;
@@ -45,10 +45,10 @@ module.exports = router;
 
 
 
-router.get('/:id', async (req, res) => {
+router.get('/:id', async(req, res) => {
   try {
 
-    const uuid = req.params.id
+    const uuid = req.params.id;
 
     const userId = req.session.user ? req.session.user.id : null;
     const userEmail = req.session.user ? req.session.user.email : null;
@@ -65,7 +65,7 @@ router.get('/:id', async (req, res) => {
 
     const pollId = pollDetails.id;
 
-    const pollCreator = pollDetails.poll_creator_id
+    const pollCreator = pollDetails.poll_creator_id;
 
     const allAuthorizedEmails = await authorizedEmails(pollId, pollCreator);
 
