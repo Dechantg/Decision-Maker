@@ -1,14 +1,48 @@
 
 
 const express           = require('express');
-const router            = express.Router();
+const router          = express.Router();
 const getByUuid         = require('../db/queries/get_poll_by_uuid')
 const moment            = require('moment');
 const getQuestions      = require('../db/queries/get_questions_by_id')
 const authorizedEmails  = require('../db/queries/get_authorized_emails')
+const allAuthorized   = require('../db/queries/get_all_authorized');
+const allOwned        = require('../db/queries/get_all_owned');
+const bodyParser      = require('body-parser');
 
 
-const db = require('../db/connection');
+router.use(bodyParser.json());
+
+
+router.get('/', async (req, res) => {
+  try {
+
+    const userId = req.session.user ? req.session.user.id : null;
+    const userEmail = req.session.user ? req.session.user.email : null;
+
+    const deleted = false;
+    const owned = await allOwned(userId, deleted);
+
+    const formattedOwned = owned.map((poll) => ({
+      ...poll,
+      created_at: moment(poll.created_at).format('MMM DD, YYYY hh:mm A'),
+      opens_at: moment(poll.opens_at).format('MMM DD, YYYY hh:mm A'),
+      closes_at: moment(poll.closes_at).format('MMM DD, YYYY hh:mm A'),
+    }));
+
+    res.render('admin-list', { owned: formattedOwned, userEmail, userId });
+  } catch (error) {
+
+    console.error('An error occurred:', error);
+
+    res.status(500).send('Internal Server Error');
+  }
+});
+
+
+
+
+module.exports = router;
 
 
 

@@ -2,13 +2,14 @@
 
 const db = require('../connection');
 
-const allOwned = (userId, deleted) => {
+const allOwned = (userId) => {
   return db.query (
   `
-  SELECT polls.uuid, poll_name, poll_description, created_at, closes_at, poll_active
+  SELECT polls.uuid, poll_name, poll_description, created_at, opens_at,closes_at, poll_active, poll_deleted
   FROM polls
-  WHERE poll_creator_id = $1 AND poll_deleted = $2;
-  `, [userId, deleted])
+  WHERE poll_creator_id = $1
+  ORDER BY created_at DESC;
+  `, [userId])
     .then(data => {
       const pollDetails = data.rows;
       return pollDetails;

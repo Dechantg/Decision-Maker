@@ -16,19 +16,22 @@
               <button type="submit" class="btn btn-primary">Logout</button>
             </form>
           </div>
+          <div class="logout-button">
+            <form action="/admin" method="GET" style="display: inline;">
+              <button type="submit" class="btn btn-primary">Admin</button>
+            </form>
+          </div>
         <% } else { %>
           <div class="auth-buttons">
             <a href="/" class="btn btn-primary">Log In</a>
             <a href="/register" class="btn btn-secondary">Register</a>
           </div>
 
-          <!-- Script to check for the presence of a session cookie -->
           <script>
             const isUserSignedIn = <%= userEmail !== null %>;
 
             if (!isUserSignedIn) {
               alert('You are not signed in. Please sign in or register.');
-              // You can also redirect the user to the login or registration page
               window.location.href = '/';
             }
           </script>

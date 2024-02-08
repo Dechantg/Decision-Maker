@@ -1,0 +1,123 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link rel="stylesheet" href="/vendor/normalize-4.1.1.css" />
+  <link rel="stylesheet" href="/vendor/border-box.css" />
+
+  <link rel="stylesheet" href="/styles/main.css" />
+
+  <script src="/vendor/jquery-3.0.0.js"></script>
+  <script defer src="/scripts/app.js"></script>
+  <title>decisionMAKER... Results Page</title>
+
+
+
+</head>
+<body>
+  <%- include('partials/_header') %>
+<p></p>
+<p></p>
+
+    <h1>List of Owned Polls</h1>
+    <h1><a href="/create">Create a Poll</a></h1>
+
+    <button id="toggleDeletedButton">Show Deleted</button>
+    <p></p>
+
+
+    <section id="pollDetails">
+      <!-- Dynamic display of poll information -input by the the creator of the poll -->
+
+
+    </section>
+
+
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Poll Name</th>
+          <th>Created At</th>
+          <th>Opens At</th>
+          <th>Closes At</th>
+          <th>Poll Active</th>
+          <th>Admin Page</th>
+          <th class="poll-deleted-header-hidden">Poll Deleted</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% owned.forEach((poll, index) => { %>
+          <tr class="poll-row"> <!-- Added class "poll-row" -->
+            <td class="choice-cell">
+              <p><a href="/results/<%= poll.uuid %>"><%= poll.poll_name %></a></p>
+            </td>
+            <td>
+              <p><%= poll.created_at %></p>
+            </td>
+            <td>
+              <p><%= poll.opens_at %></p>
+            </td>
+            <td>
+              <p><%= poll.closes_at %></p>
+            </td>
+            <td class="<%= poll.poll_active ? 'poll-status-true' : 'poll-status-false' %>">
+              <p><%= poll.poll_active ? 'Yes' : 'No' %></p>
+            </td>
+            <td class="add-row">
+              <p><a href="/admin/<%= poll.uuid %>">Admin</a></p>
+            </td>
+            <td class="poll-status-delete-hidden">
+              <p><%= poll.poll_deleted ? 'Yes' : 'No' %></p>
+            </td>
+          </tr>
+        <% }); %>
+      </tbody>
+    </table>
+
+
+    </section>
+
+
+
+
+
+</body>
+
+<script>
+  $(document).ready(function () {
+    $("#toggleDeletedButton").on("click", function () {
+      // Toggle visibility of deleted polls
+      $(".poll-deleted-header-hidden, .poll-status-delete-hidden").toggle();
+
+      var buttonText = $(this).text().toLowerCase();
+      $(this).text(buttonText === 'show deleted' ? 'Hide Deleted' : 'Show Deleted');
+
+      filterRows();
+    });
+
+    filterRows();
+
+    function filterRows() {
+      var isDeletedShown = $("#toggleDeletedButton").text().toLowerCase() === 'hide deleted';
+
+      $(".table tbody tr").each(function () {
+        var isDeleted = $(this).find('.poll-status-delete-hidden p').text().toLowerCase() === 'yes';
+
+        if (!isDeletedShown && isDeleted) {
+          $(this).hide();
+        } else {
+          $(this).show();
+        }
+      });
+
+      $(".poll-deleted-header-hidden").toggle(isDeletedShown);
+    }
+  });
+</script>
+
+
+</html>

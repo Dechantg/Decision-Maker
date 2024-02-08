@@ -22,7 +22,7 @@
 <p></p>
 <p></p>
 
-    <h1>List of Polls</h1>
+    <h1>Active Polls</h1>
     <h1><a href="/create">Create a Poll</a></h1>
 
     <section id="pollDetails">
@@ -37,7 +37,7 @@
         <thead>
           <tr>
             <th>Poll Name</th>
-            <th>Created At</th>
+            <th>Opens At</th>
             <th>Closes At</th>
             <th>Poll Active</th>
             <th>Vote</th>
@@ -51,7 +51,7 @@
               </td>
 
               <td>
-                <p><%= poll.created_at %></p>
+                <p><%= poll.opens_at %></p>
               </td>
               <td>
                 <p><%= poll.closes_at %></p>
@@ -71,7 +71,10 @@
     </section>
     <section>
 
+      <h1>Inactive Polls</h1>
 
+ </section>
+    <section>
       <table class="table">
         <thead>
           <tr>
@@ -79,33 +82,36 @@
             <th>Created At</th>
             <th>Closes At</th>
             <th>Poll Active</th>
-            <th>Admin Page</th>
-
+            <th>Vote</th>
           </tr>
         </thead>
+
         <tbody>
-          <% owned.forEach((poll, index) => { %>
+          <% formattedInactiveAuthorized.forEach((poll, index) => { %>
             <tr class="default-row">
               <td class="choice-cell">
                 <p><a href="/results/<%= poll.uuid %>"><%= poll.poll_name %></a></p>
               </td>
 
               <td>
-                <p><%= poll.created_at %></p>
+                <p><%= poll.opens_at %></p>
               </td>
               <td>
                 <p><%= poll.closes_at %></p>
               </td>
               <td class="<%= poll.poll_active ? 'poll-status-true' : 'poll-status-false' %>">
                 <p><%= poll.poll_active ? 'Yes' : 'No' %></p>
-
               <td class="add-row">
-                <p><a href="/admin/<%= poll.uuid %>">Admin</a></p>
+                <p><a href="/vote/<%= poll.uuid %>">Vote</a></p>
+              </td>
+
+
               </td>
             </tr>
           <% }); %>
         </tbody>
       </table>
+
 
     </section>
 
