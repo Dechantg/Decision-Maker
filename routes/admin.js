@@ -57,6 +57,16 @@ router.get('/:id', async (req, res) => {
 
     const pollDetails = await getByUuid(uuid);
 
+    if (pollDetails.poll_creator_id !== userId) {
+      return res.redirect('/polls');
+    }
+
+
+
+    // if (pollDetails.poll_creator_id !== userId) {
+    //   return validAccess = false;
+    // }
+
     const formattedOpensAt = moment(pollDetails.opens_at).format('YYYY-MM-DD HH:mm:ss');
     const formattedClosesAt = moment(pollDetails.closes_at).format('YYYY-MM-DD HH:mm:ss');
 
@@ -85,7 +95,8 @@ router.get('/:id', async (req, res) => {
       opensAt: formattedOpensAt,
       closesAt: formattedClosesAt,
       pollActive: pollDetails.poll_active,
-      pollDeleted: pollDetails.poll_deleted
+      pollDeleted: pollDetails.poll_deleted,
+      pollForcedStatus: pollDetails.force_active_status
     };
 
     // console.log("here is thge form data from the newly parsed cosnt: ", formData)

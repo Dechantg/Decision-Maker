@@ -8,7 +8,7 @@ const ChangePollStatus = async (pollId, userId, pollStatus) => {
   try {
     const result = await db.query(`
       UPDATE polls
-      SET poll_active = $3
+      SET poll_active = $3, force_active_status = true
       WHERE id = $1 AND poll_creator_id = $2
       RETURNING *;`, [pollId, userId, pollStatus]);
 

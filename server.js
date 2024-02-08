@@ -64,6 +64,8 @@ const deletePoll        = require('./routes/delete-poll');
 const admin             = require('./routes/admin');
 const pollActive        = require('./routes/active-switch');
 const sendEmail         = require('./routes/email')
+const cron              = require('node-cron');
+const setStatus      = require('./public/scripts/updateActiveStatus')
 
 
 
@@ -78,11 +80,11 @@ const pool = new Pool({
   database: process.env.DB_NAME,
 });
 
-// console.log('Generated UUID:', newUuid);
 
-// Mount all resource routes
-// Note: Feel free to replace the example routes below with your own
-// Note: Endpoints that return data (eg. JSON) usually start with `/api`
+cron.schedule('*/15 * * * *', () => {
+  setStatus();
+
+});
 
 
 // app.use('/users', usersRoutes);
