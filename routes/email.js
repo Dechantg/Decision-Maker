@@ -24,6 +24,10 @@ router.post('/', async(req, res) => {
     console.log("here is the pollId being passed in: ", pollId);
 
     const pollData = await pollDetails(uuid);
+
+    console.log("from inside the email route pollData: ", pollData)
+
+
     const { authorizedIds, emailsToAdd } = await processEmails(emails);
 
     const opensAt = moment(pollData[0].created_at).format('MMM DD, YYYY hh:mm A');
@@ -32,8 +36,8 @@ router.post('/', async(req, res) => {
 
     const creator = await getCreatorDetails(pollData[0].poll_creator_id);
 
-    console.log("here is the pollData fetch test", pollData);
-    console.log("here is the creator fetch test", creator);
+    // console.log("here is the pollData fetch test", pollData);
+    // console.log("here is the creator fetch test", creator);
 
     const pollDataToEmail = {
       emails: emails,

@@ -16,6 +16,7 @@ const updateEmailStatus = require('../db/queries/set_emailed_status');
 
 
 
+
 router.post('/', async(req, res) => {
   try {
     const {pollName, pollDescription, options, emails, opensAt, closesAt} = req.body;
@@ -29,6 +30,8 @@ router.post('/', async(req, res) => {
 
 
     const createdPoll = await newPoll(pollName, pollDescription, userId, pollUuid, opensAt, closesAt);
+
+    console.log("Here is the opens at time stamp we are using", opensAt)
 
     await addOptions(createdPoll.id, options);
 

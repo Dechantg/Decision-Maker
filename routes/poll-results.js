@@ -6,7 +6,8 @@ const pollDetails     = require('../db/queries/return_poll_details');
 const getWinners      = require('../db/queries/get_winners');
 const allAuthorized   = require('../db/queries/get_all_authorized');
 const allOwned        = require('../db/queries/get_all_owned');
-const moment            = require('moment');
+const convertToLocal  = require('../public/scripts/convertToLocal');
+
 
 const bodyParser      = require('body-parser');
 
@@ -38,23 +39,24 @@ router.get('/:id', async(req, res) => {
     const userId = req.session.user ? req.session.user.id : null;
     const userEmail = req.session.user ? req.session.user.email : null;
 
+    const userTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+    console.log(`User's Timezone: ${userTimeZone}`);
+
+
     const uuidExists = await pollExists(values);
 
     if (!uuidExists) {
       res.send("Error: That is not a valid uuid");
     } else {
-      console.log('log for the id being passed in for the voting link', values);
 
       const fetchedPollData = await pollDetails(values);
 
       const questionData = await getQuestions(values);
       const winnerData = await getWinners(values);
 
-      const pollData = fetchedPollData.map((item) => ({
-        ...item,
-        created_at: moment(item.created_at).format('MMM DD, YYYY hh:mm A'),
-        closes_at: moment(item.closes_at).format('MMM DD, YYYY hh:mm A'),
-      }));
+      const pollDataForTime = [fetchedPollData[0]];
+
+      const pollData = await convertToLocal(pollDataForTime, userTimeZone);
 
       console.log(userEmail);
 

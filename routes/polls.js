@@ -2,7 +2,7 @@ const express         = require('express');
 const router          = express.Router();
 const allAuthorized   = require('../db/queries/get_all_authorized');
 const bodyParser      = require('body-parser');
-const moment            = require('moment');
+const convertToLocal  = require('../public/scripts/convertToLocal');
 
 
 router.use(bodyParser.json());
@@ -13,6 +13,9 @@ router.get('/', async(req, res) => {
 
     const userId = req.session.user ? req.session.user.id : null;
     const userEmail = req.session.user ? req.session.user.email : null;
+    const userTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+    console.log(`User's Timezone: ${userTimeZone}`);
+
 
     const authorized = await allAuthorized(userId);
 
@@ -20,17 +23,16 @@ router.get('/', async(req, res) => {
 
     const inactiveAuthorized = authorized.filter(item => !item.poll_active);
 
-    const formattedAuthorized = activeAuthorized.map((item) => ({
-      ...item,
-      opens_at: moment(item.opens_at).format('MMM DD, YYYY hh:mm A'),
-      closes_at: moment(item.closes_at).format('MMM DD, YYYY hh:mm A'),
-    }));
 
-    const formattedInactiveAuthorized = inactiveAuthorized.map((item) => ({
-      ...item,
-      opens_at: moment(item.opens_at).format('MMM DD, YYYY hh:mm A'),
-      closes_at: moment(item.closes_at).format('MMM DD, YYYY hh:mm A'),
-    }));
+    const formattedAuthorized = await convertToLocal(activeAuthorized, userTimeZone);
+
+    console.log("here is my formattedAuthorized from polls", formattedAuthorized)
+
+    const formattedInactiveAuthorized = await convertToLocal(inactiveAuthorized, userTimeZone);
+
+
+
+
 
 
 

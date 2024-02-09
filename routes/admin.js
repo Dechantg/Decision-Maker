@@ -3,10 +3,11 @@
 const express           = require('express');
 const router          = express.Router();
 const getByUuid         = require('../db/queries/get_poll_by_uuid');
-const moment            = require('moment');
 const getQuestions      = require('../db/queries/get_questions_by_id');
 const authorizedEmails  = require('../db/queries/get_authorized_emails');
 const allOwned        = require('../db/queries/get_all_owned');
+const convertToLocal  = require('../public/scripts/convertToLocal');
+
 const bodyParser      = require('body-parser');
 
 
@@ -19,15 +20,20 @@ router.get('/', async(req, res) => {
     const userId = req.session.user ? req.session.user.id : null;
     const userEmail = req.session.user ? req.session.user.email : null;
 
+    const userTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+    console.log(`User's Timezone: ${userTimeZone}`);
+
+
     const deleted = false;
     const owned = await allOwned(userId, deleted);
 
-    const formattedOwned = owned.map((poll) => ({
-      ...poll,
-      created_at: moment(poll.created_at).format('MMM DD, YYYY hh:mm A'),
-      opens_at: moment(poll.opens_at).format('MMM DD, YYYY hh:mm A'),
-      closes_at: moment(poll.closes_at).format('MMM DD, YYYY hh:mm A'),
-    }));
+
+
+    const formattedOwned = await convertToLocal(owned, userTimeZone);
+
+
+
+
 
     res.render('admin-list', { owned: formattedOwned, userEmail, userId });
   } catch (error) {
@@ -53,15 +59,20 @@ router.get('/:id', async(req, res) => {
     const userId = req.session.user ? req.session.user.id : null;
     const userEmail = req.session.user ? req.session.user.email : null;
 
+    const userTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+    console.log(`User's Timezone: ${userTimeZone}`);
+
     const pollDetails = await getByUuid(uuid);
+
+    console.log("pollDetails from loading the admin page before my time shit function", pollDetails)
 
     if (pollDetails.poll_creator_id !== userId) {
       return res.redirect('/polls');
     }
 
+    const pollTimes = [pollDetails];
 
-    const formattedOpensAt = moment(pollDetails.opens_at).format('YYYY-MM-DD HH:mm:ss');
-    const formattedClosesAt = moment(pollDetails.closes_at).format('YYYY-MM-DD HH:mm:ss');
+    const formattedOwned = await convertToLocal(pollTimes, userTimeZone);
 
     const pollId = pollDetails.id;
 
@@ -83,8 +94,8 @@ router.get('/:id', async(req, res) => {
       pollDescription: pollDetails.poll_description,
       options: mappedOptions.map(option => ({ ...option})),
       emails: allAuthorizedEmails,
-      opensAt: formattedOpensAt,
-      closesAt: formattedClosesAt,
+      opensAt: formattedOwned[0].opens_at,
+      closesAt: formattedOwned[0].closes_at,
       pollActive: pollDetails.poll_active,
       pollDeleted: pollDetails.poll_deleted,
       pollForcedStatus: pollDetails.force_active_status

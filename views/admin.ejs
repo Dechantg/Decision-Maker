@@ -102,16 +102,19 @@
     <p>
       <label>Opens at:</label>
     </p>
-    <input type="date" id="opens-at-date" value="<%= formData.opensAt.substring(0, 10) %>" required>
-    <input type="time" id="opens-at-time" value="<%= formData.opensAt.substring(11, 16) %>" required>
+    <% const opensAtDate = new Date(formData.opensAt); %>
+    <input type="date" id="opens-at-date" value="<%= opensAtDate.toLocaleString('en-CA', { year: 'numeric', month: '2-digit', day: '2-digit' }) %>" required>
+    <input type="time" id="opens-at-time" value="<%= opensAtDate.toLocaleString('en-US', { hour: '2-digit', minute: '2-digit', hour12: false }) %>" required>
   </div><br>
   <div>
     <p>
       <label>Closes at:</label>
     </p>
-    <input type="date" id="closes-at-date" value="<%= formData.closesAt.substring(0, 10) %>" required>
-    <input type="time" id="closes-at-time" value="<%= formData.closesAt.substring(11, 16) %>" required>
+    <% const closesAtDate = new Date(formData.closesAt); %>
+    <input type="date" id="closes-at-date" value="<%= closesAtDate.toLocaleString('en-CA', { year: 'numeric', month: '2-digit', day: '2-digit' }) %>" required>
+    <input type="time" id="closes-at-time" value="<%= closesAtDate.toLocaleString('en-US', { hour: '2-digit', minute: '2-digit', hour12: false }) %>" required>
   </div><br>
+
   <input type="hidden" id="poll-id" name="pollId" value="<%= pollId %>" />
   <input type="hidden" id="uuid" name="uuid" value="<%= uuid %>" />
   <input type="hidden" id="poll-active" name="pollActive" value="<%= formData.pollActive %>" />
@@ -152,6 +155,18 @@
     uuid: uuid,
     pollDeleted: pollDeleted  // Set pollDeleted based on your logic
   };
+
+
+  function formatInputDate(dateString) {
+    const formattedDate = dateString.substring(0, 10);
+    return formattedDate;
+  }
+
+  // Function to format the time for the input field
+  function formatInputTime(dateString) {
+    const formattedTime = dateString.substring(11, 16);
+    return formattedTime;
+  }
 
   fetch(`/delete/${pollId}`, {
     method: 'POST',
