@@ -41,7 +41,7 @@
 
     <section id="pollDetails">
       <!-- Dynamic display of poll information -input by the the creator of the poll -->
-      <p>Created At: <span id="createdTime"><%= pollData[0].created_at %></span></p>
+      <p>Opens At: <span id="createdTime"><%= pollData[0].opens_at %></span></p>
 
       <p>End Time: <span id="endTime"><%= pollData[0].closes_at %></span></p>
     </section>
@@ -92,6 +92,9 @@
           <% }); %>
         </tbody>
       </table>
+
+      <h1><a href="http://localhost:3000/<%= values %>">Link to Poll</a></h1>
+
     </section>
 
 
