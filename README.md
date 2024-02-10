@@ -46,6 +46,8 @@ Github for contributors for project:
 
 # Screenshots
 
+!["Video of website in use"] (https://youtu.be/hEuZDjR6g4Q)
+
 !["Screenshot of Login/Home Page"](https://github.com/Dechantg/Decision-Maker/blob/master/docs/home-page.jpg)
 !["Screenshot of Registration Page"](https://github.com/Dechantg/Decision-Maker/blob/master/docs/register-page.jpg)
 !["Screenshot of Poll List Page"](https://github.com/Dechantg/Decision-Maker/blob/master/docs/poll-list-page.jpg)
