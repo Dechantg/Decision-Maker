@@ -51,4 +51,11 @@ The following steps are only for _one_ of the group members to perform.
 - PG 6.x
 
 
-!["Screenshot of Main Feed"](https://github.com/Dechantg/photolabs/blob/main/docs/photolabs-main-page.png)
+!["Screenshot of Login/Home Page"](https://github.com/Dechantg/Decision-Maker/blob/master/docs/home-page.jpg)
+!["Screenshot of Registration Page"](https://github.com/Dechantg/Decision-Maker/blob/master/docs/register-page.jpg)
+!["Screenshot of Poll List Page"](https://github.com/Dechantg/Decision-Maker/blob/master/docs/poll-list-page.jpg)
+!["Screenshot of Create Poll Page"](https://github.com/Dechantg/Decision-Maker/blob/master/docs/create-poll-page.jpg)
+!["Screenshot of Voting Page"](https://github.com/Dechantg/Decision-Maker/blob/master/docs/vote-page.jpg)
+!["Screenshot of Poll Results Page"](https://github.com/Dechantg/Decision-Maker/blob/master/docs/poll-results-page.jpg)
+!["Screenshot of Admin List Page"](https://github.com/Dechantg/Decision-Maker/blob/master/docs/admin-list-page.jpg)
+!["Screenshot of Admin Page"](https://github.com/Dechantg/Decision-Maker/blob/master/docs/admin-page.jpg)
