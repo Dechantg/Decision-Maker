@@ -2,11 +2,23 @@
 Decision Maker
 =========
 
-## Project Setup
+# Project Overview
 
 
 
-## Dependencies
+
+### LHL Midterm Project Note:
+
+This is a fork and completion of my midterm project from lighthouse labs. Due to unavoidable loss of group mate during project we were unable to finsh at the time. I have taken the time to fork the project and finish it for my personal github
+
+
+### Contributors:
+Github for contributors for project:
+- @cknowles90 (forked from his repository)
+- @dechantg
+
+
+# Dependencies
 
 - Node 10.x or above
 - NPM 5.x or above
@@ -19,14 +31,20 @@ Decision Maker
 - Body-parser 1.20.2 or above
 - Moment 2.30.1 or above
 
+# Install
 
-## To-Do List
+
+
+
+# To-Do List
 
 - refactor code to remove scripts from ejs files into helper files and reuse code when possible.
 - remove unused query files.
 - removed unused script files or repurpose when moving scripts out of ejs.
 - Refactor last two routes still using moment while rest configured to standard use helper file.
 
+
+# Screenshots
 
 !["Screenshot of Login/Home Page"](https://github.com/Dechantg/Decision-Maker/blob/master/docs/home-page.jpg)
 !["Screenshot of Registration Page"](https://github.com/Dechantg/Decision-Maker/blob/master/docs/register-page.jpg)
