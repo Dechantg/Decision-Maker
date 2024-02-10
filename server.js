@@ -77,7 +77,7 @@ const pool = new Pool({
 });
 
 
-cron.schedule('*/15 * * * *', () => {
+cron.schedule('*/1 * * * *', () => {
   setStatus();
 
 });
