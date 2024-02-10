@@ -49,3 +49,6 @@ The following steps are only for _one_ of the group members to perform.
 - Node 10.x or above
 - NPM 5.x or above
 - PG 6.x
+
+
+!["Screenshot of Main Feed"](https://github.com/Dechantg/photolabs/blob/main/docs/photolabs-main-page.png)
