@@ -4,7 +4,7 @@ Decision Maker
 
 # Project Overview
 
-
+Decision maker is a ranked voting poll for people to use to make group decisions. It allows the users to upload however many options they want, and can add however emails they way. The poll is automatically emailed to all participants with an administration link sent to the creator. Any new emails are automatically saved to the database but flagged as still needing the user to sign up. Poll results return the top 3 choices showing their scores. Ranked votes are calculated by the PostgreSQL server.
 
 
 ### LHL Midterm Project Note:
@@ -46,7 +46,7 @@ Github for contributors for project:
 
 # Screenshots
 
-!["Video of website in use"] (https://youtu.be/hEuZDjR6g4Q)
+[Video of website in use](https://www.youtube.com/watch?v%253DhEuZDjR6g4Q)
 
 !["Screenshot of Login/Home Page"](https://github.com/Dechantg/Decision-Maker/blob/master/docs/home-page.jpg)
 !["Screenshot of Registration Page"](https://github.com/Dechantg/Decision-Maker/blob/master/docs/register-page.jpg)
