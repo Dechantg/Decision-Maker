@@ -6,7 +6,7 @@ const changeStatus = async (user_id, poll_id) => {
   try {
     await db.query(
       `
-      UPDATE authorized_to_vote
+      UPDATE decision_authorized_to_vote
       SET has_voted = true
       WHERE user_id = $1
       AND poll_id = $2

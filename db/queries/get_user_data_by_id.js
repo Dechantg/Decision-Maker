@@ -6,7 +6,7 @@ const userDataById = (id) => {
   return db.query (
   `
   SELECT email, first_name, last_name
-  FROM users
+  FROM decision_users
   WHERE id = $1;
   `, [id])
     .then(data => {

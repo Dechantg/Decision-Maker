@@ -7,7 +7,7 @@ const deleteAuthorizedToVote = async (userIds, pollId) => {
     const values = [].concat(...userIds.map(userId => [userId, pollId]));
 
     const data = await db.query(`
-      DELETE FROM authorized_to_vote
+      DELETE FROM decision_authorized_to_vote
       WHERE (user_id, poll_id) IN (${placeholders});`,
       values
     );

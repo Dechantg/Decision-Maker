@@ -4,7 +4,7 @@ const userEmailById = (id) => {
   return db.query (
   `
   SELECT email
-  FROM users
+  FROM decision_users
   WHERE id = $1;
   `, [id])
     .then(data => {

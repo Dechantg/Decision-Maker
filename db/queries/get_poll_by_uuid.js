@@ -7,7 +7,7 @@ const getByUuid = async (uuid) => {
   try {
     const data = await db.query(`
       SELECT id, poll_creator_id, poll_name, poll_description, opens_at, closes_at, poll_active, poll_deleted, created_at
-      FROM polls
+      FROM decision_polls
       WHERE uuid = $1;
     `, [uuid]);
 

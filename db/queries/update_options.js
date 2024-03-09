@@ -19,7 +19,7 @@ const updateOptions = async (options) => {
       const values = [id, title, description];
 
       const query = `
-        UPDATE poll_options
+        UPDATE decision_poll_options
         SET title = $2, description = $3
         WHERE id = $1
         RETURNING *;`;

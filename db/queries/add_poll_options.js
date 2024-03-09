@@ -9,7 +9,7 @@ const addOptions = async (pollId, options) => {
     const values = [pollId, ...options.flatMap(option => [Object.keys(option)[0], Object.values(option)[0]])];
 
     const data = await db.query(`
-      INSERT INTO poll_options (poll_id, title, description)
+      INSERT INTO decision_poll_options (poll_id, title, description)
       VALUES ${placeholders}
       RETURNING *;`,
       values

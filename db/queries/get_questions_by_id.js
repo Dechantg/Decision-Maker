@@ -5,7 +5,7 @@ const getQuestions = async (pollId) => {
     const data = await db.query(
       `
       SELECT id, title, description
-      FROM poll_options
+      FROM decision_poll_options
       WHERE poll_id = $1;
       `, [pollId]
     );

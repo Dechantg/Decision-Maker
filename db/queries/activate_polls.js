@@ -8,7 +8,7 @@ const db = require('../connection');
 const activatePolls = async () => {
   try {
     const result = await db.query(`
-    UPDATE polls
+    UPDATE decision_polls
     SET poll_active = true
     WHERE opens_at <= NOW() AND closes_at >= NOW() AND force_active_status IS NOT TRUE AND poll_active IS NOT TRUE
     RETURNING *;

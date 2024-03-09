@@ -4,10 +4,10 @@ const getQuestions = async (uuid) => {
   try {
     const data = await db.query(
       `
-      SELECT poll_options.id AS question_id, poll_options.title AS option, poll_options.description AS option_details
-      FROM poll_options
-      JOIN polls ON polls.id = poll_id
-      WHERE polls.uuid = $1;
+      SELECT decision_poll_options.id AS question_id, decision_poll_options.title AS option, decision_poll_options.description AS option_details
+      FROM decision_poll_options
+      JOIN decision_polls ON decision_polls.id = poll_id
+      WHERE decision_polls.uuid = $1;
       `, [uuid]
     );
 

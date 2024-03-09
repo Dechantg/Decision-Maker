@@ -12,7 +12,7 @@ const addNewEmails = async (emails) => {
     const placeholders = emails.map((_, index) => `($${index + 1})`).join(',');
 
     const data = await db.query(`
-      INSERT INTO users (email)
+      INSERT INTO decision_users (email)
       VALUES ${placeholders}
       RETURNING id;`,
       emails

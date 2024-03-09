@@ -5,7 +5,7 @@ const setEmailStatus = async (userIds, pollId, emailStatus) => {
     const placeholders = userIds.map((_, index) => `$${index + 1}`).join(',');
 
     const data = await db.query(`
-    UPDATE authorized_to_vote
+    UPDATE decision_authorized_to_vote
     SET email_sent = $${userIds.length + 1}
     WHERE user_id IN (${placeholders}) AND poll_id = $${userIds.length + 2}
     RETURNING id, email_sent;`,

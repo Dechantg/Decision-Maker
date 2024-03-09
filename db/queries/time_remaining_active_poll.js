@@ -4,7 +4,7 @@ const selectTimeRemaining =  (poll_id) => {
   return db.query (
     `
     SELECT EXACT (EPOCH FROM (closes_at - NOW())) AS time_remaining
-    FROM polls
+    FROM decision_polls
     WHERE id = $1;
     `, [poll_id])
     .then(data => {

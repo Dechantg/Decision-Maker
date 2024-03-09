@@ -7,7 +7,7 @@ const userExists = async (email) => {
   try {
     const data = await db.query(`
       SELECT id
-      FROM users
+      FROM decision_users
       WHERE email = $1;
     `, [email]);
 

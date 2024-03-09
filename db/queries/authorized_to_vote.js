@@ -4,7 +4,7 @@ const authorizedToVote = (user_id, poll_id) => {
   return db.query (
   `
   SELECT user_id, poll_id
-  FROM authorized_to_vote
+  FROM decision_authorized_to_vote
   WHERE user_id = $1 AND poll_id = $2;
   `, [user_id, poll_id])
     .then(data => {

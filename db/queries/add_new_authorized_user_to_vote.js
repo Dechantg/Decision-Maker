@@ -11,7 +11,7 @@ const insertAuthorizedToVote = async (userIds, pollId) => {
     const values = [].concat(...userIds.map(userId => [userId, pollId]));
 
     const data = await db.query(`
-      INSERT INTO authorized_to_vote (user_id, poll_id)
+      INSERT INTO decision_authorized_to_vote (user_id, poll_id)
       VALUES ${placeholders}
       RETURNING id;`,
       values

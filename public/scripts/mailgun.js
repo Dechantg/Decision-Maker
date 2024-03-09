@@ -26,7 +26,7 @@ const sendEmail = async (pollDataToEmail) => {
 
         The poll opens at ${opensAt} and closes at ${closesAt}!!
 
-        You can find the link at http://localhost:3000/results/${uuid}
+        You can find the link at http://decision.dechantg.com/results/${uuid}
 
         Cheers,
         The Decision Maker Team
@@ -66,10 +66,10 @@ const sendAdminEmail = async (pollDataToEmail) => {
 
       The poll opens at ${opensAt} and closes at ${closesAt}!!
 
-      You can find the link at http://localhost:3000/results/${uuid}
+      You can find the link at http://decision.dechantg.com/results/${uuid}
 
       You can find the administrive link for the poll at:
-      http://localhost:3000/admin/${uuid}
+      http://decision.dechantg.com/admin/${uuid}
 
       Cheers,
       The Decision Maker Team

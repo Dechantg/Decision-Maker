@@ -4,7 +4,7 @@ const checkPollStatus = (poll_id) => {
   return db.query (
   `
   SELECT poll_active
-  FROM polls
+  FROM decision_polls
   WHERE id = $1;
   `, [poll_id])
     .then(data => {

@@ -64,6 +64,7 @@ const admin             = require('./routes/admin');
 const pollActive        = require('./routes/active-switch');
 const sendEmail         = require('./routes/email')
 const cron              = require('node-cron');
+const uploadDatabase    = require('./routes/uploadDatabase');
 const setStatus      = require('./public/scripts/updateActiveStatus')
 
 
@@ -96,7 +97,8 @@ app.use('/logout', logout);
 app.use('/admin', admin);
 app.use('/delete', deletePoll);
 app.use('/active', pollActive);
-app.use('/email', sendEmail)
+app.use('/email', sendEmail);
+app.use('/api/uploaddatabase', uploadDatabase);
 
 
 

@@ -6,7 +6,7 @@ const addUser = async (email, firstName, lastName, hashedPassword) => {
   try {
     const data = await db.query(
       `
-      INSERT INTO users (email, first_name, last_name, password_hash, signed_up)
+      INSERT INTO decision_users (email, first_name, last_name, password_hash, signed_up)
       VALUES ($1, $2, $3, $4, TRUE)
       RETURNING id, email;
       `,

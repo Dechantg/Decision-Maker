@@ -6,7 +6,7 @@ const db = require('../connection');
 const deletePoll = async (pollId, userId, pollStatus) => {
   try {
     const result = await db.query(`
-      UPDATE polls
+      UPDATE decision_polls
       SET poll_deleted = $3
       WHERE id = $1 AND poll_creator_id = $2
       RETURNING *;`, [pollId, userId, pollStatus]);

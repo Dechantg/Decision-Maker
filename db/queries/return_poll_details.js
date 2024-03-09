@@ -4,7 +4,7 @@ const pollDetails = (uuid) => {
   return db.query (
   `
   SELECT *
-  FROM polls
+  FROM decision_polls
   WHERE uuid = $1;
   `, [uuid])
     .then(data => {

@@ -7,7 +7,7 @@ const db = require('../connection');
 const UpdateExpiredStatus = async () => {
   try {
     const result = await db.query(`
-      UPDATE polls
+      UPDATE decision_polls
       SET poll_active = false
       WHERE closes_at < NOW()
       RETURNING *;`);

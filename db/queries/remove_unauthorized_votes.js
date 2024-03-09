@@ -8,7 +8,7 @@ const removeUnauthorizedVotes = async (userIds, pollId) => {
     const values = [].concat(...userIds.map(userId => [userId, pollId]));
 
     const data = await db.query(`
-      DELETE FROM user_choice
+      DELETE FROM decision_user_choice
       WHERE (user_id, poll_id) IN (${placeholders});`,
       values
     );

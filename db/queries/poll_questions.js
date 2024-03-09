@@ -4,7 +4,7 @@ const getPollOptions = (poll_id) => {
   return db.query (
     `
     SELECT poll_id, title, description
-    FROM poll_options
+    FROM decision_poll_options
     WHERE poll_id = $1;
     `, [poll_id])
     .then(data => {

@@ -3,7 +3,7 @@ const db = require('../connection');
 const endPollEarly = (poll_id) => {
 return db.query (
   `
-  UPDATE polls
+  UPDATE decision_polls
   SET closes_at = NOW()
   WHERE id = $1;
   `, [poll_id])

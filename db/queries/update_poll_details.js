@@ -6,7 +6,7 @@ const updateDetails = async (pollId, pollName, pollDescription, opensAt, closesA
   try{
     const data = await db.query(
       `
-    UPDATE polls
+    UPDATE decision_polls
     SET poll_name = $1, poll_description = $2, opens_at = $3, closes_at = $4
     WHERE id = $5 AND poll_creator_id = $6;
     `,

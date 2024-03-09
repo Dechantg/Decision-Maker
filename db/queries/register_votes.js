@@ -3,11 +3,11 @@ const db = require('../connection');
 const registerVotes = (uuid) => {
   return db.query (
   `
-  INSERT INTO user_choice (user_id, poll_id, option_id, selection_made)
-  SELECT poll_options.title AS option, poll_options.description AS option_details
+  INSERT INTO decision_user_choice (user_id, poll_id, option_id, selection_made)
+  SELECT decision_poll_options.title AS option, decision_poll_options.description AS option_details
   FROM poll_options
-  JOIN polls ON polls.id = poll_id
-  WHERE polls.uuid = $1;
+  JOIN decision_polls ON decision_polls.id = poll_id
+  WHERE decision_polls.uuid = $1;
   `, [uuid])
     .then(data => {
       const questionDetails = data.rows;

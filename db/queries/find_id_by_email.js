@@ -6,7 +6,7 @@ const findIdByEmail = (email) => {
   return db.query (
   `
   SELECT id
-  FROM users
+  FROM decision_users
   WHERE email = $1;
   `, [email])
     .then(data => {

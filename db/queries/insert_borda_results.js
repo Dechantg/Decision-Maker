@@ -4,11 +4,11 @@ const db = require('../connection');
 const insertBorda = (pollId) => {
   return db.query(
     `
-    UPDATE polls
+    UPDATE decision_polls
     SET
       result_winner = (
         SELECT option_id
-        FROM user_choice
+        FROM decision_user_choice
         WHERE poll_id = $1
         GROUP BY option_id
         ORDER BY SUM(selection_made) DESC
@@ -16,7 +16,7 @@ const insertBorda = (pollId) => {
       ),
       result_runner_up = (
         SELECT option_id
-        FROM user_choice
+        FROM decision_user_choice
         WHERE poll_id = $1
         GROUP BY option_id
         ORDER BY SUM(selection_made) DESC
@@ -24,7 +24,7 @@ const insertBorda = (pollId) => {
       ),
       result_third_choice = (
         SELECT option_id
-        FROM user_choice
+        FROM decision_user_choice
         WHERE poll_id = $1
         GROUP BY option_id
         ORDER BY SUM(selection_made) DESC
@@ -32,7 +32,7 @@ const insertBorda = (pollId) => {
       ),
       borda_winner = (
         SELECT SUM(selection_made) AS borda_talley
-        FROM user_choice
+        FROM decision_user_choice
         WHERE poll_id = $1
         GROUP BY option_id
         ORDER BY borda_talley DESC
@@ -40,7 +40,7 @@ const insertBorda = (pollId) => {
       ),
       borda_runner = (
         SELECT SUM(selection_made) AS borda_talley
-        FROM user_choice
+        FROM decision_user_choice
         WHERE poll_id = $1
         GROUP BY option_id
         ORDER BY borda_talley DESC
@@ -48,7 +48,7 @@ const insertBorda = (pollId) => {
       ),
       borda_third = (
         SELECT SUM(selection_made) AS borda_talley
-        FROM user_choice
+        FROM decision_user_choice
         WHERE poll_id = $1
         GROUP BY option_id
         ORDER BY borda_talley DESC

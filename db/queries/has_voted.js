@@ -5,7 +5,7 @@ const hasVoted = async (user_id, poll_id) => {
     const result = await db.query(
       `
       SELECT has_voted
-      FROM authorized_to_vote
+      FROM decision_authorized_to_vote
       WHERE user_id = $1 AND poll_id = $2
       `,
       [user_id, poll_id]
