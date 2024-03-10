@@ -26,6 +26,7 @@ app.use(session({
   cookie: {
     secure: false,
     sameSite: 'Lax',
+    path: '/',
   },
 }));
 
