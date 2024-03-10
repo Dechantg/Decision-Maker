@@ -24,8 +24,8 @@ app.use(session({
   saveUninitialized: true,
   name: 'Decision',
   cookie: {
-    secure: true,
-    domain: 'dechantg.com',
+    secure: false,
+    sameSite: 'Lax',
   },
 }));
 
