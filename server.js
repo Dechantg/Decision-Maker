@@ -50,7 +50,6 @@ app.use(
 
 // Separated Routes for each Resource
 // Note: Feel free to replace the example routes below with your own
-// const usersRoutes       = require('./routes/users');
 const createPoll        = require('./routes/create-poll');
 const pollResults       = require('./routes/poll-results');
 const submitPolls       = require('./routes/submit-poll');
@@ -85,7 +84,6 @@ cron.schedule('*/1 * * * *', () => {
 });
 
 
-// app.use('/users', usersRoutes);
 app.use('/create', createPoll);
 app.use('/vote', submitPolls);
 app.use('/results', pollResults);
