@@ -13,7 +13,7 @@ const pool = new Pool({
   port:     process.env.DB_PORT
 });
 
-const db = new Pool(dbParams);
+const db = new Pool(pool);
 
 db.connect();
 
