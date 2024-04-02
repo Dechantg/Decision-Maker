@@ -46,9 +46,8 @@ CREATE TABLE IF NOT EXISTS decision_user_choice (
   user_id INTEGER REFERENCES decision_users(id) ON DELETE CASCADE,
   poll_id INTEGER REFERENCES decision_polls(id) ON DELETE CASCADE,
   option_id INTEGER REFERENCES decision_poll_options(id) ON DELETE CASCADE,
-  selection_made SMALLINT
+  selection_made SMALLINT,
   UNIQUE (user_id, poll_id, option_id)
-
 );
 
 

@@ -66,6 +66,8 @@ const sendEmail         = require('./routes/email')
 const cron              = require('node-cron');
 const uploadDatabase    = require('./routes/uploadDatabase');
 const setStatus      = require('./public/scripts/updateActiveStatus')
+const googleTest        = require('./public/scripts/googleTest')
+
 
 
 const { Pool }          = require('pg');
@@ -122,7 +124,14 @@ app.get('/', async (req, res) => {
   }
 });
 
+app.get('/googletest', async (req, res) => {
+  try {
+    googleTest();
 
+  } catch (error) {
+    console.error('An error has occurred using the email path:', error);
+  }
+});
 
 app.listen(PORT, () => {
   console.log(`Example app listening on port ${PORT}`);

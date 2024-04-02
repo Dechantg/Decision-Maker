@@ -1,18 +1,22 @@
 
-// copied from mailgun's website for node.js
+const nodemailer = require('nodemailer');
 
 
-const mailgun = require('mailgun-js')({
-  apiKey: process.env.MAIL_GUN_API,
-  domain: process.env.MAIL_GUN_DOMAIN
+
+const transporter = nodemailer.createTransport({
+  service: 'gmail',
+  auth: {
+      user: process.env.GOOGLE_USER,
+      pass: process.env.GOOGLE_PASSWORD
+  }
 });
-
+``
 const sendEmail = async (pollDataToEmail) => {
   const { emails, uuid, firstName, lastName, pollName, pollDescription, creatorEmail, opensAt, closesAt } = pollDataToEmail;
 
   for (const email of emails) {
     const data = {
-      from: "polls@decisionmaker.com",
+      from: "do-not-reply@decisionmaker.ca",
       to: [email],
       subject: `Poll for ${pollName}`,
       text: `
@@ -26,7 +30,7 @@ const sendEmail = async (pollDataToEmail) => {
 
         The poll opens at ${opensAt} and closes at ${closesAt}!!
 
-        You can find the link at http://decision.dechantg.com/results/${uuid}
+        You can find the link at http://decisionmaker.ca/results/${uuid}
 
         Cheers,
         The Decision Maker Team
@@ -34,8 +38,13 @@ const sendEmail = async (pollDataToEmail) => {
     };
 
     try {
-      // const body = await mailgun.messages().send(data);
-      console.log(`Email sent to ${email}`, data);
+      const body = await transporter.sendMail(data, (error, info) => {
+        if (error) {
+            console.error('Error sending email:', error);
+        } else {
+            console.log('Email sent:', info.response);
+        }
+    });
     } catch (error) {
       console.error(`Error sending email to ${email}:`, error);
       throw error;
@@ -51,7 +60,7 @@ const sendAdminEmail = async (pollDataToEmail) => {
   const {emails, uuid, firstName, lastName, pollName, pollDescription, creatorEmail, opensAt, closesAt } = pollDataToEmail
 
   const data = {
-    from: "polls@decisionmaker.com",
+    from: "info@decisionmaker.ca",
       to: [creatorEmail],
       subject: `Poll Creator Email for ${pollName}`,
       text:`
@@ -66,10 +75,10 @@ const sendAdminEmail = async (pollDataToEmail) => {
 
       The poll opens at ${opensAt} and closes at ${closesAt}!!
 
-      You can find the link at http://decision.dechantg.com/results/${uuid}
+      You can find the link at http://decisionmaker.ca/results/${uuid}
 
       You can find the administrive link for the poll at:
-      http://decision.dechantg.com/admin/${uuid}
+      http://decisionmaker.ca/admin/${uuid}
 
       Cheers,
       The Decision Maker Team
@@ -79,8 +88,13 @@ const sendAdminEmail = async (pollDataToEmail) => {
   };
 
   try {
-    // const body = await mailgun.messages().send(data);
-    console.log('Admin Email sent:', data);
+    const body = await transporter.sendMail(data, (error, info) => {
+      if (error) {
+          console.error('Error sending email:', error);
+      } else {
+          console.log('Email sent:', info.response);
+      }
+  });
     return data;
   } catch (error) {
     console.error('Error sending email:', error);
@@ -91,7 +105,3 @@ const sendAdminEmail = async (pollDataToEmail) => {
 
 module.exports = {sendEmail, sendAdminEmail};
 
-// You can see a record of this email in your logs: https://app.mailgun.com/app/logs.
-
-// You can send up to 300 emails/day from this sandbox server.
-// Next, you should add your own domain so you can send 10000 emails/month for free.
