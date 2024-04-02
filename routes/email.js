@@ -8,7 +8,7 @@ const moment            = require('moment');
 const updateEmailStatus = require('../db/queries/set_emailed_status');
 const processEmails = require('../public/scripts/processEmails');
 const getCreatorDetails = require('../db/queries/get_user_data_by_id');
-const {sendEmail, sendAdminEmail} = require('../public/scripts/mailgun');
+const {sendEmail, sendAdminEmail} = require('../public/scripts/email');
 
 
 

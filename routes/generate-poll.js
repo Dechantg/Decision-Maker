@@ -9,7 +9,7 @@ const addNewEmails = require('../db/queries/add_new_unregistered_emails');
 const addAuthorizedToVote = require('../db/queries/add_new_authorized_user_to_vote');
 const processEmails = require('../public/scripts/processEmails');
 const getCreatorDetails = require('../db/queries/get_user_data_by_id');
-const {sendEmail, sendAdminEmail} = require('../public/scripts/mailgun');
+const {sendEmail, sendAdminEmail} = require('../public/scripts/email');
 const moment            = require('moment');
 const updateEmailStatus = require('../db/queries/set_emailed_status');
 
