@@ -124,14 +124,7 @@ app.get('/', async (req, res) => {
   }
 });
 
-app.get('/googletest', async (req, res) => {
-  try {
-    googleTest();
 
-  } catch (error) {
-    console.error('An error has occurred using the email path:', error);
-  }
-});
 
 app.listen(PORT, () => {
   console.log(`Example app listening on port ${PORT}`);
