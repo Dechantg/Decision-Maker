@@ -10,21 +10,21 @@ const bodyParser      = require('body-parser');
 router.use(bodyParser.json());
 
 
-router.get('/', async(req, res) => {
-  try {
+// router.get('/', async(req, res) => {
+//   try {
 
-    // const userId = req.session.user ? req.session.user.id : null;
-    // const userEmail = req.session.user ? req.session.user.email : null;
+//     // const userId = req.session.user ? req.session.user.id : null;
+//     // const userEmail = req.session.user ? req.session.user.email : null;
 
 
-    res.render('login');
-  } catch (error) {
+//     // res.render('login');
+//   } catch (error) {
 
-    console.error('An error occurred:', error);
+//     console.error('An error occurred:', error);
 
-    res.status(500).send('Internal Server Error');
-  }
-});
+//     res.status(500).send('Internal Server Error');
+//   }
+// });
 
 router.post('/', async(req, res) => {
   try {

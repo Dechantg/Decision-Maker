@@ -1,5 +1,6 @@
 // load .env data into process.env
 require('dotenv').config();
+const cors = require('cors');
 
 // Web server config
 const sassMiddleware = require('./lib/sass-middleware');
@@ -11,6 +12,8 @@ const session        = require('express-session');
 const PORT           = process.env.PORT || 8080;
 
 const app            = express();
+
+app.use(cors());
 
 
 app.set('view engine', 'ejs');
@@ -65,6 +68,7 @@ const pollActive        = require('./routes/active-switch');
 const sendEmail         = require('./routes/email')
 const cron              = require('node-cron');
 const uploadDatabase    = require('./routes/uploadDatabase');
+const profileEmail      = require('./routes/profile-email')
 const setStatus      = require('./public/scripts/updateActiveStatus')
 
 
@@ -93,6 +97,9 @@ app.use('/delete', deletePoll);
 app.use('/active', pollActive);
 app.use('/email', sendEmail);
 app.use('/api/uploaddatabase', uploadDatabase);
+app.use('/api/profile-email', profileEmail);
+
+
 
 
 
@@ -117,7 +124,10 @@ app.get('/', async (req, res) => {
   }
 });
 
-
+app.use((req, res) => {
+  // Redirect to the index page
+  res.redirect('/polls');
+});
 
 app.listen(PORT, () => {
   console.log(`Example app listening on port ${PORT}`);
